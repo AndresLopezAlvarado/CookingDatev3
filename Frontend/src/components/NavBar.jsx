@@ -2,14 +2,11 @@ import { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
-  Disclosure,
   Menu,
   MenuItem,
   MenuItems,
   MenuButton,
   Transition,
-  DisclosureButton,
-  DisclosurePanel,
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import {
@@ -40,7 +37,13 @@ const NavBar = () => {
   const [navIsAuthenticated, setNavIsAuthenticated] = useState([
     { name: "People", href: "/people", current: false },
     { name: "Profile", href: "#", current: false },
-    { name: "Configuration", href: "/configuration", current: false },
+    { name: "Settings", href: "/settings", current: false },
+  ]);
+
+  const [userSetting, setUserSetting] = useState([
+    { name: "Profile", href: "#", current: false },
+    { name: "Settings", href: "/settings", current: false },
+    { name: "Sign out", href: "/", current: false },
   ]);
 
   const changeCurrent = (itemName) => {
@@ -74,206 +77,178 @@ const NavBar = () => {
         href: user ? `/profile/${user._id}` : "#",
         current: false,
       },
-      { name: "Configuration", href: "/configuration", current: false },
+      { name: "Settings", href: "/settings", current: false },
+    ]);
+
+    setUserSetting([
+      {
+        name: "Profile",
+        href: user ? `/profile/${user._id}` : "#",
+        current: false,
+      },
+      ,
+      { name: "Settings", href: "/settings", current: false },
+      { name: "Sign out", href: "/", current: false },
     ]);
   }, [user]);
 
   return (
-    <Disclosure
-      as="nav"
-      className="bg-[#FF3B30] fixed left-0 top-0 z-10 w-full"
-    >
-      {({ open }) => (
-        <>
-          {isAuthenticated ? (
-            <>
-              <div className="container mx-auto px-4">
-                <div className="flex h-16 items-center">
-                  {/* Button to display the panel menu */}
-                  {/* No funciona hover:bg-[#FFCC00]  */}
-                  <DisclosureButton className="md:hidden h-8 w-8 bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:ring-2 focus:ring-inset focus:outline-none rounded-md">
-                    {open ? <XMarkIcon /> : <Bars3Icon />}
-                  </DisclosureButton>
+    <nav className="bg-[#FF3B30] fixed px-4 mx-auto left-0 top-0 z-10 w-full">
+      {isAuthenticated ? (
+        <div className="flex h-16 items-center">
+          {/* Button to display the left panel menu */}
+          {/* No funciona hover:bg-[#FFCC00]  */}
+          <Menu as="div">
+            {({ open }) => (
+              <>
+                <MenuButton className="md:hidden bg-[#FF9500] hover:bg-[#FFCC00] rounded-md">
+                  {open ? (
+                    <XMarkIcon className="h-8 ring-white ring-2 rounded-md" />
+                  ) : (
+                    <Bars3Icon className="h-8" />
+                  )}
+                </MenuButton>
 
-                  <div className="flex flex-1 justify-center gap-x-8">
-                    <div className="flex flex-shrink-0 items-center gap-x-2">
-                      {/* Logo */}
-                      <Link to="/people" onClick={changeCurrent}>
-                        <img
-                          className="h-8 w-auto"
-                          src="/potHearts.png"
-                          alt="logoApp"
-                        />
-                      </Link>
-
-                      {/* Title */}
-                      <h1 className="hidden sm:block md:hidden text-[#FFCC00] text-3xl font-bold">
-                        Cooking Date
-                      </h1>
-                    </div>
-
-                    {/* Links */}
-                    <div className="hidden md:block">
-                      <div className="flex space-x-2">
-                        {navIsAuthenticated.map((item) => (
-                          <Link
-                            key={item.name}
-                            to={item.href}
-                            className={classNames(
-                              item.current
-                                ? "bg-[#FFCC00] hover:bg-[#FF9500]"
-                                : "bg-[#FF9500] hover:bg-[#FFCC00]",
-                              "font-bold p-2 rounded-md"
-                            )}
-                            aria-current={item.current ? "page" : undefined}
-                            onClick={(t) => changeCurrent(item.name)}
-                          >
-                            {item.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-x-2">
-                    {/* Notifications button */}
-                    {/* No funciona hover:bg-[#FFCC00]  */}
-                    <button className="h-8 w-8 bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:ring-2 focus:ring-inset focus:outline-none rounded-full">
-                      <BellIcon />
-                    </button>
-
-                    {/* Profile dropdown */}
-                    {user ? (
-                      <Menu as="div">
-                        <MenuButton className="focus:ring-white focus:ring-2 focus:ring-inset focus:outline-none rounded-full">
-                          <img
-                            className="h-10 w-10 rounded-full"
-                            src={
-                              user.profilePicture
-                                ? user.profilePicture.url
-                                : "/noProfilePhoto.png"
-                            }
-                            alt="profilePicture"
-                          />
-                        </MenuButton>
-
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
-                        >
-                          <MenuItems className="absolute bg-[#FF3B30] right-0 z-10 w-48 space-y-2 p-2 mt-4 rounded-md">
-                            <MenuItem>
-                              {({ isActive }) => (
-                                <Link
-                                  to={`/profile/${user._id}`}
-                                  className={classNames(
-                                    isActive ? "bg-[#FFCC00]" : "",
-                                    "block font-bold p-2 rounded-md bg-[#FF9500]"
-                                  )}
-                                >
-                                  Profile
-                                </Link>
-                              )}
-                            </MenuItem>
-
-                            <MenuItem>
-                              {({ isActive }) => (
-                                <Link
-                                  to={`/settings`}
-                                  className={classNames(
-                                    isActive ? "bg-[#FFCC00]" : "",
-                                    "block font-bold p-2 rounded-md bg-[#FF9500]"
-                                  )}
-                                >
-                                  Settings
-                                </Link>
-                              )}
-                            </MenuItem>
-
-                            <MenuItem>
-                              {({ isActive }) => (
-                                <Link
-                                  to={`/`}
-                                  className={classNames(
-                                    isActive ? "bg-[#FFCC00]" : "",
-                                    "block font-bold p-2 rounded-md bg-[#FF9500]"
-                                  )}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    handleLogOut();
-                                  }}
-                                >
-                                  Sign out
-                                </Link>
-                              )}
-                            </MenuItem>
-                          </MenuItems>
-                        </Transition>
-                      </Menu>
-                    ) : null}
-                  </div>
-                </div>
-
-                {/* Drop down panel */}
-                <DisclosurePanel className="md:hidden">
-                  <div className="space-y-1 px-2 pb-3 pt-2">
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-100"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-75"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
+                >
+                  <MenuItems className="absolute bg-[#FF3B30] left-0 z-10 w-48 space-y-2 p-2 mt-4 rounded-md">
                     {navIsAuthenticated.map((item) => (
-                      <DisclosureButton
-                        as={Link}
-                        key={item.name}
-                        to={item.href}
-                        className={classNames(
-                          item.current
-                            ? "bg-[#FFCC00] hover:bg-[#FF9500]"
-                            : "bg-[#FF9500] hover:bg-[#FFCC00]",
-                          "block font-bold p-2 rounded-md"
-                        )}
-                        aria-current={item.current ? "page" : undefined}
-                        onClick={(t) => changeCurrent(item.name)}
-                      >
-                        {item.name}
-                      </DisclosureButton>
+                      <MenuItem key={item.name}>
+                        <Link
+                          key={item.name}
+                          to={item.href}
+                          className={classNames(
+                            item.current
+                              ? "bg-[#FFCC00] hover:bg-[#FF9500]"
+                              : "bg-[#FF9500] hover:bg-[#FFCC00]",
+                            "block font-bold p-2 rounded-md"
+                          )}
+                          aria-current={item.current ? "page" : undefined}
+                          onClick={(t) => changeCurrent(item.name)}
+                        >
+                          {item.name}
+                        </Link>
+                      </MenuItem>
                     ))}
-                  </div>
-                </DisclosurePanel>
+                  </MenuItems>
+                </Transition>
+              </>
+            )}
+          </Menu>
+
+          {/* Logo - Title - Links */}
+          <div className="flex flex-1 justify-center gap-x-8">
+            {/* Logo - Title */}
+            <div className="flex flex-shrink-0 items-center gap-x-2">
+              {/* Logo */}
+              <Link to="/people" onClick={changeCurrent}>
+                <img className="h-8" src="/potHearts.png" alt="logoApp" />
+              </Link>
+
+              {/* Title */}
+              <h1 className="hidden sm:block md:hidden text-[#FFCC00] text-3xl font-bold">
+                Cooking Date
+              </h1>
+            </div>
+
+            {/* Links */}
+            <div className="hidden md:block">
+              <div className="flex space-x-2">
+                {navIsAuthenticated.map((item) => (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className={classNames(
+                      item.current
+                        ? "bg-[#FFCC00] hover:bg-[#FF9500]"
+                        : "bg-[#FF9500] hover:bg-[#FFCC00]",
+                      "font-bold p-2 rounded-md"
+                    )}
+                    aria-current={item.current ? "page" : undefined}
+                    onClick={(t) => changeCurrent(item.name)}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
               </div>
-            </>
-          ) : (
-            <>
-              <div className="container mx-auto px-4">
-                <div className="flex h-16 items-center">
-                  {/* Button to display the panel menu */}
-                  {/* No funciona hover:bg-[#FFCC00]  */}
-                  <DisclosureButton className="md:hidden h-8 w-8 bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:ring-2 focus:ring-inset focus:outline-none rounded-md">
-                    {open ? <XMarkIcon /> : <Bars3Icon />}
-                  </DisclosureButton>
+            </div>
+          </div>
 
-                  <div className="flex flex-1 justify-center gap-x-8">
-                    <div className="flex flex-shrink-0 items-center gap-x-2">
-                      {/* Logo */}
-                      <Link to="/" onClick={changeCurrent}>
-                        <img
-                          className="h-8 w-auto"
-                          src="/potHearts.png"
-                          alt="logoApp"
-                        />
-                      </Link>
+          {/* Notifications - User´s settings */}
+          <div className="flex items-center gap-x-3">
+            {/* Notifications button */}
+            {/* No funciona hover:bg-[#FFCC00]  */}
+            <Menu as="div">
+              {({ open }) => (
+                <>
+                  <MenuButton
+                    className={
+                      open
+                        ? "bg-[#FF9500] hover:bg-[#FFCC00] h-10 w-10 p-1 ring-white ring-2 rounded-full"
+                        : "bg-[#FF9500] hover:bg-[#FFCC00] h-10 w-10 p-1 rounded-full"
+                    }
+                  >
+                    <BellIcon />
+                  </MenuButton>
 
-                      {/* Title */}
-                      <h1 className="hidden sm:block md:hidden text-[#FFCC00] text-3xl font-bold">
-                        Cooking Date
-                      </h1>
-                    </div>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <MenuItems className="absolute bg-[#FF3B30] right-0 z-10 w-48 space-y-2 p-2 mt-4 rounded-md">
+                      <MenuItem>
+                        <Link>Notifications</Link>
+                      </MenuItem>
+                    </MenuItems>
+                  </Transition>
+                </>
+              )}
+            </Menu>
 
-                    {/* Links */}
-                    <div className="hidden md:block">
-                      <div className="flex space-x-2">
-                        {navigation.map((item) => (
+            {/* User´s settings button */}
+            <Menu as="div">
+              {({ open }) => (
+                <>
+                  <MenuButton className="rounded-full">
+                    <img
+                      className={
+                        open
+                          ? "h-10 w-10 ring-white ring-2 rounded-full"
+                          : "h-10 w-10 rounded-full"
+                      }
+                      src={
+                        user.profilePicture
+                          ? user.profilePicture.url
+                          : "/noProfilePhoto.png"
+                      }
+                      alt="profilePicture"
+                    />
+                  </MenuButton>
+
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <MenuItems className="absolute bg-[#FF3B30] right-0 z-10 w-48 space-y-2 p-2 mt-4 rounded-md">
+                      {userSetting.map((item) => (
+                        <MenuItem key={item.name}>
                           <Link
                             key={item.name}
                             to={item.href}
@@ -281,47 +256,122 @@ const NavBar = () => {
                               item.current
                                 ? "bg-[#FFCC00] hover:bg-[#FF9500]"
                                 : "bg-[#FF9500] hover:bg-[#FFCC00]",
-                              "font-bold p-2 rounded-md"
+                              "block font-bold p-2 rounded-md"
                             )}
                             aria-current={item.current ? "page" : undefined}
-                            onClick={(t) => changeCurrent(item.name)}
+                            onClick={(e) => {
+                              changeCurrent(item.name);
+
+                              if (e.target.text === "Sign out") {
+                                e.preventDefault();
+                                handleLogOut();
+                              }
+                            }}
                           >
                             {item.name}
                           </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                        </MenuItem>
+                      ))}
+                    </MenuItems>
+                  </Transition>
+                </>
+              )}
+            </Menu>
+          </div>
+        </div>
+      ) : (
+        <div className="flex h-16 items-center">
+          {/* Button to display the left panel menu */}
+          {/* No funciona hover:bg-[#FFCC00]  */}
+          <Menu as="div">
+            {({ open }) => (
+              <>
+                <MenuButton className="md:hidden bg-[#FF9500] hover:bg-[#FFCC00] rounded-md">
+                  {open ? (
+                    <XMarkIcon className="h-8 ring-white ring-2 rounded-md" />
+                  ) : (
+                    <Bars3Icon className="h-8" />
+                  )}
+                </MenuButton>
 
-                {/* Drop down panel */}
-                <DisclosurePanel className="md:hidden">
-                  <div className="space-y-1 px-2 pb-3 pt-2">
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-100"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-75"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
+                >
+                  <MenuItems className="absolute bg-[#FF3B30] left-0 z-10 w-48 space-y-2 p-2 mt-4 rounded-md">
                     {navigation.map((item) => (
-                      <DisclosureButton
-                        as={Link}
-                        key={item.name}
-                        to={item.href}
-                        className={classNames(
-                          item.current
-                            ? "bg-[#FFCC00] hover:bg-[#FF9500]"
-                            : "bg-[#FF9500] hover:bg-[#FFCC00]",
-                          "block font-bold p-2 rounded-md"
-                        )}
-                        aria-current={item.current ? "page" : undefined}
-                        onClick={(t) => changeCurrent(item.name)}
-                      >
-                        {item.name}
-                      </DisclosureButton>
+                      <MenuItem key={item.name}>
+                        <Link
+                          key={item.name}
+                          to={item.href}
+                          className={classNames(
+                            item.current
+                              ? "bg-[#FFCC00] hover:bg-[#FF9500]"
+                              : "bg-[#FF9500] hover:bg-[#FFCC00]",
+                            "block font-bold p-2 rounded-md"
+                          )}
+                          aria-current={item.current ? "page" : undefined}
+                          onClick={(t) => changeCurrent(item.name)}
+                        >
+                          {item.name}
+                        </Link>
+                      </MenuItem>
                     ))}
-                  </div>
-                </DisclosurePanel>
+                  </MenuItems>
+                </Transition>
+              </>
+            )}
+          </Menu>
+
+          {/* Logo - Title - Links */}
+          <div className="flex flex-1 justify-center gap-x-8">
+            {/* Logo - Title */}
+            <div className="flex flex-shrink-0 items-center gap-x-2">
+              {/* Logo */}
+              <Link to="/" onClick={changeCurrent}>
+                <img
+                  className="h-8 w-auto"
+                  src="/potHearts.png"
+                  alt="logoApp"
+                />
+              </Link>
+
+              {/* Title */}
+              <h1 className="hidden sm:block md:hidden text-[#FFCC00] text-3xl font-bold">
+                Cooking Date
+              </h1>
+            </div>
+
+            {/* Links */}
+            <div className="hidden md:block">
+              <div className="flex space-x-2">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className={classNames(
+                      item.current
+                        ? "bg-[#FFCC00] hover:bg-[#FF9500]"
+                        : "bg-[#FF9500] hover:bg-[#FFCC00]",
+                      "font-bold p-2 rounded-md"
+                    )}
+                    aria-current={item.current ? "page" : undefined}
+                    onClick={(t) => changeCurrent(item.name)}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
               </div>
-            </>
-          )}
-        </>
+            </div>
+          </div>
+        </div>
       )}
-    </Disclosure>
+    </nav>
   );
 };
 
