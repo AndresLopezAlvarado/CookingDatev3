@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/UserModel.js";
 import { createAccessToken, createNewRefreshToken } from "../libs/jwt.js";
-import { REFRESH_TOKEN_SECRET } from "../config.js";
+import { REFRESH_TOKEN_SECRET } from "../config/config.js";
 
 export const signUp = async (req, res) => {
   const cookies = req.cookies;

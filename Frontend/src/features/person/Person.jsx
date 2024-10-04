@@ -7,11 +7,43 @@ import { TiMessages } from "react-icons/ti";
 import { differenceInYears, parseISO } from "date-fns";
 import { useGetPersonQuery } from "../people/peopleApiSlice";
 import PhotoCarousel from "../../components/PhotoCarousel";
+import { useSocket } from "../../contexts/SocketContext";
+import { selectCurrentUser } from "../auth/authSlice";
+import { useSelector } from "react-redux";
 
 const Person = () => {
+  const socketConnection = useSocket();
+  const user = useSelector(selectCurrentUser);
   const params = useParams();
   const [age, setAge] = useState(null);
   const { data: person, isLoading } = useGetPersonQuery({ userId: params.id });
+
+  const handleCookAtHome = () => {
+    socketConnection.emit("new notification", {
+      sender: user?._id,
+      receiver: params.id,
+      content: "You have received an invitation to cook at home!",
+      type: "cookAtHome",
+    });
+  };
+
+  const handleEatOutside = () => {
+    socketConnection.emit("new notification", {
+      sender: user?._id,
+      receiver: params.id,
+      content: "You have received an invitation to eat out!",
+      type: "eatOutside",
+    });
+  };
+
+  const handleBlock = () => {
+    socketConnection.emit("new notification", {
+      sender: user?._id,
+      receiver: params.id,
+      content: "Some user has blocked you!",
+      type: "block",
+    });
+  };
 
   async function loadAge() {
     var agePerson = null;
@@ -84,15 +116,24 @@ const Person = () => {
 
             {/* Barra */}
             <div className="bg-[#FF3B30] font-bold p-2 rounded-md flex text-4xl space-x-8 justify-center items-center text-center">
-              <Link className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md">
+              <Link
+                onClick={handleCookAtHome}
+                className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+              >
                 <ImSpoonKnife />
               </Link>
 
-              <Link className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md">
+              <Link
+                onClick={handleEatOutside}
+                className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+              >
                 <IoFastFoodOutline />
               </Link>
 
-              <Link className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md">
+              <Link
+                onClick={handleBlock}
+                className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+              >
                 <PiKnifeFill />
               </Link>
 

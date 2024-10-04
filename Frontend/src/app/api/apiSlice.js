@@ -21,9 +21,15 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
   if (result?.data?.error?.message === "jwt expired") {
-    console.log("accessToken expired!, attempting to refresh...");
+    console.log(
+      "accessToken expired!, attempting to refresh... (baseQueryWithReauth)"
+    );
 
-    const refreshResult = await baseQuery("/auth/refreshToken", api, extraOptions);
+    const refreshResult = await baseQuery(
+      "/auth/refreshToken",
+      api,
+      extraOptions
+    );
 
     if (refreshResult?.data) {
       const user = api.getState().auth.user;
@@ -34,7 +40,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
       api.dispatch(setUser({ user }));
 
-      console.log("accessToken refreshed successfully!");
+      console.log("accessToken refreshed successfully! (baseQueryWithReauth)");
 
       result = await baseQuery(args, api, extraOptions);
     } else {

@@ -8,23 +8,34 @@ import People from "./features/people/People";
 import Profile from "./features/profile/Profile";
 import Person from "./features/person/Person";
 import "./App.css";
+import Chat from "./features/chat/Chat";
+import { SocketProvider } from "./contexts/SocketContext";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "./features/auth/authSlice";
+import Chats from "./features/chat/Chats";
 
 function App() {
+  const user = useSelector(selectCurrentUser);
+
   return (
     <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route element={<Home />} path="/" />
-          <Route element={<SignUp />} path="/signUp" />
-          <Route element={<SignIn />} path="/signIn" />
+      <SocketProvider user={user}>
+        <Layout>
+          <Routes>
+            <Route element={<Home />} path="/" />
+            <Route element={<SignUp />} path="/signUp" />
+            <Route element={<SignIn />} path="/signIn" />
 
-          <Route element={<ProtectedRoutes />}>
-            <Route path="/people" element={<People />} />
-            <Route path="/profile/:id" element={<Profile />} />
-            <Route path="/people/:id" element={<Person />} />
-          </Route>
-        </Routes>
-      </Layout>
+            <Route element={<ProtectedRoutes />}>
+              <Route path="/people" element={<People />} />
+              <Route path="/profile/:id" element={<Profile />} />
+              <Route path="/people/:id" element={<Person />} />
+              <Route path="/chat/:id" element={<Chat />} />
+              <Route path="/chats" element={<Chats />} />
+            </Route>
+          </Routes>
+        </Layout>
+      </SocketProvider>
     </BrowserRouter>
   );
 }
