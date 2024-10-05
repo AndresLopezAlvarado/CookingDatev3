@@ -16,7 +16,7 @@ const Chats = () => {
 
   useEffect(() => {
     if (socketConnection) {
-      socketConnection.emit("chats page", user?._id);
+      socketConnection.emit("getConversations");
 
       socketConnection.on("conversations", (conversations) => {
         const conversationsData = conversations.map((conv, index) => {

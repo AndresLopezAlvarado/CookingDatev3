@@ -20,56 +20,67 @@ const io = new Server(server, {
   cors: { origin: FRONTEND_URL, credentials: true },
 });
 
-const onlineUser = new Set();
+const onlineUsers = new Set();
+const usersInChat = new Set();
 
 io.on("connection", async (socket) => {
-  console.log("New user connected", socket.id);
+  console.log(`User connected to socket: ${socket.id}`);
 
-  const user = socket.handshake.auth.user;
+  const userId = socket.handshake.auth.user?._id;
+  const userIdToString = userId?.toString();
+  const notificationsRoom = userIdToString + "navbar";
 
-  socket.join(user?._id?.toString());
+  onlineUsers.add(userIdToString);
+  io.emit("onlineUsers", Array.from(onlineUsers));
 
-  onlineUser.add(user?._id?.toString());
-  io.emit("onlineUser", Array.from(onlineUser));
+  socket.on("joinNotifications", () => socket.join(notificationsRoom));
 
-  socket.on("navbar", async (userId) => {
-    const notifications = await getNofitications(userId);
+  socket.on("getNotifications", async () => {
+    const unseenNotifications = await getNofitications(userId);
 
-    io.to(userId).emit("notifications", notifications);
+    io.to(userIdToString + "navbar").emit(
+      "unseenNotifications",
+      unseenNotifications
+    );
   });
 
-  socket.on("seen notification", async (notificationId) => {
+  socket.on("seenNotification", async (notificationId) => {
     const seenNotificacion = await NotificationModel.findByIdAndUpdate(
       notificationId,
       { seen: true },
       { new: true }
     );
     const notifications = await getNofitications(seenNotificacion.receiver);
-
-    io.to(seenNotificacion.receiver.toString()).emit(
-      "notifications",
+    io.to(seenNotificacion.receiver.toString() + "navbar").emit(
+      "unseenNotifications",
       notifications
     );
   });
 
-  socket.on("chat page", async (receiverId) => {
+  socket.on("joinChat", () => {
+    usersInChat.add(userIdToString);
+    socket.join(userIdToString);
+    io.emit("usersInChat", Array.from(usersInChat));
+  });
+
+  socket.on("getConversation", async (receiverId) => {
     const receiverDetails = await UserModel.findById(receiverId).select(
       "-password"
     );
-    const receiver = {
+    const receiverUser = {
       _id: receiverDetails?._id,
       name: receiverDetails?.username,
       email: receiverDetails?.email,
       profile_pic: receiverDetails?.profilePicture?.url,
-      online: onlineUser.has(receiverId),
+      online: onlineUsers.has(receiverId),
     };
 
-    socket.emit("user receiver", receiver);
+    socket.emit("receiverUser", receiverUser);
 
     const getConversation = await ConversationModel.findOne({
       $or: [
-        { sender: user?._id, receiver: receiverId },
-        { sender: receiverId, receiver: user?._id },
+        { sender: userId, receiver: receiverId },
+        { sender: receiverId, receiver: userId },
       ],
     })
       .populate("messages")
@@ -78,11 +89,11 @@ io.on("connection", async (socket) => {
     socket.emit("messages", getConversation?.messages || []);
   });
 
-  socket.on("seen messages", async (receiverId) => {
+  socket.on("seenMessages", async (receiverId) => {
     let getConversation = await ConversationModel.findOne({
       $or: [
-        { sender: user?._id, receiver: receiverId },
-        { sender: receiverId, receiver: user?._id },
+        { sender: userId, receiver: receiverId },
+        { sender: receiverId, receiver: userId },
       ],
     });
     const messageIds = getConversation?.messages || [];
@@ -92,24 +103,36 @@ io.on("connection", async (socket) => {
     );
 
     const updateNotifications = await NotificationModel.updateMany(
-      { sender: receiverId, receiver: user?._id, type: "message" },
+      { sender: receiverId, receiver: userId, type: "message" },
       { $set: { seen: true } }
     );
 
-    const conversationsSender = await getConversations(user?._id?.toString());
+    const conversationsSender = await getConversations(userIdToString);
     const conversationsReceiver = await getConversations(receiverId);
 
-    io.to(user?._id?.toString()).emit("conversations", conversationsSender);
-    io.to(receiverId).emit("conversations", conversationsReceiver);
+    io.to(userIdToString + "navbar").emit("conversations", conversationsSender);
+    io.to(receiverId + "navbar").emit("conversations", conversationsReceiver);
 
-    const notificationsReceiver = await getNofitications(user?._id?.toString());
+    const notificationsReceiver = await getNofitications(userIdToString);
     const notificationsSender = await getNofitications(receiverId);
 
-    io.to(user?._id?.toString()).emit("notifications", notificationsReceiver);
-    io.to(receiverId).emit("notifications", notificationsSender);
+    io.to(userIdToString + "navbar").emit(
+      "unseenNotifications",
+      notificationsReceiver
+    );
+    io.to(receiverId + "navbar").emit(
+      "unseenNotifications",
+      notificationsSender
+    );
   });
 
-  socket.on("new message", async (newMessage) => {
+  socket.on("leaveChat", () => {
+    usersInChat.delete(userIdToString);
+    socket.leave(userIdToString);
+    io.emit("usersInChat", Array.from(usersInChat));
+  });
+
+  socket.on("newMessage", async (newMessage) => {
     let getConversation = await ConversationModel.findOne({
       $or: [
         { sender: newMessage?.sender, receiver: newMessage?.receiver },
@@ -154,11 +177,14 @@ io.on("connection", async (socket) => {
     const conversationsSender = await getConversations(newMessage?.sender);
     const conversationsReceiver = await getConversations(newMessage?.receiver);
 
-    io.to(newMessage?.sender).emit("conversations", conversationsSender);
+    io.to(newMessage?.sender?.toString() + "navbar").emit(
+      "conversations",
+      conversationsSender
+    );
     io.to(newMessage?.receiver).emit("conversations", conversationsReceiver);
   });
 
-  socket.on("new notification", async (newNotification) => {
+  socket.on("newNotification", async (newNotification) => {
     const createNotification = new NotificationModel({
       sender: newNotification.sender,
       receiver: newNotification.receiver,
@@ -168,17 +194,20 @@ io.on("connection", async (socket) => {
     const saveNotification = await createNotification.save();
     const notifications = await getNofitications(newNotification.receiver);
 
-    io.to(newNotification.receiver).emit("notifications", notifications);
+    io.to(newNotification.receiver + "navbar").emit(
+      "unseenNotifications",
+      notifications
+    );
   });
 
-  socket.on("chats page", async (userId) => {
+  socket.on("getConversations", async () => {
     const conversations = await getConversations(userId);
 
-    socket.emit("conversations", conversations);
+    io.to(userIdToString + "navbar").emit("conversations", conversations);
   });
 
   socket.on("disconnect", () => {
-    onlineUser.delete(user?._id?.toString());
+    onlineUsers.delete(userIdToString);
 
     console.log("User disconnected", socket.id);
   });

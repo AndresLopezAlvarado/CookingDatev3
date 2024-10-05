@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Menu,
   MenuItem,
@@ -15,15 +15,17 @@ import {
 } from "../features/auth/authSlice";
 import { useLogOutMutation } from "../features/auth/authApiSlice";
 import { useSocket } from "../contexts/SocketContext";
+import { setOnlineUser } from "../features/auth/authSlice";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 const NavBar = () => {
+  const dispatch = useDispatch();
+  const socketConnection = useSocket();
   const user = useSelector(selectCurrentUser);
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  const socketConnection = useSocket();
   const [logOut, { isLoading }] = useLogOutMutation();
   const [notifications, setNotifications] = useState([]);
 
@@ -96,16 +98,25 @@ const NavBar = () => {
   }, [user]);
 
   useEffect(() => {
-    if (socketConnection) {
-      socketConnection.emit("navbar", user?._id);
+    if (isAuthenticated && socketConnection) {
+      socketConnection.on("onlineUsers", (onlineUsers) =>
+        dispatch(setOnlineUser(onlineUsers))
+      );
 
-      socketConnection.on("notifications", (notifications) =>
-        setNotifications(notifications)
+      socketConnection.emit("joinNotifications");
+
+      socketConnection.emit("getNotifications");
+
+      socketConnection.on("unseenNotifications", (unseenNotifications) =>
+        setNotifications(unseenNotifications)
       );
     }
 
-    return () => socketConnection?.off("notifications");
-  }, [socketConnection, user]);
+    return () => {
+      socketConnection?.off("onlineUsers");
+      socketConnection?.off("unseenNotifications");
+    };
+  }, [socketConnection, isAuthenticated, dispatch]);
 
   return (
     <nav className="bg-[#FF3B30] fixed px-4 mx-auto left-0 top-0 z-10 w-full">
@@ -213,7 +224,9 @@ const NavBar = () => {
                     </MenuButton>
 
                     <div className="absolute bg-[#FFCC00] font-bold px-2 z-10 top-0 rounded-full">
-                      {notifications.length === 0 ? null : notifications.length}
+                      {notifications?.length === 0
+                        ? null
+                        : notifications?.length}
                     </div>
                   </div>
 
@@ -227,26 +240,34 @@ const NavBar = () => {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <MenuItems className="absolute bg-[#FF3B30] right-0 z-10 w-48 space-y-2 p-2 mt-4 rounded-md">
-                      {notifications?.map((notification) => (
-                        <MenuItem key={notification._id}>
-                          <Link
-                            to={
-                              notification.type === "message"
-                                ? `/chat/${notification.sender}`
-                                : `/people/${notification.sender}`
-                            }
-                            onClick={() =>
-                              socketConnection.emit(
-                                "seen notification",
-                                notification._id
-                              )
-                            }
-                            className="bg-[#FF9500] hover:bg-[#FFCC00] block font-bold p-2 rounded-md"
-                          >
-                            {notification.type}: {notification.content}
-                          </Link>
+                      {notifications?.length === 0 ? (
+                        <MenuItem>
+                          <p className="bg-[#FF9500] hover:bg-[#FFCC00] block font-bold p-2 rounded-md">
+                            No notifications
+                          </p>
                         </MenuItem>
-                      ))}
+                      ) : (
+                        notifications?.map((notification) => (
+                          <MenuItem key={notification._id}>
+                            <Link
+                              to={
+                                notification.type === "message"
+                                  ? `/chat/${notification.sender}`
+                                  : `/people/${notification.sender}`
+                              }
+                              onClick={() =>
+                                socketConnection.emit(
+                                  "seenNotification",
+                                  notification._id
+                                )
+                              }
+                              className="bg-[#FF9500] hover:bg-[#FFCC00] block font-bold p-2 rounded-md"
+                            >
+                              {notification.type}: {notification.content}
+                            </Link>
+                          </MenuItem>
+                        ))
+                      )}
                     </MenuItems>
                   </Transition>
                 </>

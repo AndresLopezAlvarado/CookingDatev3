@@ -19,7 +19,7 @@ const Person = () => {
   const { data: person, isLoading } = useGetPersonQuery({ userId: params.id });
 
   const handleCookAtHome = () => {
-    socketConnection.emit("new notification", {
+    socketConnection.emit("newNotification", {
       sender: user?._id,
       receiver: params.id,
       content: "You have received an invitation to cook at home!",
@@ -28,7 +28,7 @@ const Person = () => {
   };
 
   const handleEatOutside = () => {
-    socketConnection.emit("new notification", {
+    socketConnection.emit("newNotification", {
       sender: user?._id,
       receiver: params.id,
       content: "You have received an invitation to eat out!",
@@ -37,7 +37,7 @@ const Person = () => {
   };
 
   const handleBlock = () => {
-    socketConnection.emit("new notification", {
+    socketConnection.emit("newNotification", {
       sender: user?._id,
       receiver: params.id,
       content: "Some user has blocked you!",

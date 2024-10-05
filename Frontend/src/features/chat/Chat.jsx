@@ -15,13 +15,15 @@ import backgroundImage from "../../assets/wallpaper.jpeg";
 import { useSocket } from "../../contexts/SocketContext";
 import { selectCurrentUser } from "../auth/authSlice";
 import uploadFile from "../../helpers/uploadFiles";
+import { useLocation } from "react-router-dom";
 
 const Chat = () => {
+  const location = useLocation();
   const socketConnection = useSocket();
   const user = useSelector(selectCurrentUser);
   const params = useParams();
   const currentMessage = useRef(null);
-  const [userReceiver, setUserReceiver] = useState({
+  const [receiverUser, setReceiverUser] = useState({
     name: "",
     email: "",
     profile_pic: "",
@@ -36,6 +38,8 @@ const Chat = () => {
   });
   const [loading, setLoading] = useState(false);
   const [openImageVideoUpload, setOpenImageVideoUpload] = useState(false);
+
+  const [usersInChat, setUsersInChat] = useState([]);
 
   const handleUploadImageVideoOpen = () => {
     setOpenImageVideoUpload((prev) => !prev);
@@ -84,7 +88,7 @@ const Chat = () => {
 
     if (message.text || message.imageUrl || message.videoUrl)
       if (socketConnection) {
-        socketConnection.emit("new message", {
+        socketConnection.emit("newMessage", {
           sender: user?._id,
           receiver: params.id,
           text: message.text,
@@ -93,12 +97,14 @@ const Chat = () => {
           msgByUserId: user?._id,
         });
 
-        socketConnection.emit("new notification", {
-          sender: user?._id,
-          receiver: params.id,
-          content: message.text,
-          type: "message",
-        });
+        if (!usersInChat.includes(params.id)) {
+          socketConnection.emit("newNotification", {
+            sender: user?._id,
+            receiver: params.id,
+            content: message.text,
+            type: "message",
+          });
+        }
 
         setMessage({ text: "", imageUrl: "", videoUrl: "" });
       }
@@ -106,24 +112,32 @@ const Chat = () => {
 
   useEffect(() => {
     if (socketConnection) {
-      socketConnection.emit("chat page", params.id);
+      socketConnection.emit("joinChat");
 
-      socketConnection.on("user receiver", (receiver) =>
-        setUserReceiver(receiver)
+      socketConnection.emit("getConversation", params.id);
+
+      socketConnection.on("receiverUser", (receiverUser) =>
+        setReceiverUser(receiverUser)
       );
 
       socketConnection.on("messages", (messages) => {
         setAllMessages(messages);
 
-        socketConnection.emit("seen messages", params.id);
+        socketConnection.emit("seenMessages", params.id);
+      });
+
+      socketConnection.on("usersInChat", (usersInChat) => {
+        setUsersInChat(usersInChat);
       });
     }
 
     return () => {
-      socketConnection?.off("user receiver");
+      socketConnection?.off("receiverUser");
       socketConnection?.off("messages");
+      socketConnection?.off("isReceiverInChat");
+      socketConnection?.emit("leaveChat");
     };
-  }, [socketConnection, params?.id]);
+  }, [socketConnection, params?.id, location.pathname]);
 
   useEffect(() => {
     if (currentMessage.current) {
@@ -142,25 +156,25 @@ const Chat = () => {
       <header className="h-16 px-4 bg-white flex justify-between items-center">
         <div className="flex justify-center items-center gap-4">
           <Link
-            to={`/people/${userReceiver._id}`}
+            to={`/people/${receiverUser._id}`}
             className="lg:hidden bg-[#FF9500] hover:bg-[#FFCC00] font-bold p-2 rounded-md"
           >
             <FaAngleLeft size={17} />
           </Link>
 
           <Avatar
-            userId={userReceiver?._id}
-            name={userReceiver?.name}
-            imageUrl={userReceiver?.profile_pic}
+            userId={receiverUser?._id}
+            name={receiverUser?.name}
+            imageUrl={receiverUser?.profile_pic}
           />
 
           <div>
             <h3 className="font-semibold text-lg my-0 text-ellipsis line-clamp-1">
-              {userReceiver?.name}
+              {receiverUser?.name}
             </h3>
 
             <p className="-my-1 text-sm">
-              {userReceiver?.online ? (
+              {receiverUser?.online ? (
                 <span className="text-[#FFCC00]">online</span>
               ) : (
                 <span className="text-slate-400">offline</span>
