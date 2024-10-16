@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IoChatbubbleEllipses } from "react-icons/io5";
 import { FaImage } from "react-icons/fa";
@@ -13,37 +13,46 @@ const Chats = () => {
   const user = useSelector(selectCurrentUser);
   const socketConnection = useSocket();
   const [allUser, setAllUser] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
-    if (socketConnection) {
-      socketConnection.emit("getConversations");
+    socketConnection?.emit("joinChats");
 
-      socketConnection.on("conversations", (conversations) => {
-        const conversationsData = conversations.map((conv, index) => {
-          if (conv?.sender?._id === conv?.receiver?._id) {
-            return {
-              ...conv,
-              userDetails: conv.sender,
-            };
-          } else if (conv?.receiver?._id !== user?._id) {
-            return {
-              ...conv,
-              userDetails: conv.receiver,
-            };
-          } else {
-            return {
-              ...conv,
-              userDetails: conv.sender,
-            };
-          }
-        });
+    socketConnection?.emit("getConversations");
 
-        setAllUser(conversationsData);
+    socketConnection?.on("conversations", (conversations) => {
+      const conversationsData = conversations.map((conv, index) => {
+        if (conv?.sender?._id === conv?.receiver?._id) {
+          return {
+            ...conv,
+            userDetails: conv.sender,
+          };
+        } else if (conv?.receiver?._id !== user?._id) {
+          return {
+            ...conv,
+            userDetails: conv.receiver,
+          };
+        } else {
+          return {
+            ...conv,
+            userDetails: conv.sender,
+          };
+        }
       });
-    }
 
-    return () => socketConnection?.off("conversations");
-  }, [socketConnection, user]);
+      setAllUser(conversationsData);
+    });
+
+    socketConnection?.on("personBlocked", () =>
+      socketConnection?.emit("getConversations")
+    );
+
+    return () => {
+      socketConnection?.emit("leaveChats");
+      // socketConnection?.off("personBlocked");
+      socketConnection?.off("conversations");
+    };
+  }, [socketConnection, user, location.pathname]);
 
   return (
     <div className="h-[calc(100vh-64px)] flex flex-col">

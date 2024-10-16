@@ -1,9 +1,18 @@
+import User from "../models/UserModel.js";
 import { ConversationModel } from "../models/ConversationModel.js";
 
 const getConversations = async (userId) => {
   if (userId) {
+    const idsWhoBlockedYou = await User.find({
+      blockedPeople: { $in: [userId] },
+    }).select("_id");
+
     const userConversations = await ConversationModel.find({
       $or: [{ sender: userId }, { receiver: userId }],
+      $and: [
+        { sender: { $nin: idsWhoBlockedYou } },
+        { receiver: { $nin: idsWhoBlockedYou } },
+      ],
     })
       .sort({ updatedAt: -1 })
       .populate("messages")
@@ -14,11 +23,8 @@ const getConversations = async (userId) => {
       const countUnseenMsg = conv?.messages?.reduce((prev, curr) => {
         const msgByUserId = curr?.msgByUserId?.toString();
 
-        if (msgByUserId !== userId) {
-          return prev + (curr?.seen ? 0 : 1);
-        } else {
-          return prev;
-        }
+        if (msgByUserId !== userId) return prev + (curr?.seen ? 0 : 1);
+        else return prev;
       }, 0);
 
       return {

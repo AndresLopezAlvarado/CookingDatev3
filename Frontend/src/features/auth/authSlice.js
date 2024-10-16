@@ -18,8 +18,8 @@ const authSlice = createSlice({
       state.user = user;
     },
 
-    setOnlineUser: (state, action) => {
-      state.onlineUser = action.payload;
+    setOnlineUsers: (state, action) => {
+      state.onlineUsers = action.payload;
     },
 
     setSocketConnection: (state, action) => {
@@ -37,7 +37,7 @@ const authSlice = createSlice({
 export const {
   setCredentials,
   setUser,
-  setOnlineUser,
+  setOnlineUsers,
   setSocketConnection,
   logOut,
 } = authSlice.actions;
@@ -47,4 +47,4 @@ export default authSlice.reducer;
 export const selectCurrentUser = (state) => state.auth.user;
 export const selectCurrentAccessToken = (state) => state.auth.accessToken;
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
-export const selectIsOnlineUser = (state) => state.auth.onlineUser;
+export const selectOnlineUsers = (state) => state.auth.onlineUsers;

@@ -7,7 +7,7 @@ const notificationSchema = new mongoose.Schema(
     content: { type: String, required: true },
     type: {
       type: String,
-      enum: ["message", "eatOutside", "cookAtHome", "block"],
+      enum: ["message", "reaction"],
       default: "message",
     },
     seen: { type: Boolean, default: false },

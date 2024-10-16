@@ -1,6 +1,8 @@
 import { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { IoChatboxOutline } from "react-icons/io5";
+import { MdEmojiEmotions } from "react-icons/md";
 import {
   Menu,
   MenuItem,
@@ -9,13 +11,13 @@ import {
   Transition,
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useSocket } from "../contexts/SocketContext";
 import {
   selectCurrentUser,
   selectIsAuthenticated,
+  setOnlineUsers,
 } from "../features/auth/authSlice";
 import { useLogOutMutation } from "../features/auth/authApiSlice";
-import { useSocket } from "../contexts/SocketContext";
-import { setOnlineUser } from "../features/auth/authSlice";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -98,9 +100,9 @@ const NavBar = () => {
   }, [user]);
 
   useEffect(() => {
-    if (isAuthenticated && socketConnection) {
+    if (socketConnection && isAuthenticated) {
       socketConnection.on("onlineUsers", (onlineUsers) =>
-        dispatch(setOnlineUser(onlineUsers))
+        dispatch(setOnlineUsers(onlineUsers))
       );
 
       socketConnection.emit("joinNotifications");
@@ -110,11 +112,16 @@ const NavBar = () => {
       socketConnection.on("unseenNotifications", (unseenNotifications) =>
         setNotifications(unseenNotifications)
       );
+
+      socketConnection.on("personBlocked", () =>
+        socketConnection.emit("getNotifications")
+      );
     }
 
     return () => {
       socketConnection?.off("onlineUsers");
       socketConnection?.off("unseenNotifications");
+      socketConnection?.off("personBlocked");
     };
   }, [socketConnection, isAuthenticated, dispatch]);
 
@@ -224,9 +231,9 @@ const NavBar = () => {
                     </MenuButton>
 
                     <div className="absolute bg-[#FFCC00] font-bold px-2 z-10 top-0 rounded-full">
-                      {notifications?.length === 0
-                        ? null
-                        : notifications?.length}
+                      {!open && notifications?.length > 0
+                        ? notifications.length
+                        : null}
                     </div>
                   </div>
 
@@ -239,7 +246,7 @@ const NavBar = () => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <MenuItems className="absolute bg-[#FF3B30] right-0 z-10 w-48 space-y-2 p-2 mt-4 rounded-md">
+                    <MenuItems className="absolute bg-[#FF3B30] right-0 z-10 w-fit space-y-2 p-2 mt-4 rounded-md">
                       {notifications?.length === 0 ? (
                         <MenuItem>
                           <p className="bg-[#FF9500] hover:bg-[#FFCC00] block font-bold p-2 rounded-md">
@@ -252,18 +259,42 @@ const NavBar = () => {
                             <Link
                               to={
                                 notification.type === "message"
-                                  ? `/chat/${notification.sender}`
-                                  : `/people/${notification.sender}`
+                                  ? `/chat/${notification.sender._id}`
+                                  : `/reactions`
                               }
                               onClick={() =>
-                                socketConnection.emit(
+                                socketConnection?.emit(
                                   "seenNotification",
                                   notification._id
                                 )
                               }
                               className="bg-[#FF9500] hover:bg-[#FFCC00] block font-bold p-2 rounded-md"
                             >
-                              {notification.type}: {notification.content}
+                              {notification.type === "message" ? (
+                                <>
+                                  <div className="flex items-center gap-x-2">
+                                    <IoChatboxOutline />
+
+                                    <p>{notification.sender.username}: </p>
+                                  </div>
+
+                                  <p className="ml-6 font-normal">
+                                    {notification.content}
+                                  </p>
+                                </>
+                              ) : (
+                                <>
+                                  <div className="flex items-center gap-x-2">
+                                    <MdEmojiEmotions />
+
+                                    <p>{notification.sender.username}: </p>
+                                  </div>
+
+                                  <p className="ml-6 font-normal">
+                                    {notification.content}
+                                  </p>
+                                </>
+                              )}
                             </Link>
                           </MenuItem>
                         ))
@@ -286,7 +317,7 @@ const NavBar = () => {
                           : "h-10 w-10 rounded-full"
                       }
                       src={
-                        user.profilePicture
+                        user?.profilePicture
                           ? user.profilePicture.url
                           : "/noProfilePhoto.png"
                       }

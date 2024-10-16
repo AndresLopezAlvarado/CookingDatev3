@@ -23,6 +23,19 @@ const userSchema = new mongoose.Schema(
     profilePicture: { url: String, public_id: String },
     photos: { type: Map, of: photoSchema },
     refreshToken: [String],
+    blockedPeople: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    cookAtHomePeople: [
+      {
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        reactedAt: { type: Date, default: Date.now },
+      },
+    ],
+    eatOutsidePeople: [
+      {
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        reactedAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true }
 );

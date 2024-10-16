@@ -1,27 +1,36 @@
-import { useEffect, useRef, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useEffect, useRef, useState, Fragment } from "react";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FaAngleLeft } from "react-icons/fa";
 import { HiDotsVertical } from "react-icons/hi";
+import { PiKnifeFill } from "react-icons/pi";
 import { FaPlus } from "react-icons/fa";
 import { FaImage } from "react-icons/fa";
 import { FaVideo } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { IoMdSend } from "react-icons/io";
+import { MdOutlineReportGmailerrorred } from "react-icons/md";
+import {
+  Menu,
+  MenuItem,
+  MenuItems,
+  MenuButton,
+  Transition,
+} from "@headlessui/react";
 import moment from "moment";
+import { useSocket } from "../../contexts/SocketContext";
 import Avatar from "../../components/Avatar";
 import Spinner from "../../components/Spinner";
 import backgroundImage from "../../assets/wallpaper.jpeg";
-import { useSocket } from "../../contexts/SocketContext";
 import { selectCurrentUser } from "../auth/authSlice";
 import uploadFile from "../../helpers/uploadFiles";
-import { useLocation } from "react-router-dom";
 
 const Chat = () => {
   const location = useLocation();
   const socketConnection = useSocket();
   const user = useSelector(selectCurrentUser);
   const params = useParams();
+  const navigate = useNavigate();
   const currentMessage = useRef(null);
   const [receiverUser, setReceiverUser] = useState({
     name: "",
@@ -97,45 +106,42 @@ const Chat = () => {
           msgByUserId: user?._id,
         });
 
-        if (!usersInChat.includes(params.id)) {
+        if (!usersInChat.includes(params.id))
           socketConnection.emit("newNotification", {
             sender: user?._id,
             receiver: params.id,
             content: message.text,
             type: "message",
           });
-        }
 
         setMessage({ text: "", imageUrl: "", videoUrl: "" });
       }
   };
 
   useEffect(() => {
-    if (socketConnection) {
-      socketConnection.emit("joinChat");
+    socketConnection?.emit("joinChat");
 
-      socketConnection.emit("getConversation", params.id);
+    socketConnection?.on("usersInChat", (usersInChat) =>
+      setUsersInChat(usersInChat)
+    );
 
-      socketConnection.on("receiverUser", (receiverUser) =>
-        setReceiverUser(receiverUser)
-      );
+    socketConnection?.emit("getConversation", params.id);
 
-      socketConnection.on("messages", (messages) => {
-        setAllMessages(messages);
+    socketConnection?.on("receiverUser", (receiverUser) =>
+      setReceiverUser(receiverUser)
+    );
 
-        socketConnection.emit("seenMessages", params.id);
-      });
+    socketConnection?.on("messages", (messages) => {
+      socketConnection.emit("seenMessages", params.id);
 
-      socketConnection.on("usersInChat", (usersInChat) => {
-        setUsersInChat(usersInChat);
-      });
-    }
+      setAllMessages(messages);
+    });
 
     return () => {
+      socketConnection?.emit("leaveChat");
+      socketConnection?.off("usersInChat");
       socketConnection?.off("receiverUser");
       socketConnection?.off("messages");
-      socketConnection?.off("isReceiverInChat");
-      socketConnection?.emit("leaveChat");
     };
   }, [socketConnection, params?.id, location.pathname]);
 
@@ -151,17 +157,21 @@ const Chat = () => {
   return (
     <div
       style={{ backgroundImage: `url(${backgroundImage})` }}
-      className="h-[calc(100vh-64px)] flex flex-col no-bg-repeat bg-cover"
+      className="h-[calc(100vh-64px)] w-full p-1 gap-y-1 flex flex-col no-bg-repeat bg-cover"
     >
-      <header className="h-16 px-4 bg-white flex justify-between items-center">
-        <div className="flex justify-center items-center gap-4">
-          <Link
-            to={`/people/${receiverUser._id}`}
-            className="lg:hidden bg-[#FF9500] hover:bg-[#FFCC00] font-bold p-2 rounded-md"
-          >
-            <FaAngleLeft size={17} />
-          </Link>
+      <header className="bg-[#FF3B30] font-bold p-2 rounded-md flex justify-between items-center">
+        <button
+          title="Go back!"
+          onClick={() => navigate(-1)}
+          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+        >
+          <FaAngleLeft className="text-4xl" />
+        </button>
 
+        <Link
+          to={`/people/${receiverUser?._id}`}
+          className="flex flex-grow gap-3 justify-center items-center"
+        >
           <Avatar
             userId={receiverUser?._id}
             name={receiverUser?.name}
@@ -181,11 +191,45 @@ const Chat = () => {
               )}
             </p>
           </div>
-        </div>
+        </Link>
 
-        <button className="bg-[#FF9500] hover:bg-[#FFCC00] font-bold p-2 rounded-md cursor-pointer">
-          <HiDotsVertical size={17} />
-        </button>
+        <Menu>
+          <MenuButton className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md">
+            <HiDotsVertical className="text-4xl" />
+          </MenuButton>
+
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-100"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <MenuItems className="absolute bg-[#FF3B30] top-32 right-8 z-10 w-48 space-y-2 p-2 mt-4 rounded-md">
+              <MenuItem>
+                <Link className="bg-[#FFCC00] hover:bg-[#FF9500] block font-bold p-2 rounded-md">
+                  <div className="flex items-center gap-2">
+                    <PiKnifeFill size={25} />
+
+                    <p>Block user</p>
+                  </div>
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <Link className="bg-[#FFCC00] hover:bg-[#FF9500] block font-bold p-2 rounded-md">
+                  <div className="flex items-center gap-2">
+                    <MdOutlineReportGmailerrorred size={25} />
+
+                    <p>Report user</p>
+                  </div>
+                </Link>
+              </MenuItem>
+              -
+            </MenuItems>
+          </Transition>
+        </Menu>
       </header>
 
       <section className="relative h-[calc(100vh-128px)] overflow-x-hidden overflow-y-scroll scrollbar">

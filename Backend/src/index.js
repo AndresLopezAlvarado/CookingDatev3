@@ -8,6 +8,7 @@ import authRoutes from "./routes/authRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import peopleRoutes from "./routes/peopleRoutes.js";
 import { connectDB } from "./config/db.js";
+import "./libs/cronJobs.js";
 
 app.use(cors({ origin: FRONTEND_URL, credentials: true }));
 app.use(express.json());

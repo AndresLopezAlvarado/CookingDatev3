@@ -1,13 +1,17 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import io from "socket.io-client";
-import { selectIsAuthenticated } from "../features/auth/authSlice";
+import {
+  selectCurrentUser,
+  selectIsAuthenticated,
+} from "../features/auth/authSlice";
 
 const SocketContext = createContext();
 
 export const useSocket = () => useContext(SocketContext);
 
-export const SocketProvider = ({ children, user }) => {
+export const SocketProvider = ({ children }) => {
+  const user = useSelector(selectCurrentUser);
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const [socketConnection, setSocketConnection] = useState(null);
 
@@ -15,14 +19,14 @@ export const SocketProvider = ({ children, user }) => {
     if (isAuthenticated) {
       const socket = io(import.meta.env.VITE_BACKEND_URL, {
         withCredentials: true,
-        auth: { user },
+        auth: { userId: user?._id },
       });
 
       setSocketConnection(socket);
 
       return () => socket.disconnect();
     }
-  }, [user]);
+  }, [isAuthenticated]);
 
   return (
     <SocketContext.Provider value={socketConnection}>
