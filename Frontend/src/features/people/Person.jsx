@@ -16,7 +16,7 @@ import { useGetPersonQuery } from "./peopleApiSlice";
 
 const Person = () => {
   const location = useLocation();
-  const socketConnection = useSocket();
+  const { socketConnection } = useSocket();
   const user = useSelector(selectCurrentUser);
   const params = useParams();
   const navigate = useNavigate();
@@ -121,10 +121,6 @@ const Person = () => {
   useEffect(() => {
     loadAge();
   }, [person]);
-
-  // useEffect(() => {
-  //   if (isBlocker) navigate(-1);
-  // }, [isBlocker]);
 
   useEffect(() => {
     socketConnection?.emit("joinPerson");

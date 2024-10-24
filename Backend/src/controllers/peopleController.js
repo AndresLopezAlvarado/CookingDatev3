@@ -3,7 +3,10 @@ import User from "../models/UserModel.js";
 export const getPeople = async (req, res) => {
   try {
     const { userId } = req.query;
-    const people = await User.find({ blockedPeople: { $nin: [userId] } });
+    const people = await User.find({
+      _id: { $ne: userId },
+      blockedPeople: { $nin: [userId] },
+    });
 
     res.json(people);
   } catch (error) {

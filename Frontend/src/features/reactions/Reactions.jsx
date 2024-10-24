@@ -10,7 +10,7 @@ import { selectOnlineUsers } from "../auth/authSlice";
 
 const Reactions = () => {
   const onlineUsers = useSelector(selectOnlineUsers);
-  const socketConnection = useSocket();
+  const { socketConnection } = useSocket();
   const [cookAtHome, setCookAtHome] = useState([]);
   const [eatOutside, setEatOutside] = useState([]);
   const location = useLocation();

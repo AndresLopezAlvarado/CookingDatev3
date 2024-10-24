@@ -19,8 +19,8 @@ function App() {
   const user = useSelector(selectCurrentUser);
 
   return (
-    <BrowserRouter>
-      <SocketProvider>
+    <SocketProvider>
+      <BrowserRouter>
         <Layout>
           <Routes>
             <Route element={<Home />} path="/" />
@@ -37,8 +37,8 @@ function App() {
             </Route>
           </Routes>
         </Layout>
-      </SocketProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </SocketProvider>
   );
 }
 

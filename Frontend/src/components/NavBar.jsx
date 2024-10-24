@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { IoChatboxOutline } from "react-icons/io5";
 import { MdEmojiEmotions } from "react-icons/md";
 import {
@@ -15,7 +15,6 @@ import { useSocket } from "../contexts/SocketContext";
 import {
   selectCurrentUser,
   selectIsAuthenticated,
-  setOnlineUsers,
 } from "../features/auth/authSlice";
 import { useLogOutMutation } from "../features/auth/authApiSlice";
 
@@ -24,12 +23,11 @@ function classNames(...classes) {
 }
 
 const NavBar = () => {
-  const dispatch = useDispatch();
-  const socketConnection = useSocket();
+  const { socketConnection } = useSocket();
   const user = useSelector(selectCurrentUser);
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const [logOut, { isLoading }] = useLogOutMutation();
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState(null);
 
   const [navigation, setNavigation] = useState([
     { name: "Products", href: "/products", current: false },
@@ -100,30 +98,21 @@ const NavBar = () => {
   }, [user]);
 
   useEffect(() => {
-    if (socketConnection && isAuthenticated) {
-      socketConnection.on("onlineUsers", (onlineUsers) =>
-        dispatch(setOnlineUsers(onlineUsers))
-      );
+    const handleUnseenNotifications = (unseenNotifications) =>
+      setNotifications(unseenNotifications);
 
-      socketConnection.emit("joinNotifications");
+    const handlePersonBlockedNotifications = () =>
+      socketConnection?.emit("getNotifications");
 
-      socketConnection.emit("getNotifications");
-
-      socketConnection.on("unseenNotifications", (unseenNotifications) =>
-        setNotifications(unseenNotifications)
-      );
-
-      socketConnection.on("personBlocked", () =>
-        socketConnection.emit("getNotifications")
-      );
-    }
+    socketConnection?.emit("getNotifications");
+    socketConnection?.on("unseenNotifications", handleUnseenNotifications);
+    socketConnection?.on("personBlocked", handlePersonBlockedNotifications);
 
     return () => {
-      socketConnection?.off("onlineUsers");
-      socketConnection?.off("unseenNotifications");
-      socketConnection?.off("personBlocked");
+      socketConnection?.off("unseenNotifications", handleUnseenNotifications);
+      socketConnection?.off("personBlocked", handlePersonBlockedNotifications);
     };
-  }, [socketConnection, isAuthenticated, dispatch]);
+  }, [socketConnection]);
 
   return (
     <nav className="bg-[#FF3B30] fixed px-4 mx-auto left-0 top-0 z-10 w-full">

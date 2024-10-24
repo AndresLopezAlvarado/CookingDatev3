@@ -27,7 +27,7 @@ import uploadFile from "../../helpers/uploadFiles";
 
 const Chat = () => {
   const location = useLocation();
-  const socketConnection = useSocket();
+  const { socketConnection } = useSocket();
   const user = useSelector(selectCurrentUser);
   const params = useParams();
   const navigate = useNavigate();

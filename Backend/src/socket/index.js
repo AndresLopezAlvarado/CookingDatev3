@@ -31,6 +31,7 @@ io.on("connection", async (socket) => {
   const userId = socket.handshake.auth.userId;
   const userIdToString = userId?.toString();
   const notificationsRoom = userIdToString + "notifications";
+  const peopleRoom = userIdToString + "people";
   const personRoom = userIdToString + "person";
   const chatRoom = userIdToString + "chat";
   const chatsRoom = userIdToString + "chats";
@@ -41,7 +42,7 @@ io.on("connection", async (socket) => {
   io.emit("onlineUsers", Array.from(onlineUsers));
 
   //Notifications
-  socket.on("joinNotifications", () => socket.join(notificationsRoom));
+  socket.join(notificationsRoom);
 
   socket.on("getNotifications", async () => {
     const unseenNotifications = await getNofitications(userId);
@@ -50,14 +51,24 @@ io.on("connection", async (socket) => {
   });
 
   socket.on("seenNotification", async (notificationId) => {
-    const seenNotificacion = await NotificationModel.findByIdAndUpdate(
+    const seenNotification = await NotificationModel.findByIdAndUpdate(
       notificationId,
       { seen: true },
       { new: true }
     );
-    const notifications = await getNofitications(seenNotificacion.receiver);
 
-    io.to(seenNotificacion.receiver.toString() + "notifications").emit(
+    await NotificationModel.updateMany(
+      {
+        sender: seenNotification.sender,
+        receiver: seenNotification.receiver,
+        type: seenNotification.type,
+      },
+      { seen: true }
+    );
+
+    const notifications = await getNofitications(seenNotification.receiver);
+
+    io.to(seenNotification.receiver.toString() + "notifications").emit(
       "unseenNotifications",
       notifications
     );
@@ -74,7 +85,6 @@ io.on("connection", async (socket) => {
     io.to(notificationsRoom).emit("unseenNotifications", notifications);
   });
 
-  //
   socket.on("newNotification", async (newNotification) => {
     const createNotification = new NotificationModel({
       sender: newNotification.sender,
@@ -92,6 +102,11 @@ io.on("connection", async (socket) => {
       notifications
     );
   });
+
+  //People
+  socket.on("joinPeople", () => socket.join(peopleRoom));
+
+  socket.on("leavePeople", () => socket.leave(peopleRoom));
 
   //Person
   socket.on("joinPerson", () => {
@@ -398,7 +413,6 @@ io.on("connection", async (socket) => {
     }
   });
 
-  //
   socket.on("newReaction", async ({ receiverId, content, type }) => {
     try {
       const createReaction = new ReactionModel({

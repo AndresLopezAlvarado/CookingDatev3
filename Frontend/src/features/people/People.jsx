@@ -17,13 +17,20 @@ const People = () => {
     isLoading,
     refetch,
   } = useGetPeopleQuery({ userId: user._id });
-  const socketConnection = useSocket();
+  const { socketConnection } = useSocket();
+  const location = useLocation();
 
   useEffect(() => {
-    socketConnection?.on("personBlocked", () => refetch());
+    const handlePersonBlockedPeople = () => refetch();
 
-    return () => socketConnection?.off("personBlocked");
-  }, [socketConnection, refetch]);
+    socketConnection?.emit("joinPeople");
+    socketConnection?.on("personBlocked", handlePersonBlockedPeople);
+
+    return () => {
+      socketConnection?.emit("leavePeople");
+      socketConnection?.off("personBlocked", handlePersonBlockedPeople);
+    };
+  }, [socketConnection, refetch, location.pathname]);
 
   return (
     <div className="h-screen w-full p-1 gap-y-1 flex flex-col">

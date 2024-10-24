@@ -11,46 +11,35 @@ import { useSocket } from "../../contexts/SocketContext";
 
 const Chats = () => {
   const user = useSelector(selectCurrentUser);
-  const socketConnection = useSocket();
+  const { socketConnection } = useSocket();
   const [allUser, setAllUser] = useState([]);
   const location = useLocation();
 
   useEffect(() => {
-    socketConnection?.emit("joinChats");
-
-    socketConnection?.emit("getConversations");
-
-    socketConnection?.on("conversations", (conversations) => {
-      const conversationsData = conversations.map((conv, index) => {
-        if (conv?.sender?._id === conv?.receiver?._id) {
-          return {
-            ...conv,
-            userDetails: conv.sender,
-          };
-        } else if (conv?.receiver?._id !== user?._id) {
-          return {
-            ...conv,
-            userDetails: conv.receiver,
-          };
-        } else {
-          return {
-            ...conv,
-            userDetails: conv.sender,
-          };
-        }
+    const handleConversations = (conversations) => {
+      const conversationsData = conversations.map((conv) => {
+        if (conv?.sender?._id === conv?.receiver?._id)
+          return { ...conv, userDetails: conv.sender };
+        else if (conv?.receiver?._id !== user?._id)
+          return { ...conv, userDetails: conv.receiver };
+        else return { ...conv, userDetails: conv.sender };
       });
 
       setAllUser(conversationsData);
-    });
+    };
 
-    socketConnection?.on("personBlocked", () =>
-      socketConnection?.emit("getConversations")
-    );
+    const handlePersonBlockedChats = () =>
+      socketConnection?.emit("getConversations");
+
+    socketConnection?.emit("joinChats");
+    socketConnection?.emit("getConversations");
+    socketConnection?.on("conversations", handleConversations);
+    socketConnection?.on("personBlocked", handlePersonBlockedChats);
 
     return () => {
       socketConnection?.emit("leaveChats");
-      // socketConnection?.off("personBlocked");
-      socketConnection?.off("conversations");
+      socketConnection?.off("conversations", handleConversations);
+      socketConnection?.off("personBlocked", handlePersonBlockedChats);
     };
   }, [socketConnection, user, location.pathname]);
 

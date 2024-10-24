@@ -1,25 +1,25 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ImSpoonKnife } from "react-icons/im";
 import { selectOnlineUsers } from "../auth/authSlice";
 
 const PersonCard = ({ person }) => {
   const onlineUsers = useSelector(selectOnlineUsers);
   const isOnline = onlineUsers?.includes(person._id);
   const navigate = useNavigate();
-  const [firstName, setFirstName] = useState(null);
+  const firstName = person.username.split(" ")[0];
+  // const [firstName, setFirstName] = useState(null);
 
-  const splitUsername = () => {
-    const usernameParts = person.username.split(" ");
-    const firstPart = usernameParts[0];
+  // const splitUsername = () => {
+  //   const usernameParts = person.username.split(" ");
+  //   const firstPart = usernameParts[0];
 
-    setFirstName(firstPart);
-  };
+  //   setFirstName(firstPart);
+  // };
 
-  useEffect(() => {
-    splitUsername();
-  }, []);
+  // useEffect(() => {
+  //   splitUsername();
+  // }, [person]);
 
   return (
     <div
