@@ -9,9 +9,9 @@ import {
 } from "../models/ConversationModel.js";
 import UserModel from "../models/UserModel.js";
 import NotificationModel from "../models/NotificationModel.js";
+import ReactionModel from "../models/ReactionModel.js";
 import getConversations from "../helpers/getConversations.js";
 import getNofitications from "../helpers/getNotifications.js";
-import ReactionModel from "../models/ReactionModel.js";
 
 dotenv.config();
 
