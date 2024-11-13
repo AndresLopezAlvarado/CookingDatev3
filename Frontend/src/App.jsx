@@ -14,6 +14,10 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "./features/auth/authSlice";
 import Chats from "./features/chat/Chats";
 import Reactions from "./features/reactions/Reactions";
+import Favorites from "./features/favorites/Favorites";
+import ReportPerson from "./features/pages/ReportPerson";
+import Recipe from "./features/recipe/Recipe";
+import Language from "./features/pages/Language";
 
 function App() {
   const user = useSelector(selectCurrentUser);
@@ -26,6 +30,7 @@ function App() {
             <Route element={<Home />} path="/" />
             <Route element={<SignUp />} path="/signUp" />
             <Route element={<SignIn />} path="/signIn" />
+            <Route element={<Language />} path="/language" />
 
             <Route element={<ProtectedRoutes />}>
               <Route path="/people" element={<People />} />
@@ -34,6 +39,9 @@ function App() {
               <Route path="/chat/:id" element={<Chat />} />
               <Route path="/chats" element={<Chats />} />
               <Route path="/reactions" element={<Reactions />} />
+              <Route path="/favorites" element={<Favorites />} />
+              <Route path="/reportPerson/:id" element={<ReportPerson />} />
+              <Route path="/recipe" element={<Recipe />} />
             </Route>
           </Routes>
         </Layout>

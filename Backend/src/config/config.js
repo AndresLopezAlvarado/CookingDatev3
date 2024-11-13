@@ -14,3 +14,5 @@ export const FRONTEND_URL = process.env.FRONTEND_URL;
 export const CLOUD_NAME = process.env.CLOUD_NAME;
 export const API_KEY = process.env.API_KEY;
 export const API_SECRET = process.env.API_SECRET;
+
+export const SPOONACULAR_API_KEY = process.env.SPOONACULAR_API_KEY;

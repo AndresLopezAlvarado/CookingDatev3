@@ -81,7 +81,7 @@ const Reactions = () => {
             <h1>There are no reactions!</h1>
           </div>
         ) : (
-          <div className="w-full rounded-md grid grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-2">
+          <div className="w-full rounded-md grid grid-cols-3 md:grid-cols-4 xl:grid-cols-5">
             {view === "cookAtHome"
               ? cookAtHome.map((reaction) => {
                   const isOnline = onlineUsers?.includes(reaction.sender._id);
@@ -89,7 +89,7 @@ const Reactions = () => {
                   return (
                     <div
                       key={reaction._id}
-                      className="h-64 ring-[#FF3B30] hover:ring-4 hover:text-opacity-70 flex flex-col items-center justify-end bg-cover bg-center rounded-md cursor-pointer relative"
+                      className="h-64 m-1 ring-[#FF3B30] hover:ring-4 hover:text-opacity-70 flex flex-col items-center justify-end bg-cover bg-center rounded-md cursor-pointer relative"
                       style={
                         reaction.sender.profilePicture
                           ? {
@@ -119,7 +119,7 @@ const Reactions = () => {
                   return (
                     <div
                       key={reaction._id}
-                      className="h-64 ring-[#FF3B30] hover:ring-4 hover:text-opacity-70 flex flex-col items-center justify-end bg-cover bg-center rounded-md cursor-pointer relative"
+                      className="h-64 m-1 ring-[#FF3B30] hover:ring-4 hover:text-opacity-70 flex flex-col items-center justify-end bg-cover bg-center rounded-md cursor-pointer relative"
                       style={
                         reaction.sender.profilePicture
                           ? {

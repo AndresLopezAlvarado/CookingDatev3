@@ -167,15 +167,17 @@ const ProfileForm = ({ onSubmit, toggleModal, user }) => {
               }}
             >
               <option value="">Select dietary preferences</option>
+              <option value="None">None</option>
+              <option value="Gluten Free">Gluten Free</option>
+              <option value="Ketogenic">Ketogenic</option>
               <option value="Vegetarian">Vegetarian</option>
+              <option value="Lacto-Vegetarian">Lacto-Vegetarian</option>
+              <option value="Ovo-Vegetarian">Ovo-Vegetarian</option>
               <option value="Vegan">Vegan</option>
-              <option value="Gluten-free">Gluten-free</option>
-              <option value="Lactose intolerant">Lactose intolerant</option>
-              <option value="Nut allergy">Nut allergy</option>
-              <option value="Seafood allergy">Seafood allergy</option>
               <option value="Pescetarian">Pescetarian</option>
-              <option value="Kosher">Kosher</option>
-              <option value="Halal">Halal</option>
+              <option value="Paleo">Paleo</option>
+              <option value="Low FODMAP">Low FODMAP</option>
+              <option value="Whole30">Whole30</option>
             </Field>
           </div>
 

@@ -1,0 +1,10 @@
+{
+  "navigation": {
+    "language": "Idioma",
+    "signIn": "Abrir sesión",
+    "people": "Gente",
+    "settings": "Configuracion",
+    "profile": "Perfil",
+    "signOut": "Cerrar sesión"
+  }
+}

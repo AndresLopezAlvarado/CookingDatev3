@@ -17,6 +17,7 @@ import {
   selectIsAuthenticated,
 } from "../features/auth/authSlice";
 import { useLogOutMutation } from "../features/auth/authApiSlice";
+import { useTranslation } from "react-i18next";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -28,26 +29,41 @@ const NavBar = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const [logOut, { isLoading }] = useLogOutMutation();
   const [notifications, setNotifications] = useState(null);
+  const { t, i18n } = useTranslation(["navbar"]);
 
-  const [navigation, setNavigation] = useState([
-    { name: "Products", href: "/products", current: false },
-    { name: "Information", href: "/information", current: false },
-    { name: "Security", href: "/security", current: false },
-    { name: "Help", href: "/help", current: false },
-    { name: "Download", href: "/download", current: false },
-    { name: "Language", href: "/language", current: false },
-    { name: "Sign in", href: "/signIn", current: false },
-  ]);
+  const buildNavigation = () => [
+    // { name: "Products", href: "/products", current: false },
+    // { name: "Information", href: "/information", current: false },
+    // { name: "Security", href: "/security", current: false },
+    // { name: "Help", href: "/help", current: false },
+    // { name: "Download", href: "/download", current: false },
+    { name: t("navigation.language"), href: "/language", current: false },
+    { name: t("navigation.signIn"), href: "/signIn", current: false },
+  ];
 
-  const [navIsAuthenticated, setNavIsAuthenticated] = useState([
-    { name: "People", href: "/people", current: false },
-    { name: "Profile", href: "#", current: false },
-    { name: "Settings", href: "/settings", current: false },
-  ]);
+  const buildNavIsAuthenticated = () => [
+    { name: t("navigation.people"), href: "/people", current: false },
+    { name: t("navigation.language"), href: "/language", current: false },
+    { name: t("navigation.settings"), href: "/settings", current: false },
+  ];
+
+  const buildUserSetting = () => [
+    {
+      name: t("navigation.profile"),
+      href: user ? `/profile/${user._id}` : "#",
+      current: false,
+    },
+    { name: t("navigation.signOut"), href: "/", current: false },
+  ];
+
+  const [navigation, setNavigation] = useState(buildNavigation);
+
+  const [navIsAuthenticated, setNavIsAuthenticated] = useState(
+    buildNavIsAuthenticated
+  );
 
   const [userSetting, setUserSetting] = useState([
     { name: "Profile", href: "#", current: false },
-    { name: "Settings", href: "/settings", current: false },
     { name: "Sign out", href: "/", current: false },
   ]);
 
@@ -75,27 +91,10 @@ const NavBar = () => {
   };
 
   useEffect(() => {
-    setNavIsAuthenticated([
-      { name: "People", href: "/people", current: false },
-      {
-        name: "Profile",
-        href: user ? `/profile/${user._id}` : "#",
-        current: false,
-      },
-      { name: "Settings", href: "/settings", current: false },
-    ]);
-
-    setUserSetting([
-      {
-        name: "Profile",
-        href: user ? `/profile/${user._id}` : "#",
-        current: false,
-      },
-      ,
-      { name: "Settings", href: "/settings", current: false },
-      { name: "Sign out", href: "/", current: false },
-    ]);
-  }, [user]);
+    setNavigation(buildNavigation());
+    setNavIsAuthenticated(buildNavIsAuthenticated());
+    setUserSetting(buildUserSetting());
+  }, [i18n.language, user]);
 
   useEffect(() => {
     const handleUnseenNotifications = (unseenNotifications) =>

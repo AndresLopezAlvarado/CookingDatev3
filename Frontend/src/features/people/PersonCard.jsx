@@ -8,24 +8,12 @@ const PersonCard = ({ person }) => {
   const isOnline = onlineUsers?.includes(person._id);
   const navigate = useNavigate();
   const firstName = person.username.split(" ")[0];
-  // const [firstName, setFirstName] = useState(null);
-
-  // const splitUsername = () => {
-  //   const usernameParts = person.username.split(" ");
-  //   const firstPart = usernameParts[0];
-
-  //   setFirstName(firstPart);
-  // };
-
-  // useEffect(() => {
-  //   splitUsername();
-  // }, [person]);
 
   return (
     <div
-      className="h-64 ring-[#FF3B30] hover:ring-4 hover:text-opacity-70 flex flex-col items-center justify-end bg-cover bg-center rounded-md cursor-pointer relative"
+      className="m-1 h-64 ring-[#FF3B30] hover:ring-4 hover:text-opacity-70 flex flex-col items-center justify-end bg-cover bg-center rounded-md cursor-pointer relative"
       style={
-        person.profilePicture
+        person.profilePicture.url
           ? { backgroundImage: `url(${person.profilePicture.url})` }
           : { backgroundImage: `url("/noProfilePhoto.png")` }
       }

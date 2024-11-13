@@ -1,0 +1,10 @@
+{
+  "navigation": {
+    "language": "Language",
+    "signIn": "Sign in",
+    "people": "People",
+    "settings": "Settings",
+    "profile": "Profile",
+    "signOut": "Sign out"
+  }
+}

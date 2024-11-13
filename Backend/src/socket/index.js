@@ -106,6 +106,20 @@ io.on("connection", async (socket) => {
   //People
   socket.on("joinPeople", () => socket.join(peopleRoom));
 
+  socket.on("updateLocation", async ({ userId, lat, lng }) => {
+    try {
+      await UserModel.findByIdAndUpdate(
+        userId,
+        { location: { lat, lng } },
+        { new: true }
+      );
+
+      io.emit("locationUpdated");
+    } catch (error) {
+      console.error("Error actualizando la ubicación del usuario:", error);
+    }
+  });
+
   socket.on("leavePeople", () => socket.leave(peopleRoom));
 
   //Person
@@ -121,11 +135,19 @@ io.on("connection", async (socket) => {
     io.to(personRoom).emit("isBlocker", isBlocker);
   });
 
+  socket.on("getIsFavorite", async (receiverId) => {
+    const user = await UserModel.findById(userId);
+    const isFavorite = user?.favoritePeople?.includes(receiverId);
+
+    io.to(personRoom).emit("isFavorite", isFavorite);
+  });
+
   socket.on("getIsBlocked", async (receiverId) => {
     const user = await UserModel.findById(userId);
     const isBlocked = user?.blockedPeople?.includes(receiverId);
 
     io.to(personRoom).emit("isBlocked", isBlocked);
+    io.to(chatRoom).emit("isBlocked", isBlocked);
   });
 
   socket.on("getReacted", async (receiverId) => {
@@ -196,6 +218,50 @@ io.on("connection", async (socket) => {
     }
   });
 
+  socket.on("markAsFavorite", async (favoritePersonId) => {
+    try {
+      const user = await UserModel.findById(userId);
+
+      if (!user?.favoritePeople?.includes(favoritePersonId)) {
+        user.favoritePeople.push(favoritePersonId);
+
+        await user.save();
+      }
+    } catch (error) {
+      console.error({
+        message: "Something went wrong on markAsFavorite",
+        error: error,
+      });
+
+      throw new Error({
+        message: "Something went wrong on markAsFavorite",
+        error: error,
+      });
+    }
+  });
+
+  socket.on("unmarkAsFavorite", async (unfavoritePersonId) => {
+    try {
+      const user = await UserModel.findById(userId);
+
+      user.favoritePeople = user.favoritePeople.filter(
+        (favoritePersonId) => favoritePersonId.toString() !== unfavoritePersonId
+      );
+
+      await user.save();
+    } catch (error) {
+      console.error({
+        message: "Something went wrong on unmarkAsFavorite",
+        error: error,
+      });
+
+      throw new Error({
+        message: "Something went wrong on unmarkAsFavorite",
+        error: error,
+      });
+    }
+  });
+
   socket.on("blockPerson", async (blockPersonId) => {
     try {
       const user = await UserModel.findById(userId);
@@ -208,6 +274,7 @@ io.on("connection", async (socket) => {
         io.to(blockPersonId + "notifications").emit("personBlocked");
         io.to(blockPersonId + "people").emit("personBlocked");
         io.to(blockPersonId + "chats").emit("personBlocked");
+        io.to(chatRoom).emit("isBlocked", true);
       }
     } catch (error) {
       console.error({
@@ -235,6 +302,7 @@ io.on("connection", async (socket) => {
       io.to(unblockPersonId + "notifications").emit("personBlocked");
       io.to(unblockPersonId + "people").emit("personBlocked");
       io.to(unblockPersonId + "chats").emit("personBlocked");
+      io.to(chatRoom).emit("isBlocked", false);
     } catch (error) {
       console.error({
         message: "Something went wrong on unblockPerson",
@@ -451,6 +519,7 @@ io.on("connection", async (socket) => {
 
   socket.on("disconnect", () => {
     onlineUsers.delete(userIdToString);
+    io.emit("onlineUsers", Array.from(onlineUsers));
 
     console.log("User disconnected", socket.id);
   });

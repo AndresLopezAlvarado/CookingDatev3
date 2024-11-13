@@ -5,6 +5,8 @@ import { ImSpoonKnife } from "react-icons/im";
 import { PiKnifeFill } from "react-icons/pi";
 import { IoFastFoodOutline } from "react-icons/io5";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
+import { FaRegStar } from "react-icons/fa6";
+import { FaStar } from "react-icons/fa6";
 import { IoChatboxOutline } from "react-icons/io5";
 import { CgUnblock } from "react-icons/cg";
 import { FaAngleLeft } from "react-icons/fa";
@@ -26,6 +28,7 @@ const Person = () => {
   const [isReacted, setIsReacted] = useState({});
   const [isBlocker, setIsBlocker] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const handleCookAtHome = async () => {
     if (isReacted.isCookAtHome) return;
@@ -80,6 +83,25 @@ const Person = () => {
       throw new Error(error);
     }
   };
+  const handleMarkAsFavorite = async () => {
+    try {
+      socketConnection?.emit("markAsFavorite", params.id);
+
+      socketConnection?.emit("getIsFavorite", params.id);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  const handleUnmarkAsFavorite = async () => {
+    try {
+      socketConnection?.emit("unmarkAsFavorite", params.id);
+
+      socketConnection?.emit("getIsFavorite", params.id);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
 
   const handleBlockPerson = async () => {
     try {
@@ -123,6 +145,8 @@ const Person = () => {
   }, [person]);
 
   useEffect(() => {
+    const handleIsBlockedPerson = (isBlocked) => setIsBlocked(isBlocked);
+
     socketConnection?.emit("joinPerson");
 
     socketConnection?.on("usersInReactions", (usersInReactions) => {
@@ -133,9 +157,15 @@ const Person = () => {
 
     socketConnection?.on("isBlocker", (isBlocker) => setIsBlocker(isBlocker));
 
+    socketConnection?.emit("getIsFavorite", params.id);
+
+    socketConnection?.on("isFavorite", (isFavorite) =>
+      setIsFavorite(isFavorite)
+    );
+
     socketConnection?.emit("getIsBlocked", params.id);
 
-    socketConnection?.on("isBlocked", (isBlocked) => setIsBlocked(isBlocked));
+    socketConnection?.on("isBlocked", handleIsBlockedPerson);
 
     socketConnection?.emit("getReacted", params.id);
 
@@ -147,7 +177,8 @@ const Person = () => {
       socketConnection?.emit("leavePerson");
       socketConnection?.off("usersInReactions");
       socketConnection?.off("isBlocker");
-      socketConnection?.off("isBlocked");
+      socketConnection?.off("isFavorite");
+      socketConnection?.off("isBlocked", handleIsBlockedPerson);
       socketConnection?.off("isReacted");
     };
   }, [socketConnection, params?.id, isReacted, location.pathname]);
@@ -204,7 +235,7 @@ const Person = () => {
             </div>
 
             {/* Barra */}
-            <div className="bg-[#FF3B30] font-bold p-2 rounded-md flex text-4xl space-x-8 justify-center items-center text-center">
+            <div className="bg-[#FF3B30] font-bold p-2 rounded-md flex text-4xl space-x-6 justify-center items-center text-center">
               <button
                 title="Go back!"
                 onClick={() => navigate(-1)}
@@ -254,6 +285,19 @@ const Person = () => {
               </Link>
 
               <button
+                title={isFavorite ? "Unmark as favorite" : "Mark as favorite"}
+                onClick={(e) => {
+                  e.preventDefault();
+
+                  if (isFavorite) handleUnmarkAsFavorite();
+                  else handleMarkAsFavorite();
+                }}
+                className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+              >
+                {isFavorite ? <FaStar /> : <FaRegStar />}
+              </button>
+
+              <button
                 title={isBlocked ? "Unblock user" : "Block user"}
                 onClick={(e) => {
                   e.preventDefault();
@@ -266,13 +310,13 @@ const Person = () => {
                 {isBlocked ? <CgUnblock /> : <PiKnifeFill />}
               </button>
 
-              <button
+              <Link
+                to={`/reportPerson/${params.id}`}
                 title="Report user"
-                onClick={handleReportPerson}
                 className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
               >
                 <MdOutlineReportGmailerrorred />
-              </button>
+              </Link>
             </div>
           </div>
         </>

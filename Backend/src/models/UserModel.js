@@ -23,7 +23,6 @@ const userSchema = new mongoose.Schema(
     profilePicture: { url: String, public_id: String },
     photos: { type: Map, of: photoSchema },
     refreshToken: [String],
-    blockedPeople: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     cookAtHomePeople: [
       {
         userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
@@ -36,6 +35,12 @@ const userSchema = new mongoose.Schema(
         reactedAt: { type: Date, default: Date.now },
       },
     ],
+    favoritePeople: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    blockedPeople: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    location: {
+      lat: { type: Number, default: null },
+      lng: { type: Number, default: null },
+    },
   },
   { timestamps: true }
 );

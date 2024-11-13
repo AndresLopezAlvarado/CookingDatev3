@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FaAngleLeft } from "react-icons/fa";
 import { HiDotsVertical } from "react-icons/hi";
+import { CgUnblock } from "react-icons/cg";
 import { PiKnifeFill } from "react-icons/pi";
 import { FaPlus } from "react-icons/fa";
 import { FaImage } from "react-icons/fa";
@@ -47,7 +48,7 @@ const Chat = () => {
   });
   const [loading, setLoading] = useState(false);
   const [openImageVideoUpload, setOpenImageVideoUpload] = useState(false);
-
+  const [isBlocked, setIsBlocked] = useState(false);
   const [usersInChat, setUsersInChat] = useState([]);
 
   const handleUploadImageVideoOpen = () => {
@@ -118,12 +119,38 @@ const Chat = () => {
       }
   };
 
+  const handleBlockPerson = async () => {
+    try {
+      socketConnection?.emit("blockPerson", params.id);
+
+      socketConnection?.emit("getIsBlocked", params.id);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  const handleUnblockPerson = async () => {
+    try {
+      socketConnection?.emit("unblockPerson", params.id);
+
+      socketConnection?.emit("getIsBlocked", params.id);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
   useEffect(() => {
+    const handleIsBlockedChat = (isBlocked) => setIsBlocked(isBlocked);
+
     socketConnection?.emit("joinChat");
 
     socketConnection?.on("usersInChat", (usersInChat) =>
       setUsersInChat(usersInChat)
     );
+
+    socketConnection?.emit("getIsBlocked", params.id);
+
+    socketConnection?.on("isBlocked", handleIsBlockedChat);
 
     socketConnection?.emit("getConversation", params.id);
 
@@ -140,6 +167,7 @@ const Chat = () => {
     return () => {
       socketConnection?.emit("leaveChat");
       socketConnection?.off("usersInChat");
+      socketConnection?.off("isBlocked", handleIsBlockedChat);
       socketConnection?.off("receiverUser");
       socketConnection?.off("messages");
     };
@@ -209,16 +237,38 @@ const Chat = () => {
           >
             <MenuItems className="absolute bg-[#FF3B30] top-32 right-8 z-10 w-48 space-y-2 p-2 mt-4 rounded-md">
               <MenuItem>
-                <Link className="bg-[#FFCC00] hover:bg-[#FF9500] block font-bold p-2 rounded-md">
-                  <div className="flex items-center gap-2">
-                    <PiKnifeFill size={25} />
+                <button
+                  className="bg-[#FFCC00] hover:bg-[#FF9500] w-full block font-bold p-2 rounded-md"
+                  onClick={(e) => {
+                    e.preventDefault();
 
-                    <p>Block user</p>
+                    if (isBlocked) handleUnblockPerson();
+                    else handleBlockPerson();
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    {isBlocked ? (
+                      <>
+                        <CgUnblock size={25} />
+
+                        <p>Unblock user</p>
+                      </>
+                    ) : (
+                      <>
+                        <PiKnifeFill size={25} />
+
+                        <p>Block user</p>
+                      </>
+                    )}
                   </div>
-                </Link>
+                </button>
               </MenuItem>
+
               <MenuItem>
-                <Link className="bg-[#FFCC00] hover:bg-[#FF9500] block font-bold p-2 rounded-md">
+                <Link
+                  className="bg-[#FFCC00] hover:bg-[#FF9500] w-full block font-bold p-2 rounded-md"
+                  to={`/reportPerson/${receiverUser._id}`}
+                >
                   <div className="flex items-center gap-2">
                     <MdOutlineReportGmailerrorred size={25} />
 
@@ -226,7 +276,6 @@ const Chat = () => {
                   </div>
                 </Link>
               </MenuItem>
-              -
             </MenuItems>
           </Transition>
         </Menu>

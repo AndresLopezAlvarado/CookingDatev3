@@ -7,6 +7,7 @@ import { FRONTEND_URL, PORT } from "./config/config.js";
 import authRoutes from "./routes/authRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import peopleRoutes from "./routes/peopleRoutes.js";
+import recipeRoutes from "./routes/recipeRoutes.js";
 import { connectDB } from "./config/db.js";
 import "./libs/cronJobs.js";
 
@@ -24,6 +25,7 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/people", peopleRoutes);
+app.use("/api/recipe", recipeRoutes);
 
 try {
   await connectDB();

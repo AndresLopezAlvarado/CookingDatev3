@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { IoChatbubbleEllipses } from "react-icons/io5";
+import { MdEmojiEmotions } from "react-icons/md";
+import { FaStar } from "react-icons/fa6";
+import { FaAngleLeft } from "react-icons/fa";
+import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 import { FaImage } from "react-icons/fa";
+import { IoIosPeople } from "react-icons/io";
 import { FiArrowUpLeft } from "react-icons/fi";
 import { FaVideo } from "react-icons/fa";
 import { selectCurrentUser } from "../auth/authSlice";
@@ -14,6 +18,7 @@ const Chats = () => {
   const { socketConnection } = useSocket();
   const [allUser, setAllUser] = useState([]);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleConversations = (conversations) => {
@@ -44,18 +49,47 @@ const Chats = () => {
   }, [socketConnection, user, location.pathname]);
 
   return (
-    <div className="h-[calc(100vh-64px)] flex flex-col">
-      <header className="h-16 px-4 bg-white flex justify-between items-center">
-        <NavLink
-          title="chat"
-          className={({ isActive }) =>
-            `bg-[#FF9500] font-bold p-2 rounded-md cursor-pointer ${
-              isActive && "bg-[#FFCC00]"
-            }`
-          }
+    <div className="h-[calc(100vh-64px)] w-full p-1 gap-y-1 flex flex-col">
+      <header className="bg-[#FF3B30] font-bold p-2 rounded-md text-4xl flex space-x-8 justify-center items-center text-center">
+        <button
+          title="Go back!"
+          onClick={() => navigate(-1)}
+          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
-          <IoChatbubbleEllipses size={17} />
-        </NavLink>
+          <FaAngleLeft />
+        </button>
+
+        <Link
+          title="People"
+          to="/people"
+          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+        >
+          <IoIosPeople />
+        </Link>
+
+        <Link
+          title="Reactions"
+          to="/reactions"
+          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+        >
+          <MdEmojiEmotions />
+        </Link>
+
+        <Link
+          title="Favorites"
+          to="/favorites"
+          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+        >
+          <FaStar />
+        </Link>
+
+        <Link
+          title="Random recipe"
+          to="/recipe"
+          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+        >
+          <GiPerspectiveDiceSixFacesRandom />
+        </Link>
       </header>
 
       <section className="p-4">
