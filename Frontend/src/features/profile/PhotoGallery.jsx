@@ -131,8 +131,6 @@ const PhotoGallery = ({ toggleModal }) => {
     loadUser();
   }, []);
 
-  console.log(photoFiles);
-
   return (
     <div className="space-y-4 text-center">
       <h1 className="text-3xl font-bold">{t("form.f8")}</h1>
