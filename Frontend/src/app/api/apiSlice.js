@@ -2,8 +2,10 @@ import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setCredentials, logOut, setUser } from "../../features/auth/authSlice";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:3000/api",
+  baseUrl: `${BACKEND_URL}/api`,
   credentials: "include",
 
   prepareHeaders: (headers, { getState }) => {
