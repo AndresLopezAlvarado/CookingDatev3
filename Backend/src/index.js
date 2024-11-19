@@ -23,27 +23,20 @@ app.use(
   })
 );
 
-// app.use(express.static(path.resolve("../Frontend")));
-app.use(express.static(path.resolve("../Frontend/dist")));
+app.use(express.static(path.resolve("../Frontend")));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/people", peopleRoutes);
 app.use("/api/recipe", recipeRoutes);
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.resolve("../Frontend/index.html"));
-// });
 app.get("*", (req, res) => {
-  res.sendFile(
-    path.join(path.resolve("../Frontend/dist"), "index.html"),
-    (err) => {
-      if (err) {
-        console.error("Error al servir index.html:", err);
-        res.status(500).send("Error al servir la aplicación.");
-      }
+  res.sendFile(path.join(path.resolve("../Frontend"), "index.html"), (err) => {
+    if (err) {
+      console.error("Error al servir index.html:", err);
+      res.status(500).send("Error al servir la aplicación.");
     }
-  );
+  });
 });
 
 try {
