@@ -23,7 +23,7 @@ app.use(
   })
 );
 
-const frontendPath = path.resolve("../Frontend/dist");
+const frontendPath = path.resolve("./dist");
 app.use(express.static(frontendPath));
 
 app.use("/api/auth", authRoutes);
@@ -32,8 +32,6 @@ app.use("/api/people", peopleRoutes);
 app.use("/api/recipe", recipeRoutes);
 
 app.get("*", (req, res) => {
-  const frontendPath = path.resolve("../Frontend/dist");
-
   res.sendFile(path.join(frontendPath, "index.html"), (err) => {
     if (err) {
       console.error("Error al servir index.html:", err);
