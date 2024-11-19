@@ -23,7 +23,7 @@ app.use(
   })
 );
 
-const frontendPath = path.resolve("./dist");
+const frontendPath = path.join(process.cwd(), "Frontend-dist");
 app.use(express.static(frontendPath));
 
 app.use("/api/auth", authRoutes);
