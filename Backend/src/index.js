@@ -10,7 +10,6 @@ import peopleRoutes from "./routes/peopleRoutes.js";
 import recipeRoutes from "./routes/recipeRoutes.js";
 import { connectDB } from "./config/db.js";
 import "./libs/cronJobs.js";
-import path from "path";
 
 app.use(cors({ origin: FRONTEND_URL, credentials: true }));
 app.use(express.json());
@@ -23,22 +22,14 @@ app.use(
   })
 );
 
-const frontendPath = path.join(process.cwd(), "Frontend-dist");
-app.use(express.static(frontendPath));
-
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/people", peopleRoutes);
 app.use("/api/recipe", recipeRoutes);
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(frontendPath, "index.html"), (err) => {
-    if (err) {
-      console.error("Error al servir index.html:", err);
-      res.status(500).send("Error al servir la aplicación.");
-    }
-  });
-});
+app.use((req, res) =>
+  res.status(404).json({ message: "Pagina no encontrada!!!" })
+);
 
 try {
   await connectDB();

@@ -6,9 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
-    "build:frontend": "cd ../Frontend && npm install && npm run build && cp -r dist ../Backend/Frontend-dist",
-    "postinstall": "npm run build:frontend"
+    "start": "node src/index.js"
   },
   "keywords": [],
   "author": "",
