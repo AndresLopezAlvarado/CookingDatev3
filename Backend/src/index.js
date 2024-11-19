@@ -35,12 +35,15 @@ app.use("/api/recipe", recipeRoutes);
 //   res.sendFile(path.resolve("../Frontend/index.html"));
 // });
 app.get("*", (req, res) => {
-  res.sendFile(path.join(frontendPath, "index.html"), (err) => {
-    if (err) {
-      console.error("Error al servir index.html:", err);
-      res.status(500).send("Error al servir la aplicación.");
+  res.sendFile(
+    path.join(path.resolve("../Frontend/dist"), "index.html"),
+    (err) => {
+      if (err) {
+        console.error("Error al servir index.html:", err);
+        res.status(500).send("Error al servir la aplicación.");
+      }
     }
-  });
+  );
 });
 
 try {
