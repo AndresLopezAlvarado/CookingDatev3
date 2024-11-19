@@ -1,0 +1,21 @@
+{
+  "bar": {
+    "t1": "Go back!",
+    "t2": "People",
+    "t3": "Chats",
+    "t4": "Reactions",
+    "t5": "Favorites"
+  },
+  "title": {
+    "t1": "Random Recipe",
+    "t2": "Search a random recipe from all over the world!",
+    "t3": "Diets",
+    "t4": "Intolerances",
+    "t5": "Exclude Ingredients"
+  },
+  "placeholder": {
+    "p1": "You can select multiple options",
+    "p2": "Enter ingredients separated by commas"
+  },
+  "button": "Search"
+}

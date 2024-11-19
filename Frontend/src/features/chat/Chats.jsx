@@ -12,6 +12,7 @@ import { FaVideo } from "react-icons/fa";
 import { selectCurrentUser } from "../auth/authSlice";
 import Avatar from "../../components/Avatar";
 import { useSocket } from "../../contexts/SocketContext";
+import { useTranslation } from "react-i18next";
 
 const Chats = () => {
   const user = useSelector(selectCurrentUser);
@@ -19,6 +20,7 @@ const Chats = () => {
   const [allUser, setAllUser] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation(["chats"]);
 
   useEffect(() => {
     const handleConversations = (conversations) => {
@@ -52,7 +54,7 @@ const Chats = () => {
     <div className="h-[calc(100vh-64px)] w-full p-1 gap-y-1 flex flex-col">
       <header className="bg-[#FF3B30] font-bold p-2 rounded-md text-4xl flex space-x-8 justify-center items-center text-center">
         <button
-          title="Go back!"
+          title={t("bar.t1")}
           onClick={() => navigate(-1)}
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -60,7 +62,7 @@ const Chats = () => {
         </button>
 
         <Link
-          title="People"
+          title={t("bar.t2")}
           to="/people"
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -68,7 +70,7 @@ const Chats = () => {
         </Link>
 
         <Link
-          title="Reactions"
+          title={t("bar.t3")}
           to="/reactions"
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -76,7 +78,7 @@ const Chats = () => {
         </Link>
 
         <Link
-          title="Favorites"
+          title={t("bar.t4")}
           to="/favorites"
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -84,7 +86,7 @@ const Chats = () => {
         </Link>
 
         <Link
-          title="Random recipe"
+          title={t("bar.t5")}
           to="/recipe"
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -93,14 +95,14 @@ const Chats = () => {
       </header>
 
       <section className="p-4">
-        <h2 className="text-2xl font-bold">Messages</h2>
+        <h2 className="text-2xl font-bold">{t("title.t1")}</h2>
 
         <div className="h-full overflow-x-hidden overflow-y-auto scrollbar">
           {allUser.length === 0 && (
             <div className="flex flex-col text-lg text-[#FFCC00] justify-center items-center text-center">
               <FiArrowUpLeft size={50} />
 
-              <p>Explore users to start a conversation with.</p>
+              <p>{t("title.t2")}</p>
             </div>
           )}
 
@@ -129,7 +131,7 @@ const Chats = () => {
                           <span>
                             <FaImage />
                           </span>
-                          {!conv?.lastMsg?.text && <span>Image</span>}
+                          {!conv?.lastMsg?.text && <span>{t("title.t3")}</span>}
                         </div>
                       )}
 
@@ -138,7 +140,7 @@ const Chats = () => {
                           <span>
                             <FaVideo />
                           </span>
-                          {!conv?.lastMsg?.text && <span>Video</span>}
+                          {!conv?.lastMsg?.text && <span>{t("title.t4")}</span>}
                         </div>
                       )}
                     </div>

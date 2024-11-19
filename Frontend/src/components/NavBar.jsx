@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IoChatboxOutline } from "react-icons/io5";
 import { MdEmojiEmotions } from "react-icons/md";
@@ -30,13 +30,9 @@ const NavBar = () => {
   const [logOut, { isLoading }] = useLogOutMutation();
   const [notifications, setNotifications] = useState(null);
   const { t, i18n } = useTranslation(["navbar"]);
+  const navigate = useNavigate();
 
   const buildNavigation = () => [
-    // { name: "Products", href: "/products", current: false },
-    // { name: "Information", href: "/information", current: false },
-    // { name: "Security", href: "/security", current: false },
-    // { name: "Help", href: "/help", current: false },
-    // { name: "Download", href: "/download", current: false },
     { name: t("navigation.language"), href: "/language", current: false },
     { name: t("navigation.signIn"), href: "/signIn", current: false },
   ];
@@ -84,7 +80,9 @@ const NavBar = () => {
 
   const handleLogOut = async () => {
     try {
-      await logOut().unwrap();
+      await logOut();
+
+      navigate("/");
     } catch (error) {
       console.log({ "error en handleLogOut": error });
     }
@@ -238,7 +236,7 @@ const NavBar = () => {
                       {notifications?.length === 0 ? (
                         <MenuItem>
                           <p className="bg-[#FF9500] hover:bg-[#FFCC00] block font-bold p-2 rounded-md">
-                            No notifications
+                            {t("navigation.noNotifications")}
                           </p>
                         </MenuItem>
                       ) : (
@@ -279,7 +277,14 @@ const NavBar = () => {
                                   </div>
 
                                   <p className="ml-6 font-normal">
-                                    {notification.content}
+                                    {t(
+                                      {
+                                        "They invited you to cook at home!":
+                                          "navigation.cookAtHome",
+                                        "They invited you to eat out!":
+                                          "navigation.eatOutside",
+                                      }[notification.content]
+                                    )}
                                   </p>
                                 </>
                               )}
@@ -338,8 +343,13 @@ const NavBar = () => {
                             onClick={(e) => {
                               changeCurrent(item.name);
 
-                              if (e.target.text === "Sign out") {
+                              if (
+                                ["Sign out", "Cerrar sesión"].includes(
+                                  e.target.text
+                                )
+                              ) {
                                 e.preventDefault();
+
                                 handleLogOut();
                               }
                             }}

@@ -15,6 +15,7 @@ import { IoIosPeople } from "react-icons/io";
 import { FaAngleLeft } from "react-icons/fa";
 import Spinner from "../../components/Spinner";
 import { useLazyGetRecipeQuery } from "./recipeApiSlice";
+import { useTranslation } from "react-i18next";
 
 const Recipe = () => {
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ const Recipe = () => {
     excludeIngredients: [],
   });
   const [trigger, { data, error, isLoading }] = useLazyGetRecipeQuery();
+  const { t } = useTranslation(["recipe"]);
 
   const handleDietChange = (selectedOptions) => {
     const selectedDiets = selectedOptions.map((option) => option.value);
@@ -99,7 +101,7 @@ const Recipe = () => {
       {/* Barra */}
       <div className="bg-[#FF3B30] font-bold p-2 rounded-md text-4xl flex space-x-8 justify-center items-center text-center">
         <button
-          title="Go back!"
+          title={t("bar.t1")}
           onClick={() => navigate(-1)}
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -107,7 +109,7 @@ const Recipe = () => {
         </button>
 
         <Link
-          title="People"
+          title={t("bar.t2")}
           to="/people"
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -115,7 +117,7 @@ const Recipe = () => {
         </Link>
 
         <Link
-          title="Chats"
+          title={t("bar.t3")}
           to="/chats"
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -123,7 +125,7 @@ const Recipe = () => {
         </Link>
 
         <Link
-          title="Reactions"
+          title={t("bar.t4")}
           to="/reactions"
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -131,7 +133,7 @@ const Recipe = () => {
         </Link>
 
         <Link
-          title="Favorites"
+          title={t("bar.t5")}
           to="/favorites"
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -141,11 +143,9 @@ const Recipe = () => {
 
       {/* Form */}
       <div className="flex flex-col items-center text-center gap-4">
-        <h1 className="text-3xl font-bold">Random Recipe</h1>
+        <h1 className="text-3xl font-bold">{t("title.t1")}</h1>
 
-        <h2 className="text-2xl">
-          Search a random recipe from all over the world!
-        </h2>
+        <h2 className="text-2xl">{t("title.t2")}</h2>
 
         <form
           className="w-full flex flex-col gap-3 justify-center items-center"
@@ -154,7 +154,7 @@ const Recipe = () => {
           {/* Diet Select */}
           <div className="w-2/3">
             <label className="font-bold" htmlFor="diet">
-              Diets:
+              {t("title.t3")}:
             </label>
 
             <Select
@@ -167,7 +167,7 @@ const Recipe = () => {
                 (option) =>
                   filters?.diet && filters?.diet.includes(option.value)
               )}
-              placeholder="You can select multiple options"
+              placeholder={t("placeholder.p1")}
               styles={{
                 control: (base) => ({
                   ...base,
@@ -250,7 +250,7 @@ const Recipe = () => {
           {/* Intolerances Select */}
           <div className="w-2/3">
             <label className="font-bold" htmlFor="intolerances">
-              Intolerances:
+              {t("title.t4")}:
             </label>
 
             <Select
@@ -264,7 +264,7 @@ const Recipe = () => {
                   filters?.intolerances &&
                   filters?.intolerances.includes(option.value)
               )}
-              placeholder="You can select multiple options"
+              placeholder={t("placeholder.p1")}
               styles={{
                 control: (base) => ({
                   ...base,
@@ -347,13 +347,13 @@ const Recipe = () => {
           {/* Exclude Ingredients Input */}
           <div className="w-2/3 flex flex-col">
             <label className="font-bold" htmlFor="excludeIngredients">
-              Exclude Ingredients:
+              {t("title.t5")}:
             </label>
 
             <input
               type="text"
               name="excludeIngredients"
-              placeholder="Enter ingredients separated by commas"
+              placeholder={t("placeholder.p2")}
               onChange={handleExcludeChange}
               className="bg-[#FFCC00] text-[#FF3B30] placeholder-orange-400 placeholder:text-center w-full p-2 rounded-md"
             />
@@ -367,7 +367,7 @@ const Recipe = () => {
             {isLoading ? (
               <AiOutlineLoading3Quarters className="animate-spin h-5 w-5" />
             ) : (
-              "Search"
+              t("button")
             )}
           </button>
         </form>

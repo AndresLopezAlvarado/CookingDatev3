@@ -1,0 +1,15 @@
+{
+  "bar": {
+    "t1": "Go back!",
+    "t2": "People",
+    "t3": "Reactions",
+    "t4": "Favorites",
+    "t5": "Random recipe"
+  },
+  "title": {
+    "t1": "Messages",
+    "t2": "Explore People to start a conversation with.",
+    "t3": "Image",
+    "t4": "Video"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "bar": {
+    "t1": "Atrás!"
+  },
+  "title": {
+    "t1": "Reportar usuario",
+    "t2": "Reportado por",
+    "t3": "Usuario reportado",
+    "t4": "Razón",
+    "t5": "Escriba la razón por la cual reporta al usuario..."
+  },
+  "button": "Enviar reporte"
+}

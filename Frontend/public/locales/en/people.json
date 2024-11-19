@@ -1,0 +1,12 @@
+{
+  "bar": {
+    "t1": "Chats",
+    "t2": "Reactions",
+    "t3": "Favorites",
+    "t4": "Random recipe"
+  },
+  "title": {
+    "t1": "Getting location...",
+    "t2": "There are no people!"
+  }
+}

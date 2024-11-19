@@ -11,6 +11,7 @@ import { selectCurrentUser } from "../auth/authSlice";
 import { useSocket } from "../../contexts/SocketContext";
 import Spinner from "../../components/Spinner";
 import PeopleGrid from "./PeopleGrid";
+import { useTranslation } from "react-i18next";
 
 const People = () => {
   const location = useLocation();
@@ -23,6 +24,7 @@ const People = () => {
     isLoading,
     refetch,
   } = useGetPeopleQuery({ userId: user._id }, { skip: !gpsLocation });
+  const { t } = useTranslation(["people"]);
 
   useEffect(() => {
     const handlePersonBlockedPeople = () => refetch();
@@ -69,7 +71,7 @@ const People = () => {
       {/* Barra */}
       <div className="bg-[#FF3B30] font-bold p-2 rounded-md text-4xl flex space-x-8 justify-center items-center text-center">
         <Link
-          title="Chats"
+          title={t("bar.t1")}
           to="/chats"
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -77,7 +79,7 @@ const People = () => {
         </Link>
 
         <Link
-          title="Reactions"
+          title={t("bar.t2")}
           to="/reactions"
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -85,7 +87,7 @@ const People = () => {
         </Link>
 
         <Link
-          title="Favorites"
+          title={t("bar.t3")}
           to="/favorites"
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -93,7 +95,7 @@ const People = () => {
         </Link>
 
         <Link
-          title="Random recipe"
+          title={t("bar.t4")}
           to="/recipe"
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -103,7 +105,7 @@ const People = () => {
 
       {/* People */}
       {isFetchingLocation ? (
-        <h1 className="font-bold text-xl text-center">Getting location...</h1>
+        <h1 className="font-bold text-xl text-center">{t("title.t1")}</h1>
       ) : isLoading ? (
         <Spinner />
       ) : (
@@ -113,7 +115,7 @@ const People = () => {
               <div className="flex flex-col flex-1 justify-center items-center">
                 <VscEmptyWindow className="w-48 h-48" />
 
-                <h1>There are no people!</h1>
+                <h1>{t("title.t2")}</h1>
               </div>
             ) : (
               <PeopleGrid people={people} />

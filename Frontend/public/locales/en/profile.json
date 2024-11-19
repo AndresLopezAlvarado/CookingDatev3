@@ -1,0 +1,54 @@
+{
+  "title": {
+    "t1": "years",
+    "t2": "From",
+    "t3": "Gender",
+    "t4": "Dietary preferences",
+    "t5": "There are no photos!",
+    "t6": "No files have been selected.",
+    "t7": "files selected"
+  },
+  "button": {
+    "b1": "Edit profile",
+    "b2": "Upload photos",
+    "b3": "Save",
+    "b4": "Search..."
+  },
+  "form": {
+    "f1": "Edit Profile",
+    "f2": "Username",
+    "f3": "Birthdate",
+    "f4": "Gender",
+    "f5": "Country",
+    "f6": "Select country",
+    "f7": "Dietary Preferences",
+    "f8": "Photo Gallery",
+    "f9": "There are no photos!"
+  },
+  "placeholder": { "p1": "Username" },
+  "gender": {
+    "g1": "Select gender",
+    "g2": "Female",
+    "g3": "Male",
+    "g4": "Transgender",
+    "g5": "Non-binary",
+    "g6": "Genderfluid",
+    "g7": "Gender-neutral / Agender",
+    "g8": "Intersex",
+    "g9": "Others"
+  },
+  "diet": {
+    "d1": "Select dietary preferences",
+    "d2": "None",
+    "d3": "Gluten Free",
+    "d4": "Ketogenic",
+    "d5": "Vegetarian",
+    "d6": "Lacto-Vegetarian",
+    "d7": "Ovo-Vegetarian",
+    "d8": "Vegan",
+    "d9": "Pescetarian",
+    "d10": "Paleo",
+    "d11": "Low FODMAP",
+    "d12": "Whole30"
+  }
+}

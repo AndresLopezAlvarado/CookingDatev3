@@ -25,6 +25,7 @@ import Spinner from "../../components/Spinner";
 import backgroundImage from "../../assets/wallpaper.jpeg";
 import { selectCurrentUser } from "../auth/authSlice";
 import uploadFile from "../../helpers/uploadFiles";
+import { useTranslation } from "react-i18next";
 
 const Chat = () => {
   const location = useLocation();
@@ -50,6 +51,7 @@ const Chat = () => {
   const [openImageVideoUpload, setOpenImageVideoUpload] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
   const [usersInChat, setUsersInChat] = useState([]);
+  const { t } = useTranslation(["chat"]);
 
   const handleUploadImageVideoOpen = () => {
     setOpenImageVideoUpload((prev) => !prev);
@@ -189,7 +191,7 @@ const Chat = () => {
     >
       <header className="bg-[#FF3B30] font-bold p-2 rounded-md flex justify-between items-center">
         <button
-          title="Go back!"
+          title={t("bar.t1")}
           onClick={() => navigate(-1)}
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -213,9 +215,9 @@ const Chat = () => {
 
             <p className="-my-1 text-sm">
               {receiverUser?.online ? (
-                <span className="text-[#FFCC00]">online</span>
+                <span className="text-[#FFCC00]">{t("bar.t2.online")}</span>
               ) : (
-                <span className="text-slate-400">offline</span>
+                <span className="text-slate-400">{t("bar.t2.offline")}</span>
               )}
             </p>
           </div>
@@ -235,7 +237,7 @@ const Chat = () => {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <MenuItems className="absolute bg-[#FF3B30] top-32 right-8 z-10 w-48 space-y-2 p-2 mt-4 rounded-md">
+            <MenuItems className="absolute bg-[#FF3B30] top-32 right-8 z-10 w-52 space-y-2 p-2 mt-4 rounded-md">
               <MenuItem>
                 <button
                   className="bg-[#FFCC00] hover:bg-[#FF9500] w-full block font-bold p-2 rounded-md"
@@ -251,13 +253,13 @@ const Chat = () => {
                       <>
                         <CgUnblock size={25} />
 
-                        <p>Unblock user</p>
+                        <p>{t("bar.t3.isBlocked")}</p>
                       </>
                     ) : (
                       <>
                         <PiKnifeFill size={25} />
 
-                        <p>Block user</p>
+                        <p>{t("bar.t3.isNotBlocked")}</p>
                       </>
                     )}
                   </div>
@@ -272,7 +274,7 @@ const Chat = () => {
                   <div className="flex items-center gap-2">
                     <MdOutlineReportGmailerrorred size={25} />
 
-                    <p>Report user</p>
+                    <p>{t("bar.t4")}</p>
                   </div>
                 </Link>
               </MenuItem>
@@ -394,7 +396,7 @@ const Chat = () => {
                     <FaImage size={18} />
                   </div>
 
-                  <p>Image</p>
+                  <p>{t("title.t1")}</p>
                 </label>
 
                 <label
@@ -405,7 +407,7 @@ const Chat = () => {
                     <FaVideo size={18} />
                   </div>
 
-                  <p>Video</p>
+                  <p>{t("title.t2")}</p>
                 </label>
 
                 <input

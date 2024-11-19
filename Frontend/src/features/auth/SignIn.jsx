@@ -4,11 +4,13 @@ import { useToast } from "@chakra-ui/react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { useSignInMutation } from "./authApiSlice";
+import { useTranslation } from "react-i18next";
 
 const SignIn = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const [signIn, { isLoading }] = useSignInMutation();
+  const { t } = useTranslation(["signIn"]);
 
   const signInSchema = yup.object({
     email: yup
@@ -58,7 +60,7 @@ const SignIn = () => {
       >
         {({ isSubmitting }) => (
           <Form className="space-y-4">
-            <h1 className="text-3xl font-bold">Sign In</h1>
+            <h1 className="text-3xl font-bold">{t("title.t1")}</h1>
 
             <div>
               <label className="font-bold" htmlFor="email">
@@ -81,7 +83,7 @@ const SignIn = () => {
 
             <div>
               <label className="font-bold" htmlFor="password">
-                Password:
+                {t("password")}:
               </label>
 
               <Field
@@ -106,14 +108,14 @@ const SignIn = () => {
               {isSubmitting ? (
                 <AiOutlineLoading3Quarters className="animate-spin h-5 w-5" />
               ) : (
-                "Sign In"
+                t("button")
               )}
             </button>
 
             <h3 className="font-bold">
-              Don't have an account?{" "}
+              {t("title.t2")}
               <Link className="text-[#FFCC00] font-bold" to={"/signUp"}>
-                Sign Up!
+                {t("title.t3")}
               </Link>
             </h3>
           </Form>

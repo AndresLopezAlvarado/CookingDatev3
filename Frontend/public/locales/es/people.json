@@ -1,0 +1,12 @@
+{
+  "bar": {
+    "t1": "Conversaciones",
+    "t2": "Reacciones",
+    "t3": "Favoritos",
+    "t4": "Receta aleatoria"
+  },
+  "title": {
+    "t1": "Obteniendo ubicación...",
+    "t2": "No hay gente!"
+  }
+}

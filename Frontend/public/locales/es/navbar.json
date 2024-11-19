@@ -1,10 +1,13 @@
 {
   "navigation": {
     "language": "Idioma",
-    "signIn": "Abrir sesión",
+    "signIn": "Iniciar sesión",
     "people": "Gente",
     "settings": "Configuracion",
     "profile": "Perfil",
-    "signOut": "Cerrar sesión"
+    "signOut": "Cerrar sesión",
+    "noNotifications": "No hay notificaciones",
+    "cookAtHome": "Te han invitado a cocinar en casa!",
+    "eatOutside": "Te han invitado a comer afuera!"
   }
 }

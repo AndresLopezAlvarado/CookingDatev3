@@ -8,6 +8,7 @@ import { selectCurrentUser } from "../auth/authSlice";
 import ProfileModal from "./ProfileModal";
 import UploadPhotosModal from "./UploadPhotosModal";
 import { useProfilePictureMutation } from "./profileApiSlice";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
   const user = useSelector(selectCurrentUser);
@@ -19,6 +20,7 @@ const Profile = () => {
     editProfile: false,
     uploadPhotos: false,
   });
+  const { t } = useTranslation(["profile"]);
 
   const photoProfile = () => {
     inputFileRef.current.click();
@@ -111,30 +113,30 @@ const Profile = () => {
 
         {/* Info */}
         <div className="text-center text-xl">
-          {age ? (
+          {age !== 0 && (
             <h2>
-              <span className="font-bold">{age}</span> years
+              <span className="font-bold">{age}</span> {t("title.t1")}
             </h2>
-          ) : null}
+          )}
 
-          {user.country ? (
+          {user.country && (
             <h3>
-              <span className="font-bold">From:</span> {user.country}
+              <span className="font-bold">{t("title.t2")}:</span> {user.country}
             </h3>
-          ) : null}
+          )}
 
-          {user.gender ? (
+          {user.gender && (
             <h4>
-              <span className="font-bold">Gender:</span> {user.gender}
+              <span className="font-bold">{t("title.t3")}:</span> {user.gender}
             </h4>
-          ) : null}
+          )}
 
-          {user.dietaryPreferences ? (
+          {user.dietaryPreferences && (
             <h5>
-              <span className="font-bold">Dietary preferences:</span>{" "}
+              <span className="font-bold">{t("title.t4")}:</span>{" "}
               {user.dietaryPreferences}
             </h5>
-          ) : null}
+          )}
         </div>
 
         {/* Edit profile button */}
@@ -143,7 +145,7 @@ const Profile = () => {
           className="bg-[#FF9500] hover:bg-[#FFCC00] font-bold p-2 rounded-md"
           onClick={toggleModal}
         >
-          Edit profile
+          {t("button.b1")}
         </button>
       </div>
 
@@ -164,7 +166,7 @@ const Profile = () => {
           <div className="flex flex-col justify-center items-center space-y-2">
             <FaFileImage className="w-48 h-48" />
 
-            <h1>There are no photos!</h1>
+            <h1>{t("title.t5")}</h1>
           </div>
         )}
 
@@ -173,7 +175,7 @@ const Profile = () => {
           className="bg-[#FF9500] hover:bg-[#FFCC00] font-bold p-2 rounded-md"
           onClick={toggleModal}
         >
-          Upload photos
+          {t("button.b2")}
         </button>
       </div>
 

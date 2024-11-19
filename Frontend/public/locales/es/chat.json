@@ -1,0 +1,18 @@
+{
+  "bar": {
+    "t1": "Atrás!",
+    "t2": {
+      "online": "En línea",
+      "offline": "Desconectado"
+    },
+    "t3": {
+      "isBlocked": "Desbloquear usuario",
+      "isNotBlocked": "Bloquear usuario"
+    },
+    "t4": "Reportar usuario"
+  },
+  "title": {
+    "t1": "Imagen",
+    "t2": "Video"
+  }
+}

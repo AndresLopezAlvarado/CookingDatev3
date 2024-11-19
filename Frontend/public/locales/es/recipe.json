@@ -1,0 +1,21 @@
+{
+  "bar": {
+    "t1": "Atrás!",
+    "t2": "Gente",
+    "t3": "Conversaciones",
+    "t4": "Reacciones",
+    "t5": "Favoritos"
+  },
+  "title": {
+    "t1": "Receta aleatoria",
+    "t2": "Obtén una receta de cualquier parte del mundo, de manera aleatoria!",
+    "t3": "Dietas",
+    "t4": "Intolerancias",
+    "t5": "Excluir ingredientes"
+  },
+  "placeholder": {
+    "p1": "Puedes seleccionar múltiples opciones",
+    "p2": "Ingrese los ingredientes separados por comas"
+  },
+  "button": "Buscar"
+}

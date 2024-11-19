@@ -15,6 +15,7 @@ import { useSocket } from "../../contexts/SocketContext";
 import PhotoCarousel from "../../components/PhotoCarousel";
 import { selectCurrentUser } from "../auth/authSlice";
 import { useGetPersonQuery } from "./peopleApiSlice";
+import { useTranslation } from "react-i18next";
 
 const Person = () => {
   const location = useLocation();
@@ -29,6 +30,7 @@ const Person = () => {
   const [isBlocker, setIsBlocker] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
+  const { t } = useTranslation(["person"]);
 
   const handleCookAtHome = async () => {
     if (isReacted.isCookAtHome) return;
@@ -211,33 +213,39 @@ const Person = () => {
             <div>
               <h1 className="text-2xl font-bold">
                 {person.username}
-                {age ? <span>, {age} years</span> : null}
+                {age !== 0 && (
+                  <span>
+                    , {age} {t("title.t1")}
+                  </span>
+                )}
               </h1>
 
-              {person.country ? (
+              {person.country && (
                 <h3 className="text-xl">
-                  <span className="font-bold">From:</span> {person.country}
+                  <span className="font-bold">{t("title.t2")}:</span>{" "}
+                  {person.country}
                 </h3>
-              ) : null}
+              )}
 
-              {person.gender ? (
+              {person.gender && (
                 <h4 className="text-xl">
-                  <span className="font-bold">Gender:</span> {person.gender}
+                  <span className="font-bold">{t("title.t3")}:</span>{" "}
+                  {person.gender}
                 </h4>
-              ) : null}
+              )}
 
-              {person.dietaryPreferences ? (
+              {person.dietaryPreferences && (
                 <h5 className="text-xl">
-                  <span className="font-bold">Dietary preferences:</span>{" "}
+                  <span className="font-bold">{t("title.t4")}:</span>{" "}
                   {person.dietaryPreferences}
                 </h5>
-              ) : null}
+              )}
             </div>
 
             {/* Barra */}
             <div className="bg-[#FF3B30] font-bold p-2 rounded-md flex text-4xl space-x-6 justify-center items-center text-center">
               <button
-                title="Go back!"
+                title={t("bar.t1")}
                 onClick={() => navigate(-1)}
                 className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
               >
@@ -247,8 +255,8 @@ const Person = () => {
               <button
                 title={
                   isReacted.isCookAtHome
-                    ? "You already invited this person to cook at home!"
-                    : "Let's cook at home!"
+                    ? t("bar.t2.isReacted")
+                    : t("bar.t2.isNotReacted")
                 }
                 onClick={handleCookAtHome}
                 className={
@@ -263,8 +271,8 @@ const Person = () => {
               <button
                 title={
                   isReacted.isEatOutside
-                    ? "You already invited this person to eat outside!"
-                    : "Let's eat outside!"
+                    ? t("bar.t3.isReacted")
+                    : t("bar.t3.isNotReacted")
                 }
                 onClick={handleEatOutside}
                 className={
@@ -277,7 +285,7 @@ const Person = () => {
               </button>
 
               <Link
-                title={`Chat with ${person.username}`}
+                title={`${t("bar.t4")} ${person.username}`}
                 to={`/chat/${person._id}`}
                 className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
               >
@@ -285,7 +293,11 @@ const Person = () => {
               </Link>
 
               <button
-                title={isFavorite ? "Unmark as favorite" : "Mark as favorite"}
+                title={
+                  isFavorite
+                    ? t("bar.t5.isFavorite")
+                    : t("bar.t5.isNotFavorite")
+                }
                 onClick={(e) => {
                   e.preventDefault();
 
@@ -298,7 +310,9 @@ const Person = () => {
               </button>
 
               <button
-                title={isBlocked ? "Unblock user" : "Block user"}
+                title={
+                  isBlocked ? t("bar.t6.isBlocked") : t("bar.t6.isNotBlocked")
+                }
                 onClick={(e) => {
                   e.preventDefault();
 
@@ -312,7 +326,7 @@ const Person = () => {
 
               <Link
                 to={`/reportPerson/${params.id}`}
-                title="Report user"
+                title={t("bar.t7")}
                 className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
               >
                 <MdOutlineReportGmailerrorred />

@@ -1,0 +1,29 @@
+{
+  "bar": {
+    "t1": "Go back!",
+    "t2": {
+      "isReacted": "You already invited this person to cook at home!",
+      "isNotReacted": "Let's cook at home!"
+    },
+    "t3": {
+      "isReacted": "You already invited this person to eat outside!",
+      "isNotReacted": "Let's eat outside!"
+    },
+    "t4": "Chat with",
+    "t5": {
+      "isFavorite": "Unmark as favorite",
+      "isNotFavorite": "Mark as favorite"
+    },
+    "t6": {
+      "isBlocked": "Unblock user",
+      "isNotBlocked": "Block user"
+    },
+    "t7": "Report user"
+  },
+  "title": {
+    "t1": "years",
+    "t2": "From",
+    "t3": "Gender",
+    "t4": "Dietary preferences"
+  }
+}

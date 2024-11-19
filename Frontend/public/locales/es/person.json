@@ -1,0 +1,29 @@
+{
+  "bar": {
+    "t1": "Atrás!",
+    "t2": {
+      "isReacted": "Ya has invitado a esta persona a comer en casa!",
+      "isNotReacted": "Comamos en casa!"
+    },
+    "t3": {
+      "isReacted": "Ya has invitado a esta persona a comer afuera!",
+      "isNotReacted": "Comamos afuera!"
+    },
+    "t4": "Chatea con",
+    "t5": {
+      "isFavorite": "Eliminar de favoritos",
+      "isNotFavorite": "Marcar como favorito"
+    },
+    "t6": {
+      "isBlocked": "Desbloquear usuario",
+      "isNotBlocked": "Bloquear usuario"
+    },
+    "t7": "Reportar usuario"
+  },
+  "title": {
+    "t1": "años",
+    "t2": "De",
+    "t3": "Género",
+    "t4": "Preferencias de dieta"
+  }
+}

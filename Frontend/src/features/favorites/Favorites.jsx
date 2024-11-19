@@ -9,6 +9,7 @@ import { IoIosPeople } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { selectCurrentUser, selectOnlineUsers } from "../auth/authSlice";
 import { useGetFavoritesQuery } from "../people/peopleApiSlice";
+import { useTranslation } from "react-i18next";
 
 const Favorites = () => {
   const user = useSelector(selectCurrentUser);
@@ -21,6 +22,7 @@ const Favorites = () => {
   });
   const onlineUsers = useSelector(selectOnlineUsers);
   const navigate = useNavigate();
+  const { t } = useTranslation(["favorites"]);
 
   useEffect(() => {
     refetch();
@@ -31,7 +33,7 @@ const Favorites = () => {
       {/* Barra */}
       <div className="bg-[#FF3B30] font-bold p-2 rounded-md text-4xl flex space-x-8 justify-center items-center text-center">
         <button
-          title="Go back!"
+          title={t("bar.t1")}
           onClick={() => navigate(-1)}
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -39,7 +41,7 @@ const Favorites = () => {
         </button>
 
         <Link
-          title="People"
+          title={t("bar.t2")}
           to="/people"
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -47,7 +49,7 @@ const Favorites = () => {
         </Link>
 
         <Link
-          title="Chats"
+          title={t("bar.t3")}
           to="/chats"
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -55,7 +57,7 @@ const Favorites = () => {
         </Link>
 
         <Link
-          title="Reactions"
+          title={t("bar.t4")}
           to="/reactions"
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -63,7 +65,7 @@ const Favorites = () => {
         </Link>
 
         <Link
-          title="Random recipe"
+          title={t("bar.t5")}
           to="/recipe"
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -77,7 +79,7 @@ const Favorites = () => {
           <div className="flex flex-col flex-1 justify-center items-center">
             <FaStar className="w-48 h-48" />
 
-            <h1>There are no favorites!</h1>
+            <h1>{t("title.t1")}</h1>
           </div>
         ) : (
           <div className="w-full rounded-md grid grid-cols-3 md:grid-cols-4 xl:grid-cols-5">

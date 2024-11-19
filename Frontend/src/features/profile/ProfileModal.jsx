@@ -25,11 +25,7 @@ const ProfileModal = ({ isOpen, toggleModal, user }) => {
 
   return (
     <Modal isOpen={isOpen} onClose={toggleModal}>
-      <ProfileForm
-        onSubmit={handleSubmit}
-        toggleModal={toggleModal}
-        user={user}
-      />
+      <ProfileForm onSubmit={handleSubmit} user={user} />
     </Modal>
   );
 };

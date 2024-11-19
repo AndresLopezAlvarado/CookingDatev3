@@ -5,6 +5,9 @@
     "people": "People",
     "settings": "Settings",
     "profile": "Profile",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "noNotifications": "No notifications",
+    "cookAtHome": "They invited you to cook at home!",
+    "eatOutside": "They invited you to eat out!"
   }
 }

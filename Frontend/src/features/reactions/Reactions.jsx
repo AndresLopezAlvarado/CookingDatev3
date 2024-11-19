@@ -7,6 +7,7 @@ import { FaAngleLeft } from "react-icons/fa";
 import { useSocket } from "../../contexts/SocketContext";
 import { useSelector } from "react-redux";
 import { selectOnlineUsers } from "../auth/authSlice";
+import { useTranslation } from "react-i18next";
 
 const Reactions = () => {
   const onlineUsers = useSelector(selectOnlineUsers);
@@ -16,6 +17,7 @@ const Reactions = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [view, setView] = useState("cookAtHome");
+  const { t } = useTranslation(["reactions"]);
 
   useEffect(() => {
     socketConnection?.emit("joinReactions");
@@ -48,7 +50,7 @@ const Reactions = () => {
       {/* Barra */}
       <div className="bg-[#FF3B30] font-bold p-2 rounded-md text-4xl flex space-x-8 justify-center items-center text-center">
         <button
-          title="Go back!"
+          title={t("bar.t1")}
           onClick={() => navigate(-1)}
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -56,7 +58,7 @@ const Reactions = () => {
         </button>
 
         <button
-          title="Let's cook at home!"
+          title={t("bar.t2")}
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
           onClick={() => setView("cookAtHome")}
         >
@@ -64,7 +66,7 @@ const Reactions = () => {
         </button>
 
         <button
-          title="Let's eat outside!"
+          title={t("bar.t3")}
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
           onClick={() => setView("eatOutside")}
         >
@@ -78,7 +80,7 @@ const Reactions = () => {
           <div className="flex flex-col flex-1 justify-center items-center">
             <VscEmptyWindow className="w-48 h-48" />
 
-            <h1>There are no reactions!</h1>
+            <h1>{t("title.t1")}</h1>
           </div>
         ) : (
           <div className="w-full rounded-md grid grid-cols-3 md:grid-cols-4 xl:grid-cols-5">

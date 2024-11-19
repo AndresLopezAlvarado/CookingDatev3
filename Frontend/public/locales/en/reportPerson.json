@@ -1,0 +1,13 @@
+{
+  "bar": {
+    "t1": "Go back!"
+  },
+  "title": {
+    "t1": "Report user",
+    "t2": "Reported by",
+    "t3": "Reported user",
+    "t4": "Reason",
+    "t5": "Type reason..."
+  },
+  "button": "Send report"
+}

@@ -1,0 +1,12 @@
+{
+  "bar": {
+    "t1": "Go back!",
+    "t2": "People",
+    "t3": "Chats",
+    "t4": "Reactions",
+    "t5": "Random recipe"
+  },
+  "title": {
+    "t1": "There are no favorites!"
+  }
+}

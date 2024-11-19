@@ -10,6 +10,7 @@ import {
   useGetPersonQuery,
   useReportPersonMutation,
 } from "../people/peopleApiSlice";
+import { useTranslation } from "react-i18next";
 
 const ReportPerson = () => {
   const reportedBy = useSelector(selectCurrentUser);
@@ -19,6 +20,7 @@ const ReportPerson = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const [reportPerson, { isLoading }] = useReportPersonMutation();
+  const { t } = useTranslation(["reportPerson"]);
 
   const reportSchema = yup.object({
     reason: yup
@@ -76,7 +78,7 @@ const ReportPerson = () => {
     <div className="h-screen flex flex-col justify-center items-center text-center gap-4">
       <div className="bg-[#FF3B30] font-bold p-2 rounded-md flex text-4xl space-x-6 justify-center items-center text-center">
         <button
-          title="Go back!"
+          title={t("bar.t1")}
           onClick={() => navigate(-1)}
           className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
         >
@@ -84,14 +86,14 @@ const ReportPerson = () => {
         </button>
       </div>
 
-      <h1 className="text-3xl font-bold">Report user</h1>
+      <h1 className="text-3xl font-bold">{t("title.t1")}</h1>
 
       <label className="font-bold" htmlFor="reportedBy">
-        Reported by: {reportedBy?.username}
+        {t("title.t2")}: {reportedBy?.username}
       </label>
 
       <label className="font-bold" htmlFor="reportedPerson">
-        Reported user: {reportedPerson?.username}
+        {t("title.t3")}: {reportedPerson?.username}
       </label>
 
       <Formik
@@ -106,7 +108,7 @@ const ReportPerson = () => {
           <Form className="space-y-4">
             <div>
               <label className="font-bold" htmlFor="reason">
-                Reason:
+                {t("title.t4")}:
               </label>
 
               <Field
@@ -114,7 +116,7 @@ const ReportPerson = () => {
                 as="textarea"
                 rows="8"
                 name="reason"
-                placeholder="Type reason"
+                placeholder={t("title.t5")}
               />
 
               <ErrorMessage
@@ -132,7 +134,7 @@ const ReportPerson = () => {
               {isSubmitting ? (
                 <AiOutlineLoading3Quarters className="animate-spin h-5 w-5" />
               ) : (
-                "Send report"
+                t("button")
               )}
             </button>
           </Form>

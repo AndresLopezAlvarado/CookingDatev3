@@ -1,0 +1,10 @@
+{
+  "title": {
+    "t1": "Sign Up",
+    "t2": "Already have an account? ",
+    "t3": "Sign In!"
+  },
+  "username": "Username",
+  "password": "Password",
+  "button": "Sign Up"
+}

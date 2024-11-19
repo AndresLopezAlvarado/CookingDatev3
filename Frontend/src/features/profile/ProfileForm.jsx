@@ -4,10 +4,12 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import SelectDate from "../../components/SelectDate";
 import fetchCountries from "../../constants/countries";
+import { useTranslation } from "react-i18next";
 
-const ProfileForm = ({ onSubmit, toggleModal, user }) => {
+const ProfileForm = ({ onSubmit, user }) => {
   const [userData, setUserData] = useState(user);
   const [countries, setCountries] = useState([]);
+  const { t } = useTranslation(["profile"]);
 
   const handleOnChange = (date) => {
     setUserData((prevUserData) => ({ ...prevUserData, birthdate: date }));
@@ -50,17 +52,17 @@ const ProfileForm = ({ onSubmit, toggleModal, user }) => {
     >
       {({ isSubmitting }) => (
         <Form className="space-y-4 text-center">
-          <h1 className="text-3xl font-bold">Edit Profile</h1>
+          <h1 className="text-3xl font-bold">{t("form.f1")}</h1>
 
           <div>
             <label className="font-bold" htmlFor="username">
-              Username:
+              {t("form.f2")}:
             </label>
 
             <Field
               className="bg-[#FFCC00] text-[#FF3B30] placeholder-orange-400 w-full p-2 rounded-md"
               name="username"
-              placeholder="Username"
+              placeholder={t("placeholder.p1")}
               onChange={(e) => {
                 setUserData((prevUserData) => ({
                   ...prevUserData,
@@ -78,7 +80,7 @@ const ProfileForm = ({ onSubmit, toggleModal, user }) => {
 
           <div className="flex flex-col">
             <label className="font-bold" htmlFor="birthdate">
-              Birthdate:
+              {t("form.f3")}:
             </label>
 
             <SelectDate
@@ -91,7 +93,7 @@ const ProfileForm = ({ onSubmit, toggleModal, user }) => {
 
           <div>
             <label className="font-bold" htmlFor="gender">
-              Gender:
+              {t("form.f4")}:
             </label>
 
             <Field
@@ -107,23 +109,21 @@ const ProfileForm = ({ onSubmit, toggleModal, user }) => {
                 }));
               }}
             >
-              <option value="">Select gender</option>
-              <option value="Female">Female</option>
-              <option value="Male">Male</option>
-              <option value="Transgender">Transgender</option>
-              <option value="Non-binary">Non-binary</option>
-              <option value="Genderfluid">Genderfluid</option>
-              <option value="Gender-neutral / Agender">
-                Gender-neutral / Agender
-              </option>
-              <option value="Intersex">Intersex</option>
-              <option value="Others">Others</option>
+              <option value="">{t("gender.g1")}</option>
+              <option value="Female">{t("gender.g2")}</option>
+              <option value="Male">{t("gender.g3")}</option>
+              <option value="Transgender">{t("gender.g4")}</option>
+              <option value="Non-binary">{t("gender.g5")}</option>
+              <option value="Genderfluid">{t("gender.g6")}</option>
+              <option value="Gender-neutral / Agender">{t("gender.g7")}</option>
+              <option value="Intersex">{t("gender.g8")}</option>
+              <option value="Others">{t("gender.g9")}</option>
             </Field>
           </div>
 
           <div>
             <label className="font-bold" htmlFor="country">
-              Country:
+              {t("form.f5")}:
             </label>
 
             <Field
@@ -139,7 +139,7 @@ const ProfileForm = ({ onSubmit, toggleModal, user }) => {
                 }));
               }}
             >
-              <option value="">Select country</option>
+              <option value="">{t("form.f6")}</option>
               {countries.map((country, index) => (
                 <option key={index} value={country.name.common}>
                   {country.name.common}
@@ -150,7 +150,7 @@ const ProfileForm = ({ onSubmit, toggleModal, user }) => {
 
           <div>
             <label className="font-bold" htmlFor="dietaryPreferences">
-              Dietary Preferences:
+              {t("form.f7")}:
             </label>
 
             <Field
@@ -166,18 +166,18 @@ const ProfileForm = ({ onSubmit, toggleModal, user }) => {
                 }));
               }}
             >
-              <option value="">Select dietary preferences</option>
-              <option value="None">None</option>
-              <option value="Gluten Free">Gluten Free</option>
-              <option value="Ketogenic">Ketogenic</option>
-              <option value="Vegetarian">Vegetarian</option>
-              <option value="Lacto-Vegetarian">Lacto-Vegetarian</option>
-              <option value="Ovo-Vegetarian">Ovo-Vegetarian</option>
-              <option value="Vegan">Vegan</option>
-              <option value="Pescetarian">Pescetarian</option>
-              <option value="Paleo">Paleo</option>
-              <option value="Low FODMAP">Low FODMAP</option>
-              <option value="Whole30">Whole30</option>
+              <option value="">{t("diet.d1")}</option>
+              <option value="None">{t("diet.d2")}</option>
+              <option value="Gluten Free">{t("diet.d3")}</option>
+              <option value="Ketogenic">{t("diet.d4")}</option>
+              <option value="Vegetarian">{t("diet.d5")}</option>
+              <option value="Lacto-Vegetarian">{t("diet.d6")}</option>
+              <option value="Ovo-Vegetarian">{t("diet.d7")}</option>
+              <option value="Vegan">{t("diet.d8")}</option>
+              <option value="Pescetarian">{t("diet.d9")}</option>
+              <option value="Paleo">{t("diet.d10")}</option>
+              <option value="Low FODMAP">{t("diet.d11")}</option>
+              <option value="Whole30">{t("diet.d12")}</option>
             </Field>
           </div>
 
@@ -186,12 +186,11 @@ const ProfileForm = ({ onSubmit, toggleModal, user }) => {
             className="bg-[#FF9500] hover:bg-[#FFCC00] font-bold p-2 rounded-md"
             type="submit"
             disabled={isSubmitting}
-            // onClick={toggleModal}
           >
             {isSubmitting ? (
               <AiOutlineLoading3Quarters className="animate-spin h-5 w-5" />
             ) : (
-              "Save"
+              t("button.b3")
             )}
           </button>
         </Form>

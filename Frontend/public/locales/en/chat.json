@@ -1,0 +1,18 @@
+{
+  "bar": {
+    "t1": "Go back!",
+    "t2": {
+      "online": "Online",
+      "offline": "Offline"
+    },
+    "t3": {
+      "isBlocked": "Unblock user",
+      "isNotBlocked": "Block user"
+    },
+    "t4": "Report user"
+  },
+  "title": {
+    "t1": "Image",
+    "t2": "Video"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "bar": {
+    "t1": "Atrás!",
+    "t2": "Gente",
+    "t3": "Reacciones",
+    "t4": "Favoritos",
+    "t5": "Receta aleatoria"
+  },
+  "title": {
+    "t1": "Mensajes",
+    "t2": "Explora en Gente para iniciar una conversación",
+    "t3": "Imagen",
+    "t4": "Video"
+  }
+}

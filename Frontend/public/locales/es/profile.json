@@ -1,0 +1,54 @@
+{
+  "title": {
+    "t1": "años",
+    "t2": "De",
+    "t3": "Género",
+    "t4": "Preferencias de dieta",
+    "t5": "No hay fotos!",
+    "t6": "No se han seleccionado archivos.",
+    "t7": "archivos seleccionados"
+  },
+  "button": {
+    "b1": "Editar perfil",
+    "b2": "Subir fotos",
+    "b3": "Guardar",
+    "b4": "Examinar..."
+  },
+  "form": {
+    "f1": "Editar Perfil",
+    "f2": "Nombre de usuario",
+    "f3": "Fecha de nacimiento",
+    "f4": "Género",
+    "f5": "País",
+    "f6": "Seleccionar país",
+    "f7": "Preferencias de dieta",
+    "f8": "Galeria de fotos",
+    "f9": "No hay fotos!"
+  },
+  "placeholder": { "p1": "Nombre de usuario" },
+  "gender": {
+    "g1": "Seleccionar género",
+    "g2": "Femenino",
+    "g3": "Masculino",
+    "g4": "Transgénero",
+    "g5": "No binarie",
+    "g6": "Género fluido",
+    "g7": "Género neutro / Agénero",
+    "g8": "Intersexual",
+    "g9": "Otros"
+  },
+  "diet": {
+    "d1": "Seleccionar preferencias de dieta",
+    "d2": "Ninguna",
+    "d3": "Libre de gluten",
+    "d4": "Cetogénico",
+    "d5": "Vegetariano",
+    "d6": "Lactovegetariano",
+    "d7": "Ovovegetariano",
+    "d8": "Vegano",
+    "d9": "Pescetariano",
+    "d10": "Paleolítico",
+    "d11": "Low FODMAP",
+    "d12": "Whole30"
+  }
+}

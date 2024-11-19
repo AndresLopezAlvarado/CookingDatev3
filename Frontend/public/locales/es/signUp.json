@@ -1,0 +1,10 @@
+{
+  "title": {
+    "t1": "Registrarse",
+    "t2": "¿Ya tienes una cuenta? ",
+    "t3": "Inicia sesión!"
+  },
+  "username": "Nombre de usuario",
+  "password": "Contraseña",
+  "button": "Registrate"
+}

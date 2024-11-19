@@ -7,6 +7,7 @@ import {
   useDeletePhotoMutation,
   useUploadPhotosMutation,
 } from "./profileApiSlice";
+import { useTranslation } from "react-i18next";
 
 const PhotoGallery = ({ toggleModal }) => {
   const user = useSelector(selectCurrentUser);
@@ -17,6 +18,7 @@ const PhotoGallery = ({ toggleModal }) => {
   const [savedPhotos, setSavedPhotos] = useState([]);
   const [photoFiles, setPhotoFiles] = useState([]);
   const [draggedIndex, setDraggedIndex] = useState(null);
+  const { t } = useTranslation(["profile"]);
 
   const handleDragStart = (event, index) => {
     setDraggedIndex(index);
@@ -129,16 +131,18 @@ const PhotoGallery = ({ toggleModal }) => {
     loadUser();
   }, []);
 
+  console.log(photoFiles);
+
   return (
     <div className="space-y-4 text-center">
-      <h1 className="text-3xl font-bold">Photo Gallery</h1>
+      <h1 className="text-3xl font-bold">{t("form.f8")}</h1>
 
       <div className="flex flex-col space-y-2">
         {savedPhotos.length === 0 ? (
           <div className="flex flex-col justify-center items-center space-y-2">
             <FaFileImage className="w-48 h-48" />
-            
-            <h1>There are no photos!</h1>
+
+            <h1>{t("form.f9")}</h1>
           </div>
         ) : (
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
@@ -170,12 +174,30 @@ const PhotoGallery = ({ toggleModal }) => {
           </div>
         )}
 
-        <input
-          className="w-full bg-[#FFCC00] text-[#FF3B30] placeholder-orange-400 file:bg-[#FF9500] file:hover:bg-[#FFCC00] file:hover:border-[#FF3B30] file:border-0 file:hover:border file:font-bold file:p-2 file:rounded-md p-2 rounded-md cursor-pointer"
-          type="file"
-          multiple
-          onChange={handleFileInputChange}
-        />
+        <div className="bg-[#FFCC00] w-full flex gap-2 p-2 rounded-md items-center">
+          <input
+            id="fileInput"
+            type="file"
+            multiple
+            className="hidden"
+            onChange={handleFileInputChange}
+          />
+
+          <label
+            htmlFor="fileInput"
+            className="bg-[#FF9500] hover:bg-[#FFCC00] hover:ring-[#FF9500] hover:ring-2 font-bold p-2 rounded-md"
+          >
+            {t("button.b4")}
+          </label>
+
+          <p className="text-[#FF3B30]">
+            {photoFiles?.length === 0
+              ? t("title.t6")
+              : photoFiles?.length === 1
+              ? `${photoFiles[0].name}`
+              : `${photoFiles.length} ${t("title.t7")}`}
+          </p>
+        </div>
       </div>
 
       <button
@@ -186,7 +208,7 @@ const PhotoGallery = ({ toggleModal }) => {
           uploadPhotoFiles();
         }}
       >
-        Save
+        {t("button.b3")}
       </button>
     </div>
   );
