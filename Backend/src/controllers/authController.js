@@ -32,7 +32,7 @@ export const signUp = async (req, res) => {
 
       res.clearCookie("refreshToken", {
         httpOnly: true,
-        sameSite: "None",
+        sameSite: "none",
         secure: true,
       });
     }
@@ -94,7 +94,7 @@ export const signIn = async (req, res) => {
 
       res.clearCookie("refreshToken", {
         httpOnly: true,
-        sameSite: "None",
+        sameSite: "none",
         secure: true,
       });
     }
@@ -138,7 +138,7 @@ export const logOut = async (req, res) => {
     if (!userFound) {
       res.clearCookie("refreshToken", {
         httpOnly: true,
-        sameSite: "None",
+        sameSite: "none",
         secure: true,
       });
 
@@ -153,7 +153,7 @@ export const logOut = async (req, res) => {
 
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      sameSite: "None",
+      sameSite: "none",
       secure: true,
     });
 
@@ -181,7 +181,7 @@ export const refreshToken = async (req, res) => {
 
   res.clearCookie("refreshToken", {
     httpOnly: true,
-    sameSite: "None",
+    sameSite: "none",
     secure: true,
   });
 
@@ -228,7 +228,7 @@ export const refreshToken = async (req, res) => {
       res.cookie("refreshToken", newRefreshToken, {
         httpOnly: true,
         secure: true,
-        sameSite: "None",
+        sameSite: "none",
         max: 24 * 60 * 60 * 1000,
       });
 
