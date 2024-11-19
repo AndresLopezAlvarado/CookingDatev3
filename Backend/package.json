@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
-    "build:frontend": "cd ../frontend && npm install && npm run build && cp -r ../frontend/dist ./dist"
+    "build:frontend": "cd ../Frontend && npm install && npm run build && cp -r ../Frontend/dist ./dist"
   },
   "keywords": [],
   "author": "",
