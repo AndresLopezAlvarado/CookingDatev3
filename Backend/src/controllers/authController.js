@@ -34,7 +34,7 @@ export const signUp = async (req, res) => {
         httpOnly: true,
         sameSite: "none",
         secure: true,
-        Partitioned: true,
+        partitioned: true,
       });
     }
 
@@ -46,7 +46,7 @@ export const signUp = async (req, res) => {
       sameSite: "none",
       secure: true,
       maxAge: 24 * 60 * 60 * 1000,
-      Partitioned: true,
+      partitioned: true,
     });
 
     res.json({ user: userSaved, accessToken });
@@ -97,7 +97,7 @@ export const signIn = async (req, res) => {
         httpOnly: true,
         sameSite: "none",
         secure: true,
-        Partitioned: true,
+        partitioned: true,
       });
     }
 
@@ -109,7 +109,7 @@ export const signIn = async (req, res) => {
       sameSite: "none",
       secure: true,
       maxAge: 24 * 60 * 60 * 1000,
-      Partitioned: true,
+      partitioned: true,
     });
 
     res.json({ user: userFound, accessToken });
@@ -142,7 +142,7 @@ export const logOut = async (req, res) => {
         httpOnly: true,
         sameSite: "none",
         secure: true,
-        Partitioned: true,
+        partitioned: true,
       });
 
       return res.sendStatus(204);
@@ -158,7 +158,7 @@ export const logOut = async (req, res) => {
       httpOnly: true,
       sameSite: "none",
       secure: true,
-      Partitioned: true,
+      partitioned: true,
     });
 
     res.sendStatus(204);
@@ -187,7 +187,7 @@ export const refreshToken = async (req, res) => {
     httpOnly: true,
     sameSite: "none",
     secure: true,
-    Partitioned: true,
+    partitioned: true,
   });
 
   try {
@@ -235,7 +235,7 @@ export const refreshToken = async (req, res) => {
         secure: true,
         sameSite: "none",
         max: 24 * 60 * 60 * 1000,
-        Partitioned: true,
+        partitioned: true,
       });
 
       res.json({ user: userFound, accessToken });
