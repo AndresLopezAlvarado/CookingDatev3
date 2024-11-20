@@ -6,6 +6,7 @@ import {
   selectIsAuthenticated,
   setOnlineUsers,
 } from "../features/auth/authSlice";
+import { BACKEND_URL } from "../config";
 
 const SocketContext = createContext();
 
@@ -19,7 +20,7 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      const socket = io(import.meta.env.VITE_BACKEND_URL, {
+      const socket = io(BACKEND_URL, {
         withCredentials: true,
         auth: { userId: user._id },
       });

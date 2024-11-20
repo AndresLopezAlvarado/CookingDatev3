@@ -4,11 +4,11 @@ import App from "./App.jsx";
 import "./index.css";
 
 import { Provider } from "react-redux";
-import { persistor, store } from "./app/store.js";
 import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./app/store.js";
 import { ChakraProvider } from "@chakra-ui/react";
-import "./i18n.js";
 import Spinner from "./components/Spinner.jsx";
+import "./i18n.js";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

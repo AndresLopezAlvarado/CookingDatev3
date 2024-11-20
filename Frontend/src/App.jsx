@@ -1,23 +1,23 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "./features/auth/authSlice";
+import { SocketProvider } from "./contexts/SocketContext";
 import Layout from "./components/Layout";
 import Home from "./features/pages/Home";
 import SignUp from "./features/auth/SignUp";
 import SignIn from "./features/auth/SignIn";
+import Language from "./features/pages/Language";
 import ProtectedRoutes from "./features/auth/ProtectedRoutes";
 import People from "./features/people/People";
 import Profile from "./features/profile/Profile";
 import Person from "./features/people/Person";
-import "./App.css";
 import Chat from "./features/chat/Chat";
-import { SocketProvider } from "./contexts/SocketContext";
-import { useSelector } from "react-redux";
-import { selectCurrentUser } from "./features/auth/authSlice";
 import Chats from "./features/chat/Chats";
 import Reactions from "./features/reactions/Reactions";
 import Favorites from "./features/favorites/Favorites";
 import ReportPerson from "./features/pages/ReportPerson";
 import Recipe from "./features/recipe/Recipe";
-import Language from "./features/pages/Language";
+import "./App.css";
 
 function App() {
   const user = useSelector(selectCurrentUser);
