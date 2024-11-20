@@ -27,17 +27,6 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/people", peopleRoutes);
 app.use("/api/recipe", recipeRoutes);
 
-app.use((req, res, next) => {
-  if (req.originalUrl.startsWith("/api"))
-    return res.status(404).json({ message: "API route not found" });
-
-  next();
-});
-
-app.use((req, res) =>
-  res.status(404).send("Ruta no encontrada en el servidor backend.")
-);
-
 try {
   await connectDB();
 

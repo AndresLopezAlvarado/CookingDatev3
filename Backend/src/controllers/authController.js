@@ -104,7 +104,7 @@ export const signIn = async (req, res) => {
 
     res.cookie("refreshToken", newRefreshToken, {
       httpOnly: true,
-      sameSite: "None",
+      sameSite: "none",
       secure: true,
       maxAge: 24 * 60 * 60 * 1000,
       Partitioned: true,
