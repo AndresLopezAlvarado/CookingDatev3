@@ -12,29 +12,31 @@ const Footer = () => {
   const { t } = useTranslation(["footer"]);
 
   return (
-    <footer className="bg-[#FF3B30] flex flex-col space-y-2 p-2">
-      <p className="bg-[#FF9500] text-justify p-4 rounded-md shadow-md">
+    <footer className="bg-primary flex flex-col gap-1 p-1">
+      <p className="bg-secondary text-justify p-2 rounded-md">
         {t("paragraph")}
       </p>
 
-      <div className="bg-[#FF9500] p-4 grid grid-cols-3 gap-x-2 rounded-md shadow-md ">
-        <div className="flex flex-col space-y-2">
-          <h1 className="text-2xl font-bold mb-2">{t("legal.legal")}</h1>
+      <div className="grid grid-cols-3 gap-1">
+        <div className="bg-secondary text-center p-2 flex flex-col gap-1 rounded-md">
+          <h1 className="text-2xl font-bold">{t("legal.legal")}</h1>
           <Link>{t("legal.privacy")}</Link>
           <Link>{t("legal.terms")}</Link>
           <Link>{t("legal.cookiePolicy")}</Link>
           <Link>{t("legal.intellectualProperty")}</Link>
         </div>
 
-        <div className="flex flex-col space-y-2">
-          <h1 className="text-2xl font-bold mb-2">{t("careers.careers")}</h1>
+        <div className="bg-secondary text-center p-2 flex flex-col gap-1 rounded-md">
+          <h1 className="text-2xl font-bold">
+            {t("careers.careers")}
+          </h1>
           <Link>{t("careers.careersPortal")}</Link>
           <Link>{t("careers.techBlog")}</Link>
         </div>
 
-        <div className="flex flex-col space-y-2">
-          <h1 className="text-2xl font-bold mb-2">{t("social")}</h1>
-          <div className="py-1 flex gap-3">
+        <div className="bg-secondary text-center p-2 flex flex-col gap-2 rounded-md">
+          <h1 className="text-2xl font-bold">{t("social")}</h1>
+          <div className="flex gap-3 justify-center">
             <BsFacebook />
             <BsInstagram />
             <BsTwitterX />
@@ -44,9 +46,9 @@ const Footer = () => {
         </div>
       </div>
 
-      <p className="bg-[#FF9500] text-center text-sm p-4 rounded-md shadow-md">
+      <label className="bg-secondary text-center text-sm p-2 rounded-md">
         {t("rights")}
-      </p>
+      </label>
     </footer>
   );
 };

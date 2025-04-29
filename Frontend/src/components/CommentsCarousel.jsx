@@ -8,8 +8,9 @@ const CommentsCarousel = ({ comments }) => {
   return (
     <Swiper
       breakpoints={{
+        0: { slidesPerView: 1, spaceBetween: 10 },
         640: { slidesPerView: 2, spaceBetween: 15 },
-        1280: { slidesPerView: 3, spaceBetween: 15 },
+        1280: { slidesPerView: 3, spaceBetween: 20 }, // Aumenté a 20
       }}
       freeMode={true}
       pagination={{ clickable: true }}
@@ -18,18 +19,16 @@ const CommentsCarousel = ({ comments }) => {
         disableOnInteraction: false,
       }}
       modules={[FreeMode, Pagination, Autoplay]}
-      className="w-full pb-10"
+      className="w-full p-4"
     >
       {comments &&
         comments.map((comment) => (
           <SwiperSlide
             key={comment.id}
-            className="border-[#FF3B30] border-2 p-2 flex flex-col justify-center space-y-2 rounded-md"
+            className="border-primary text-sm border-4 mb-4 p-4 flex flex-col justify-center gap-1 rounded-md"
           >
             <h1 className="font-bold">{comment.name}</h1>
-
             <p>{comment.body}</p>
-
             <h1 className="font-bold">{comment.email}</h1>
           </SwiperSlide>
         ))}

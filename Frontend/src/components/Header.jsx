@@ -23,7 +23,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const NavBar = () => {
+const Header = () => {
   const { socketConnection } = useSocket();
   const user = useSelector(selectCurrentUser);
   const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -112,9 +112,9 @@ const NavBar = () => {
   }, [socketConnection]);
 
   return (
-    <nav className="bg-[#FF3B30] fixed px-4 mx-auto left-0 top-0 z-10 w-full">
+    <header className="bg-primary p-2 flex items-center h-12 w-full fixed left-0 top-0 z-10">
       {isAuthenticated ? (
-        <div className="flex h-16 items-center">
+        <nav className="flex items-center">
           {/* Button to display the left panel menu */}
           <Menu as="div">
             {({ open }) => (
@@ -364,15 +364,14 @@ const NavBar = () => {
               )}
             </Menu>
           </div>
-        </div>
+        </nav>
       ) : (
-        <div className="flex h-16 items-center">
+        <nav className="w-full flex">
           {/* Button to display the left panel menu */}
-          {/* No funciona hover:bg-[#FFCC00]  */}
-          <Menu as="div">
+          <Menu as={"div"} className={"flex items-center"}>
             {({ open }) => (
               <>
-                <MenuButton className="md:hidden bg-[#FF9500] hover:bg-[#FFCC00] rounded-md">
+                <MenuButton className="md:hidden bg-secondary hover:bg-tertiary rounded-md">
                   {open ? (
                     <XMarkIcon className="h-8 ring-white ring-2 rounded-md" />
                   ) : (
@@ -389,7 +388,7 @@ const NavBar = () => {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <MenuItems className="absolute bg-[#FF3B30] left-0 z-10 w-48 space-y-2 p-2 mt-4 rounded-md">
+                  <MenuItems className="absolute bg-primary top-12 z-10 w-fit space-y-1 p-2 rounded-md">
                     {navigation.map((item) => (
                       <MenuItem key={item.name}>
                         <Link
@@ -397,9 +396,9 @@ const NavBar = () => {
                           to={item.href}
                           className={classNames(
                             item.current
-                              ? "bg-[#FFCC00] hover:bg-[#FF9500]"
-                              : "bg-[#FF9500] hover:bg-[#FFCC00]",
-                            "block font-bold p-2 rounded-md"
+                              ? "bg-tertiary hover:bg-secondary"
+                              : "bg-secondary hover:bg-tertiary",
+                            "block font-bold p-1 rounded-md"
                           )}
                           aria-current={item.current ? "page" : undefined}
                           onClick={(t) => changeCurrent(item.name)}
@@ -415,36 +414,36 @@ const NavBar = () => {
           </Menu>
 
           {/* Logo - Title - Links */}
-          <div className="flex flex-1 justify-center gap-x-8">
+          <div className="flex-1 gap-2 md:flex md:justify-center">
             {/* Logo - Title */}
-            <div className="flex flex-shrink-0 items-center gap-x-2">
+            <div className="flex justify-center items-center gap-2">
               {/* Logo */}
               <Link to="/" onClick={changeCurrent}>
                 <img
-                  className="h-8 w-auto"
+                  className="h-8"
                   src="/potHearts.png"
-                  alt="logoApp"
+                  alt="Cooking Date logo"
                 />
               </Link>
 
               {/* Title */}
-              <h1 className="hidden sm:block md:hidden text-[#FFCC00] text-3xl font-bold">
+              <h1 className="hidden sm:block md:hidden text-tertiary text-3xl font-bold">
                 Cooking Date
               </h1>
             </div>
 
             {/* Links */}
             <div className="hidden md:block">
-              <div className="flex space-x-2">
+              <div className="flex space-x-1">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
                     to={item.href}
                     className={classNames(
                       item.current
-                        ? "bg-[#FFCC00] hover:bg-[#FF9500]"
-                        : "bg-[#FF9500] hover:bg-[#FFCC00]",
-                      "font-bold p-2 rounded-md"
+                        ? "bg-tertiary hover:bg-secondary"
+                        : "bg-secondary hover:bg-tertiary",
+                      "font-bold p-1 rounded-md"
                     )}
                     aria-current={item.current ? "page" : undefined}
                     onClick={(t) => changeCurrent(item.name)}
@@ -455,10 +454,10 @@ const NavBar = () => {
               </div>
             </div>
           </div>
-        </div>
+        </nav>
       )}
-    </nav>
+    </header>
   );
 };
 
-export default NavBar;
+export default Header;

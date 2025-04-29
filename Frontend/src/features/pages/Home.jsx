@@ -23,19 +23,17 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="h-screen w-full flex flex-col justify-center items-center text-center">
-      <h1 className="font-bold">
-        {t("titles.t1")}
-        <Link className="text-[#FFCC00]" to="/signIn">
-          {t("titles.t2")}
-        </Link>
-      </h1>
+    <div className="h-full w-full p-4 flex flex-col justify-center items-center text-center">
+      <h1 className="font-bold">{t("titles.t1")}</h1>
+      <Link className="text-tertiary font-bold" to="/signIn">
+        {t("titles.t2")}
+      </Link>
 
-      <img className="w-5/6" src="/panOnStove.gif" alt="logoHome" />
+      <img className="sm:w-3/4 md:w-1/2 lg:w-1/4" src="/logo.png" alt="Home logo" />
 
       {comments.length > 0 && (
-        <div className="w-5/6 flex flex-col gap-3">
-          <h1 className="text-3xl font-bold">{t("titles.t3")}</h1>
+        <div className="w-2/3 flex flex-col gap-3">
+          <h1 className="text-2xl font-bold">{t("titles.t3")}</h1>
 
           <CommentsCarousel comments={comments} />
         </div>
