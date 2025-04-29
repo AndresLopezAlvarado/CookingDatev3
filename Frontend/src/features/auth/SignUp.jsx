@@ -15,16 +15,16 @@ const SignUp = () => {
   const signUpSchema = yup.object({
     username: yup
       .string()
-      .min(4, "Username must be a least 4 characters")
-      .required("Username is required"),
+      .min(4, "Username must be a least 4 characters!")
+      .required("Username is required!"),
     email: yup
       .string()
-      .email("Email is not valid")
-      .required("Email is required"),
+      .email("Email is not valid!")
+      .required("Email is required!"),
     password: yup
       .string()
-      .min(6, "Password must be a least 6 characters")
-      .required("Password is required"),
+      .min(6, "Password must be a least 6 characters!")
+      .required("Password is required!"),
   });
 
   const handleSubmit = async (data, { setSubmitting }) => {
@@ -40,7 +40,7 @@ const SignUp = () => {
         duration: 4000,
 
         render: () => (
-          <div className="bg-[#FFCC00] font-bold p-4 rounded-md text-center">
+          <div className="bg-tertiary font-bold p-4 rounded-md text-center">
             <h1>An error has occurred!:</h1>
 
             <p>{error.response.data.message}</p>
@@ -53,7 +53,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="h-screen w-full flex flex-col justify-center items-center text-center">
+    <div className="h-screen w-full p-8 md:p-16 flex flex-col items-center text-center">
       <Formik
         enableReinitialize
         initialValues={{ username: "", email: "", password: "" }}
@@ -72,13 +72,14 @@ const SignUp = () => {
               </label>
 
               <Field
-                className="bg-[#FFCC00] text-[#FF3B30] placeholder-orange-400 w-full p-2 rounded-md"
+                className="bg-tertiary text-primary placeholder-orange-400 w-full p-2 rounded-md"
+                type="text"
                 name="username"
                 placeholder={t("username")}
               />
 
               <ErrorMessage
-                className="text-[#FFCC00] font-bold"
+                className="text-primary font-bold"
                 name="username"
                 component="h2"
               />
@@ -90,14 +91,14 @@ const SignUp = () => {
               </label>
 
               <Field
-                className="bg-[#FFCC00] text-[#FF3B30] placeholder-orange-400 w-full p-2 rounded-md"
+                className="bg-tertiary text-primary placeholder-orange-400 w-full p-2 rounded-md"
                 type="email"
                 name="email"
-                placeholder="Email"
+                placeholder="example@email.com"
               />
 
               <ErrorMessage
-                className="text-[#FFCC00] font-bold"
+                className="text-primary font-bold"
                 name="email"
                 component="h2"
               />
@@ -109,21 +110,21 @@ const SignUp = () => {
               </label>
 
               <Field
-                className="bg-[#FFCC00] text-[#FF3B30] placeholder-orange-400 w-full p-2 rounded-md"
+                className="bg-tertiary text-primary placeholder-orange-400 w-full p-2 rounded-md"
                 type="password"
                 name="password"
                 placeholder="********"
               />
 
               <ErrorMessage
-                className="text-[#FFCC00] font-bold"
+                className="text-primary font-bold"
                 name="password"
                 component="h2"
               />
             </div>
 
             <button
-              className="bg-[#FF9500] hover:bg-[#FFCC00] font-bold p-2 rounded-md"
+              className="bg-secondary hover:bg-tertiary font-bold p-2 rounded-md"
               type="submit"
               disabled={isSubmitting}
             >
@@ -136,7 +137,7 @@ const SignUp = () => {
 
             <h3 className="font-bold">
               {t("title.t2")}
-              <Link className="text-[#FFCC00] font-bold" to={"/signIn"}>
+              <Link className="text-tertiary font-bold" to={"/signIn"}>
                 {t("title.t3")}
               </Link>
             </h3>

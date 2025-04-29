@@ -6,23 +6,22 @@ const Language = () => {
     { code: "en", language: t("languages.l1") },
     { code: "es", language: t("languages.l2") },
   ];
-
   const changeLanguage = (lng) => i18n.changeLanguage(lng);
 
   return (
-    <div className="h-screen flex flex-col items-center gap-8">
+    <div className="h-screen p-8 md:p-16 flex flex-col items-center gap-10">
       <h1 className="text-3xl font-bold">{t("title")}</h1>
 
       <p>{t("paragraph")}</p>
 
-      <div className="flex gap-2">
+      <div className="flex gap-1">
         {languages.map((lng) => {
           return (
             <button
               className={
                 lng.code === i18n.language
-                  ? "bg-[#FFCC00] hover:bg-[#FF9500] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
-                  : "bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+                  ? "bg-tertiary hover:bg-secondary focus:ring-primary focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+                  : "bg-secondary hover:bg-tertiary focus:ring-primary focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
               }
               key={lng.code}
               onClick={() => changeLanguage(lng.code)}
