@@ -114,14 +114,14 @@ const Header = () => {
   return (
     <header className="bg-primary p-2 flex items-center h-12 w-full fixed left-0 top-0 z-10">
       {isAuthenticated ? (
-        <nav className="flex items-center">
+        <nav className="w-full flex">
           {/* Button to display the left panel menu */}
-          <Menu as="div">
+          <Menu as={"div"} className={"flex items-center"}>
             {({ open }) => (
               <>
-                <MenuButton className="md:hidden bg-[#FF9500] hover:bg-[#FFCC00] rounded-md">
+                <MenuButton className="md:hidden bg-secondary hover:bg-tertiary rounded-md">
                   {open ? (
-                    <XMarkIcon className="h-8 ring-white ring-2 rounded-md" />
+                    <XMarkIcon className="h-8 ring-tertiary ring-2 rounded-md" />
                   ) : (
                     <Bars3Icon className="h-8" />
                   )}
@@ -136,7 +136,7 @@ const Header = () => {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <MenuItems className="absolute bg-[#FF3B30] left-0 z-10 w-48 space-y-2 p-2 mt-4 rounded-md">
+                  <MenuItems className="absolute bg-primary top-12 z-10 w-fit space-y-1 p-2 rounded-md">
                     {navIsAuthenticated.map((item) => (
                       <MenuItem key={item.name}>
                         <Link
@@ -144,9 +144,9 @@ const Header = () => {
                           to={item.href}
                           className={classNames(
                             item.current
-                              ? "bg-[#FFCC00] hover:bg-[#FF9500]"
-                              : "bg-[#FF9500] hover:bg-[#FFCC00]",
-                            "block font-bold p-2 rounded-md"
+                              ? "bg-tertiary hover:bg-secondary"
+                              : "bg-secondary hover:bg-tertiary",
+                            "block font-bold p-1 rounded-md"
                           )}
                           aria-current={item.current ? "page" : undefined}
                           onClick={(t) => changeCurrent(item.name)}
@@ -162,32 +162,36 @@ const Header = () => {
           </Menu>
 
           {/* Logo - Title - Links */}
-          <div className="flex flex-1 justify-center gap-x-8">
+          <div className="flex-1 flex justify-center items-center gap-2">
             {/* Logo - Title */}
-            <div className="flex flex-shrink-0 items-center gap-x-2">
+            <div className="flex justify-center items-center gap-2">
               {/* Logo */}
               <Link to="/people" onClick={changeCurrent}>
-                <img className="h-8" src="/potHearts.png" alt="logoApp" />
+                <img
+                  className="h-8"
+                  src="/potHearts.png"
+                  alt="Cooking Date logo"
+                />
               </Link>
 
               {/* Title */}
-              <h1 className="hidden sm:block md:hidden text-[#FFCC00] text-3xl font-bold">
+              <h1 className="hidden sm:block md:hidden text-tertiary text-3xl font-bold">
                 Cooking Date
               </h1>
             </div>
 
             {/* Links */}
             <div className="hidden md:block">
-              <div className="flex space-x-2">
+              <div className="flex space-x-1">
                 {navIsAuthenticated.map((item) => (
                   <Link
                     key={item.name}
                     to={item.href}
                     className={classNames(
                       item.current
-                        ? "bg-[#FFCC00] hover:bg-[#FF9500]"
-                        : "bg-[#FF9500] hover:bg-[#FFCC00]",
-                      "font-bold p-2 rounded-md"
+                        ? "bg-tertiary hover:bg-secondary"
+                        : "bg-secondary hover:bg-tertiary",
+                      "font-bold p-1 rounded-md"
                     )}
                     aria-current={item.current ? "page" : undefined}
                     onClick={(t) => changeCurrent(item.name)}
@@ -200,27 +204,27 @@ const Header = () => {
           </div>
 
           {/* Notifications - User´s settings */}
-          <div className="flex items-center gap-x-3">
+          <div className="flex justify-center items-center gap-1">
             {/* Notifications button */}
-            <Menu as="div">
+            <Menu as={"div"} className={"flex items-center"}>
               {({ open }) => (
                 <>
-                  <div>
+                  <div className="relative flex items-center">
                     <MenuButton
                       className={
                         open
-                          ? "bg-[#FF9500] hover:bg-[#FFCC00] h-10 w-10 p-1 ring-white ring-2 rounded-full"
-                          : "bg-[#FF9500] hover:bg-[#FFCC00] h-10 w-10 p-1 rounded-full"
+                          ? "bg-secondary hover:bg-tertiary h-8 w-8 p-1 ring-tertiary ring-2 rounded-full"
+                          : "bg-secondary hover:bg-tertiary h-8 w-8 p-1 rounded-full"
                       }
                     >
                       <BellIcon />
                     </MenuButton>
 
-                    <div className="absolute bg-[#FFCC00] font-bold px-2 z-10 top-0 rounded-full">
-                      {!open && notifications?.length > 0
-                        ? notifications.length
-                        : null}
-                    </div>
+                    {!open && notifications?.length > 0 && (
+                      <div className="absolute bg-tertiary font-bold text-xs h-5 w-5 z-10 -top-1 -left-1 flex items-center justify-center rounded-full">
+                        {notifications.length}
+                      </div>
+                    )}
                   </div>
 
                   <Transition
@@ -232,10 +236,10 @@ const Header = () => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <MenuItems className="absolute bg-[#FF3B30] right-0 z-10 w-fit space-y-2 p-2 mt-4 rounded-md">
+                    <MenuItems className="absolute bg-primary top-12 right-2 z-10 w-fit space-y-1 p-2 rounded-md">
                       {notifications?.length === 0 ? (
                         <MenuItem>
-                          <p className="bg-[#FF9500] hover:bg-[#FFCC00] block font-bold p-2 rounded-md">
+                          <p className="bg-secondary hover:bg-tertiary block font-bold p-1 rounded-md">
                             {t("navigation.noNotifications")}
                           </p>
                         </MenuItem>
@@ -254,39 +258,31 @@ const Header = () => {
                                   notification._id
                                 )
                               }
-                              className="bg-[#FF9500] hover:bg-[#FFCC00] block font-bold p-2 rounded-md"
+                              className="bg-secondary hover:bg-tertiary block p-1 rounded-md"
                             >
                               {notification.type === "message" ? (
-                                <>
-                                  <div className="flex items-center gap-x-2">
+                                <label className="flex items-center gap-1">
+                                  <span className="font-bold flex items-center gap-1">
                                     <IoChatboxOutline />
-
-                                    <p>{notification.sender.username}: </p>
-                                  </div>
-
-                                  <p className="ml-6 font-normal">
-                                    {notification.content}
-                                  </p>
-                                </>
+                                    {notification.sender.username}:
+                                  </span>
+                                  {notification.content}
+                                </label>
                               ) : (
-                                <>
-                                  <div className="flex items-center gap-x-2">
+                                <label className="flex items-center gap-1">
+                                  <span className="font-bold flex items-center gap-1">
                                     <MdEmojiEmotions />
-
-                                    <p>{notification.sender.username}: </p>
-                                  </div>
-
-                                  <p className="ml-6 font-normal">
-                                    {t(
-                                      {
-                                        "They invited you to cook at home!":
-                                          "navigation.cookAtHome",
-                                        "They invited you to eat out!":
-                                          "navigation.eatOutside",
-                                      }[notification.content]
-                                    )}
-                                  </p>
-                                </>
+                                    {notification.sender.username}:
+                                  </span>
+                                  {t(
+                                    {
+                                      "They invited you to cook at home!":
+                                        "navigation.cookAtHome",
+                                      "They invited you to eat out!":
+                                        "navigation.eatOutside",
+                                    }[notification.content]
+                                  )}
+                                </label>
                               )}
                             </Link>
                           </MenuItem>
@@ -299,15 +295,15 @@ const Header = () => {
             </Menu>
 
             {/* User´s settings button */}
-            <Menu as="div">
+            <Menu as={"div"} className={"flex items-center"}>
               {({ open }) => (
                 <>
-                  <MenuButton className="rounded-full">
+                  <MenuButton>
                     <img
                       className={
                         open
-                          ? "h-10 w-10 ring-white ring-2 rounded-full"
-                          : "h-10 w-10 rounded-full"
+                          ? "h-8 w-8 ring-tertiary ring-2 rounded-full"
+                          : "h-8 w-8 rounded-full"
                       }
                       src={
                         user?.profilePicture
@@ -327,7 +323,7 @@ const Header = () => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <MenuItems className="absolute bg-[#FF3B30] right-0 z-10 w-48 space-y-2 p-2 mt-4 rounded-md">
+                    <MenuItems className="absolute bg-primary right-2 top-12 z-10 w-fit space-y-1 p-2 rounded-md">
                       {userSetting.map((item) => (
                         <MenuItem key={item.name}>
                           <Link
@@ -335,9 +331,9 @@ const Header = () => {
                             to={item.href}
                             className={classNames(
                               item.current
-                                ? "bg-[#FFCC00] hover:bg-[#FF9500]"
-                                : "bg-[#FF9500] hover:bg-[#FFCC00]",
-                              "block font-bold p-2 rounded-md"
+                                ? "bg-tertiary hover:bg-secondary"
+                                : "bg-secondary hover:bg-tertiary",
+                              "block font-bold p-1 rounded-md"
                             )}
                             aria-current={item.current ? "page" : undefined}
                             onClick={(e) => {
@@ -373,7 +369,7 @@ const Header = () => {
               <>
                 <MenuButton className="md:hidden bg-secondary hover:bg-tertiary rounded-md">
                   {open ? (
-                    <XMarkIcon className="h-8 ring-white ring-2 rounded-md" />
+                    <XMarkIcon className="h-8 ring-tertiary ring-2 rounded-md" />
                   ) : (
                     <Bars3Icon className="h-8" />
                   )}
@@ -414,7 +410,7 @@ const Header = () => {
           </Menu>
 
           {/* Logo - Title - Links */}
-          <div className="flex-1 gap-2 md:flex md:justify-center">
+          <div className="flex-1 flex justify-center items-center gap-2">
             {/* Logo - Title */}
             <div className="flex justify-center items-center gap-2">
               {/* Logo */}
