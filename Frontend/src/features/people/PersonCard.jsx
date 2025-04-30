@@ -10,7 +10,7 @@ const PersonCard = ({ person }) => {
 
   return (
     <div
-      className="m-1 h-64 ring-[#FF3B30] hover:ring-4 hover:text-opacity-70 flex flex-col items-center justify-end bg-cover bg-center rounded-md cursor-pointer relative"
+      className="relative h-52 ring-primary hover:ring-4 flex flex-col items-center justify-end bg-cover bg-center rounded-md cursor-pointer"
       style={
         person.profilePicture.url
           ? { backgroundImage: `url(${person.profilePicture.url})` }
@@ -24,7 +24,7 @@ const PersonCard = ({ person }) => {
         <div className="absolute top-2 right-2 bg-green-500 p-2 rounded-full" />
       )}
 
-      <h1 className="bg-[#FF3B30] text-xl font-bold px-2 m-1 rounded-md">
+      <h1 className="bg-primary text-tertiary text-lg font-bold px-1 rounded-md">
         {firstName}
       </h1>
     </div>

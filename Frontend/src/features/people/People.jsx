@@ -67,61 +67,60 @@ const People = () => {
   }, [socketConnection, refetch, location.pathname]);
 
   return (
-    <div className="h-screen w-full p-1 gap-y-1 flex flex-col">
+    <div className="min-h-screen flex flex-col">
       {/* Barra */}
-      <div className="bg-[#FF3B30] font-bold p-2 rounded-md text-4xl flex space-x-8 justify-center items-center text-center">
-        <Link
-          title={t("bar.t1")}
-          to="/chats"
-          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
-        >
-          <TiMessages />
-        </Link>
-
-        <Link
-          title={t("bar.t2")}
-          to="/reactions"
-          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
-        >
-          <MdEmojiEmotions />
-        </Link>
-
-        <Link
-          title={t("bar.t3")}
-          to="/favorites"
-          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
-        >
-          <FaStar />
-        </Link>
-
-        <Link
-          title={t("bar.t4")}
-          to="/recipe"
-          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
-        >
-          <GiPerspectiveDiceSixFacesRandom />
-        </Link>
-      </div>
+      <nav className="bg-primary p-2 fixed top-14 inset-x-1 z-10 flex gap-8 justify-center rounded-md">
+        {[
+          {
+            icon: <TiMessages className="text-2xl" />,
+            to: "/chats",
+            key: "t1",
+          },
+          {
+            icon: <MdEmojiEmotions className="text-2xl" />,
+            to: "/reactions",
+            key: "t2",
+          },
+          {
+            icon: <FaStar className="text-2xl" />,
+            to: "/favorites",
+            key: "t3",
+          },
+          {
+            icon: <GiPerspectiveDiceSixFacesRandom className="text-2xl" />,
+            to: "/recipe",
+            key: "t4",
+          },
+        ].map((item) => (
+          <Link
+            key={item.key}
+            title={t(`bar.${item.key}`)}
+            to={item.to}
+            className="bg-secondary h-8 w-8 flex items-center justify-center hover:bg-tertiary focus:ring-2 focus:ring-tertiary focus:ring-inset rounded-md"
+          >
+            {item.icon}
+          </Link>
+        ))}
+      </nav>
 
       {/* People */}
-      {isFetchingLocation ? (
-        <h1 className="font-bold text-xl text-center">{t("title.t1")}</h1>
-      ) : isLoading ? (
-        <Spinner />
-      ) : (
-        <div className="flex flex-col flex-1 overflow-y-auto items-center text-center">
-          {people &&
-            (people?.length === 0 ? (
-              <div className="flex flex-col flex-1 justify-center items-center">
-                <VscEmptyWindow className="w-48 h-48" />
+      <main className="mt-14 flex-1 flex">
+        {isFetchingLocation || isLoading ? (
+          <div className="flex-1 flex flex-col gap-4 items-center justify-center">
+            <h1 className="font-bold text-xl">{t("title.t1")}</h1>
 
-                <h1>{t("title.t2")}</h1>
-              </div>
-            ) : (
-              <PeopleGrid people={people} />
-            ))}
-        </div>
-      )}
+            <Spinner />
+          </div>
+        ) : people?.length === 0 ? (
+          <div className="h-full flex flex-col items-center justify-center">
+            <VscEmptyWindow className="w-48 h-48" />
+
+            <h1>{t("title.t2")}</h1>
+          </div>
+        ) : (
+          <PeopleGrid people={people} />
+        )}
+      </main>
     </div>
   );
 };
