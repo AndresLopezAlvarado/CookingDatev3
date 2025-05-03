@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaFileImage } from "react-icons/fa";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { selectCurrentUser } from "../auth/authSlice";
@@ -132,10 +133,10 @@ const PhotoGallery = ({ toggleModal }) => {
   }, []);
 
   return (
-    <div className="space-y-4 text-center">
+    <div className="flex flex-col gap-4 items-center">
       <h1 className="text-3xl font-bold">{t("form.f8")}</h1>
 
-      <div className="flex flex-col space-y-2">
+      <div className="flex flex-col gap-2 items-center">
         {savedPhotos.length === 0 ? (
           <div className="flex flex-col justify-center items-center space-y-2">
             <FaFileImage className="w-48 h-48" />
@@ -143,7 +144,7 @@ const PhotoGallery = ({ toggleModal }) => {
             <h1>{t("form.f9")}</h1>
           </div>
         ) : (
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-1">
             {savedPhotos.map((photo, index) => (
               <div
                 key={index}
@@ -156,14 +157,14 @@ const PhotoGallery = ({ toggleModal }) => {
                 <img
                   src={photo.url}
                   alt={`Photo ${index}`}
-                  className="w-full h-full rounded-md"
+                  className="w-full h-full object-cover rounded-md"
                 />
 
                 <button
                   onClick={() => {
                     handleDelete(index, photo);
                   }}
-                  className="absolute top-2 right-2 bg-[#FF9500] hover:bg-[#FFCC00] text-sm font-bold px-2 py-1 rounded-md"
+                  className="absolute top-1 right-1 h-6 w-6 bg-secondary hover:bg-tertiary text-sm font-bold rounded-full"
                 >
                   X
                 </button>
@@ -172,7 +173,7 @@ const PhotoGallery = ({ toggleModal }) => {
           </div>
         )}
 
-        <div className="bg-[#FFCC00] w-full flex gap-2 p-2 rounded-md items-center">
+        <div className="bg-tertiary flex gap-2 p-1 rounded-md items-center">
           <input
             id="fileInput"
             type="file"
@@ -183,12 +184,12 @@ const PhotoGallery = ({ toggleModal }) => {
 
           <label
             htmlFor="fileInput"
-            className="bg-[#FF9500] hover:bg-[#FFCC00] hover:ring-[#FF9500] hover:ring-2 font-bold p-2 rounded-md"
+            className="bg-secondary hover:bg-tertiary hover:ring-secondary hover:ring-2 font-bold p-1 rounded-md"
           >
             {t("button.b4")}
           </label>
 
-          <p className="text-[#FF3B30]">
+          <p className="text-primary">
             {photoFiles?.length === 0
               ? t("title.t6")
               : photoFiles?.length === 1
@@ -200,13 +201,18 @@ const PhotoGallery = ({ toggleModal }) => {
 
       <button
         id="closeUploadPhotos"
-        className="bg-[#FF9500] hover:bg-[#FFCC00] font-bold p-2 rounded-md"
+        className="bg-secondary hover:bg-tertiary font-bold p-2 rounded-md"
+        disabled={isLoading}
         onClick={() => {
           toggleModal();
           uploadPhotoFiles();
         }}
       >
-        {t("button.b3")}
+        {isLoading ? (
+          <AiOutlineLoading3Quarters className="animate-spin h-5 w-5" />
+        ) : (
+          t("button.b3")
+        )}
       </button>
     </div>
   );

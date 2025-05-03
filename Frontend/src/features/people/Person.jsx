@@ -186,11 +186,11 @@ const Person = () => {
   }, [socketConnection, params?.id, isReacted, location.pathname]);
 
   return (
-    <div className="h-screen w-full p-1 gap-y-1 flex flex-col justify-center items-center text-center">
+    <div className="min-h-screen p-1 sm:p-2 md:p-3 flex flex-col gap-2 text-center items-center">
       {person && (
         <>
           {/* Photos */}
-          <div className="h-[50vh] w-full border-[#FF3B30] border p-1 rounded-md">
+          <div className="h-96 w-full sm:w-5/6 lg:w-3/5 border border-primary p-1 rounded-md">
             {person.photos ? (
               <PhotoCarousel photos={person.photos} />
             ) : (
@@ -208,7 +208,7 @@ const Person = () => {
           </div>
 
           {/* Info */}
-          <div className="h-1/2 space-y-4">
+          <div className="w-full sm:w-5/6 lg:w-3/5 flex flex-col gap-4">
             {/* Info */}
             <div>
               <h1 className="text-2xl font-bold">
@@ -243,11 +243,11 @@ const Person = () => {
             </div>
 
             {/* Barra */}
-            <div className="bg-[#FF3B30] font-bold p-2 rounded-md flex text-4xl space-x-6 justify-center items-center text-center">
+            <div className="bg-primary p-2 text-xl md:text-2xl lg:text-3xl xl:text-4xl flex gap-3 sm:gap-4 md:gap-5 xl:gap-6 justify-center items-center text-center rounded-md">
               <button
                 title={t("bar.t1")}
                 onClick={() => navigate(-1)}
-                className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+                className="bg-secondary hover:bg-tertiary p-2 focus:ring-tertiary focus:outline-none focus:ring-2 focus:ring-inset rounded-md"
               >
                 <FaAngleLeft />
               </button>
@@ -261,8 +261,8 @@ const Person = () => {
                 onClick={handleCookAtHome}
                 className={
                   isReacted.isCookAtHome
-                    ? "bg-gray-200 font-bold p-2 rounded-md cursor-default"
-                    : "bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+                    ? "bg-gray-200 p-2 rounded-md cursor-default"
+                    : "bg-secondary hover:bg-tertiary p-2 focus:ring-tertiary focus:outline-none focus:ring-2 focus:ring-inset rounded-md"
                 }
               >
                 <ImSpoonKnife />
@@ -277,8 +277,8 @@ const Person = () => {
                 onClick={handleEatOutside}
                 className={
                   isReacted.isEatOutside
-                    ? "bg-gray-200 font-bold p-2 rounded-md cursor-default"
-                    : "bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+                    ? "bg-gray-200 p-2 rounded-md cursor-default"
+                    : "bg-secondary hover:bg-tertiary p-2 focus:ring-tertiary focus:outline-none focus:ring-2 focus:ring-inset rounded-md"
                 }
               >
                 <IoFastFoodOutline />
@@ -287,7 +287,7 @@ const Person = () => {
               <Link
                 title={`${t("bar.t4")} ${person.username}`}
                 to={`/chat/${person._id}`}
-                className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+                className="bg-secondary hover:bg-tertiary p-2 focus:ring-tertiary focus:outline-none focus:ring-2 focus:ring-inset rounded-md"
               >
                 <IoChatboxOutline />
               </Link>
@@ -304,7 +304,7 @@ const Person = () => {
                   if (isFavorite) handleUnmarkAsFavorite();
                   else handleMarkAsFavorite();
                 }}
-                className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+                className="bg-secondary hover:bg-tertiary p-2 focus:ring-tertiary focus:outline-none focus:ring-2 focus:ring-inset rounded-md"
               >
                 {isFavorite ? <FaStar /> : <FaRegStar />}
               </button>
@@ -319,7 +319,7 @@ const Person = () => {
                   if (isBlocked) handleUnblockPerson();
                   else handleBlockPerson();
                 }}
-                className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+                className="bg-secondary hover:bg-tertiary p-2 focus:ring-tertiary focus:outline-none focus:ring-2 focus:ring-inset rounded-md"
               >
                 {isBlocked ? <CgUnblock /> : <PiKnifeFill />}
               </button>
@@ -327,7 +327,7 @@ const Person = () => {
               <Link
                 to={`/reportPerson/${params.id}`}
                 title={t("bar.t7")}
-                className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+                className="bg-secondary hover:bg-tertiary p-2 focus:ring-tertiary focus:outline-none focus:ring-2 focus:ring-inset rounded-md"
               >
                 <MdOutlineReportGmailerrorred />
               </Link>

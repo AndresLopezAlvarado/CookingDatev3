@@ -25,8 +25,8 @@ const ReportPerson = () => {
   const reportSchema = yup.object({
     reason: yup
       .string()
-      .min(0, "'Reason' cannot be empty")
-      .required("'Reason' is required"),
+      .min(0, "'Reason' cannot be empty!")
+      .required("'Reason' is required!"),
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
@@ -46,7 +46,7 @@ const ReportPerson = () => {
         duration: 4000,
 
         render: () => (
-          <div className="bg-[#FFCC00] font-bold p-4 rounded-md text-center">
+          <div className="bg-tertiary font-bold p-4 rounded-md text-center">
             <h1>
               Your report has been submitted (id: {reportId.toString()}) and
               will be reviewed.
@@ -62,7 +62,7 @@ const ReportPerson = () => {
         duration: 4000,
 
         render: () => (
-          <div className="bg-[#FFCC00] font-bold p-4 rounded-md text-center">
+          <div className="bg-tertiary font-bold p-4 rounded-md text-center">
             <h1>An error has occurred!:</h1>
 
             <p>{error.response.data.message}</p>
@@ -75,18 +75,24 @@ const ReportPerson = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col justify-center items-center text-center gap-4">
-      <div className="bg-[#FF3B30] font-bold p-2 rounded-md flex text-4xl space-x-6 justify-center items-center text-center">
+    <div className="min-h-screen p-1 flex flex-col gap-4 items-center text-center">
+      <div className="bg-primary w-full md:w-5/6 lg:w-3/5 2xl:w-3/6 p-2 flex gap-2 justify-between items-center rounded-md">
         <button
           title={t("bar.t1")}
           onClick={() => navigate(-1)}
-          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+          className="bg-secondary hover:bg-tertiary h-8 w-8 flex items-center justify-center focus:ring-tertiary focus:outline-none focus:ring-2 focus:ring-inset rounded-md"
         >
           <FaAngleLeft />
         </button>
-      </div>
 
-      <h1 className="text-3xl font-bold">{t("title.t1")}</h1>
+        <h1 className="text-3xl text-tertiary font-bold">{t("title.t1")}</h1>
+
+        <img
+          className="h-8 w-8 rounded-full"
+          src={reportedPerson?.profilePicture?.url}
+          alt="Reported person"
+        />
+      </div>
 
       <label className="font-bold" htmlFor="reportedBy">
         {t("title.t2")}: {reportedBy?.username}
@@ -105,14 +111,14 @@ const ReportPerson = () => {
         }
       >
         {({ isSubmitting }) => (
-          <Form className="space-y-4">
-            <div>
+          <Form className="flex flex-col gap-4 items-center w-full md:w-5/6 lg:w-3/5 2xl:w-3/6">
+            <div className="w-full">
               <label className="font-bold" htmlFor="reason">
                 {t("title.t4")}:
               </label>
 
               <Field
-                className="bg-[#FFCC00] text-[#FF3B30] placeholder-orange-400 w-full p-2 rounded-md"
+                className="bg-tertiary w-full p-2 text-primary placeholder-orange-400 rounded-md"
                 as="textarea"
                 rows="8"
                 name="reason"
@@ -120,14 +126,14 @@ const ReportPerson = () => {
               />
 
               <ErrorMessage
-                className="text-[#FFCC00] font-bold"
+                className="text-primary font-bold"
                 name="reason"
                 component="h2"
               />
             </div>
 
             <button
-              className="bg-[#FF9500] hover:bg-[#FFCC00] font-bold p-2 rounded-md"
+              className="bg-secondary hover:bg-tertiary font-bold p-2 rounded-md"
               type="submit"
               disabled={isSubmitting}
             >

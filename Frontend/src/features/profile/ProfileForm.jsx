@@ -38,7 +38,7 @@ const ProfileForm = ({ onSubmit, user }) => {
         dietaryPreferences: userData.dietaryPreferences,
       }}
       validationSchema={yup.object({
-        username: yup.string().required("Username is required"),
+        username: yup.string().required("Username is required!"),
       })}
       onSubmit={async (values, { setSubmitting }) => {
         for (let key in values) {
@@ -51,16 +51,16 @@ const ProfileForm = ({ onSubmit, user }) => {
       }}
     >
       {({ isSubmitting }) => (
-        <Form className="space-y-4 text-center">
+        <Form className="flex flex-col gap-4 text-center items-center">
           <h1 className="text-3xl font-bold">{t("form.f1")}</h1>
 
-          <div>
+          <div className="w-full flex flex-col gap-1">
             <label className="font-bold" htmlFor="username">
               {t("form.f2")}:
             </label>
 
             <Field
-              className="bg-[#FFCC00] text-[#FF3B30] placeholder-orange-400 w-full p-2 rounded-md"
+              className="bg-tertiary text-primary placeholder-orange-400 p-2 rounded-md"
               name="username"
               placeholder={t("placeholder.p1")}
               onChange={(e) => {
@@ -72,13 +72,13 @@ const ProfileForm = ({ onSubmit, user }) => {
             />
 
             <ErrorMessage
-              className="text-[#FFCC00] font-bold"
+              className="text-tertiary font-bold"
               name="username"
               component="h2"
             />
           </div>
 
-          <div className="flex flex-col">
+          <div className="w-full flex flex-col gap-1">
             <label className="font-bold" htmlFor="birthdate">
               {t("form.f3")}:
             </label>
@@ -91,13 +91,13 @@ const ProfileForm = ({ onSubmit, user }) => {
             />
           </div>
 
-          <div>
+          <div className="w-full flex flex-col gap-1">
             <label className="font-bold" htmlFor="gender">
               {t("form.f4")}:
             </label>
 
             <Field
-              className="bg-[#FFCC00] text-[#FF3B30] placeholder-orange-400 w-full p-2 rounded-md"
+              className="bg-tertiary text-primary placeholder-orange-400 p-2 rounded-md"
               id="gender"
               name="gender"
               as="select"
@@ -121,13 +121,13 @@ const ProfileForm = ({ onSubmit, user }) => {
             </Field>
           </div>
 
-          <div>
+          <div className="w-full flex flex-col gap-1">
             <label className="font-bold" htmlFor="country">
               {t("form.f5")}:
             </label>
 
             <Field
-              className="bg-[#FFCC00] text-[#FF3B30] placeholder-orange-400 w-full p-2 rounded-md"
+              className="bg-tertiary text-primary placeholder-orange-400 p-2 rounded-md"
               id="country"
               name="country"
               as="select"
@@ -148,13 +148,13 @@ const ProfileForm = ({ onSubmit, user }) => {
             </Field>
           </div>
 
-          <div>
+          <div className="w-full flex flex-col gap-1">
             <label className="font-bold" htmlFor="dietaryPreferences">
               {t("form.f7")}:
             </label>
 
             <Field
-              className="bg-[#FFCC00] text-[#FF3B30] placeholder-orange-400 w-full p-2 rounded-md"
+              className="bg-tertiary text-primary placeholder-orange-400 p-2 rounded-md"
               id="dietaryPreferences"
               name="dietaryPreferences"
               as="select"
@@ -183,7 +183,7 @@ const ProfileForm = ({ onSubmit, user }) => {
 
           <button
             id="closeEditProfile"
-            className="bg-[#FF9500] hover:bg-[#FFCC00] font-bold p-2 rounded-md"
+            className="bg-secondary hover:bg-tertiary font-bold p-2 rounded-md"
             type="submit"
             disabled={isSubmitting}
           >

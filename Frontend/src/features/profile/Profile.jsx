@@ -80,27 +80,25 @@ const Profile = () => {
   }, [user]);
 
   return (
-    <div className="h-[calc(100vh-4rem)] w-full p-1 gap-y-6 flex flex-col overflow-y-auto">
+    <div className="min-h-screen pt-4 pb-4 flex flex-col gap-2">
       {/* Profile */}
-      <div className="gap-y-3 flex flex-col items-center justify-center">
+      <div className="flex flex-col gap-3 items-center justify-center">
         <h1 className="text-3xl font-bold">{user.username}</h1>
 
         {/* Photo profile */}
-        <div className="relative w-5/6 flex flex-col items-center justify-center">
+        <div className="relative flex flex-col items-center justify-center">
           <img
-            src={
-              user.profilePicture
-                ? user.profilePicture.url
-                : "/noProfilePhoto.png"
-            }
+            src={user.profilePicture?.url || "/noProfilePhoto.png"}
             onClick={photoProfile}
-            className="w-auto mx-auto h-[25vh] rounded-full cursor-pointer object-cover"
+            className="h-64 object-cover rounded-full cursor-pointer"
           />
 
-          <MdAddAPhoto
+          <div
+            className="absolute right-0 bottom-0 bg-secondary hover:bg-tertiary h-8 w-8 flex items-center justify-center rounded-full cursor-pointer"
             onClick={photoProfile}
-            className="absolute top-1/2 right-0 h-1/4 w-1/4 p-2 bg-[#FF9500] hover:bg-[#FFCC00] rounded-full cursor-pointer"
-          />
+          >
+            <MdAddAPhoto />
+          </div>
 
           <input
             type="file"
@@ -112,37 +110,30 @@ const Profile = () => {
         </div>
 
         {/* Info */}
-        <div className="text-center text-xl">
+        <div className="text-center text-xl flex flex-col gap-1">
           {age !== 0 && (
             <h2>
               <span className="font-bold">{age}</span> {t("title.t1")}
             </h2>
           )}
 
-          {user.country && (
-            <h3>
-              <span className="font-bold">{t("title.t2")}:</span> {user.country}
-            </h3>
-          )}
-
-          {user.gender && (
-            <h4>
-              <span className="font-bold">{t("title.t3")}:</span> {user.gender}
-            </h4>
-          )}
-
-          {user.dietaryPreferences && (
-            <h5>
-              <span className="font-bold">{t("title.t4")}:</span>{" "}
-              {user.dietaryPreferences}
-            </h5>
-          )}
+          {[
+            { value: user.country, label: t("title.t2") },
+            { value: user.gender, label: t("title.t3") },
+            { value: user.dietaryPreferences, label: t("title.t4") },
+          ]
+            .filter((item) => item.value)
+            .map(({ value, label }, idx) => (
+              <div key={idx}>
+                <span className="font-bold">{label}:</span> {value}
+              </div>
+            ))}
         </div>
 
         {/* Edit profile button */}
         <button
           id="editProfile"
-          className="bg-[#FF9500] hover:bg-[#FFCC00] font-bold p-2 rounded-md"
+          className="bg-secondary hover:bg-tertiary font-bold p-2 rounded-md"
           onClick={toggleModal}
         >
           {t("button.b1")}
@@ -150,20 +141,20 @@ const Profile = () => {
       </div>
 
       {/* Upload photos */}
-      <div className="gap-y-3 flex flex-col items-center justify-center">
-        {user.photos ? (
-          <div className="grid grid-cols-3 gap-2">
+      <div className="p-1 sm:p-2 md:p-4 flex flex-col gap-3 items-center justify-center">
+        {user.photos && Object.keys(user.photos).length > 0 ? (
+          <div className="grid grid-cols-3 gap-1 md:grid-cols-4">
             {Object.values(user.photos).map((photo, index) => (
               <img
                 src={photo.url}
                 alt={`Photo ${index}`}
-                className="w-full h-full rounded-md"
+                className="w-full h-full object-cover rounded-md"
                 key={index}
               />
             ))}
           </div>
         ) : (
-          <div className="flex flex-col justify-center items-center space-y-2">
+          <div className="flex flex-col gap-2 justify-center items-center">
             <FaFileImage className="w-48 h-48" />
 
             <h1>{t("title.t5")}</h1>
@@ -172,7 +163,7 @@ const Profile = () => {
 
         <button
           id="uploadPhotos"
-          className="bg-[#FF9500] hover:bg-[#FFCC00] font-bold p-2 rounded-md"
+          className="bg-secondary hover:bg-tertiary font-bold p-2 rounded-md"
           onClick={toggleModal}
         >
           {t("button.b2")}

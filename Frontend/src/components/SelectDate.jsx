@@ -29,15 +29,6 @@ const SelectDate = ({ name = "", handleOnChange, birthdate, selected }) => {
     "November",
     "December",
   ];
-
-  const dayStyles = (date) => {
-    return "bg-[#FF3B30]";
-  };
-
-  const weekDayStyles = (date) => {
-    return "bg-[#FF3B30] rounded-md";
-  };
-
   const parseBirthdate = () => {
     const date = new Date(birthdate);
 
@@ -53,11 +44,10 @@ const SelectDate = ({ name = "", handleOnChange, birthdate, selected }) => {
 
   return (
     <DatePicker
-      className="bg-[#FFCC00] text-[#FF3B30] placeholder-orange-400 w-full p-2 rounded-md"
-      calendarClassName="bg-[#FF3B30] p-2"
-      dayClassName={dayStyles}
-      weekDayClassName={weekDayStyles}
-      popperClassName="bg-[#FF3B30]"
+      className="bg-tertiary text-primary placeholder-orange-400 w-full p-2 rounded-md"
+      calendarClassName="bg-primary border border-tertiary p-1"
+      weekDayClassName={() => "bg-tertiary font-bold rounded-md"}
+      dayClassName={() => "bg-tertiary rounded-md"}
       value={parseBirthdate}
       selected={selected}
       onChange={(date) => {
@@ -73,15 +63,10 @@ const SelectDate = ({ name = "", handleOnChange, birthdate, selected }) => {
         prevMonthButtonDisabled,
         nextMonthButtonDisabled,
       }) => (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-          }}
-          className="bg-[#FF3B30] p-2 gap-x-1"
-        >
+        <div className="bg-primary p-1 flex gap-1">
           <button
-            className="bg-[#FF9500] hover:bg-[#FFCC00] font-bold p-2 rounded-md"
+            className="bg-secondary hover:bg-tertiary p-2 rounded-md"
+            type="button"
             onClick={decreaseMonth}
             disabled={prevMonthButtonDisabled}
           >
@@ -91,7 +76,7 @@ const SelectDate = ({ name = "", handleOnChange, birthdate, selected }) => {
           <select
             value={getYear(date)}
             onChange={({ target: { value } }) => changeYear(value)}
-            className="bg-[#FFCC00] text-[#FF3B30] placeholder-orange-400 w-full p-2 rounded-md"
+            className="bg-tertiary text-primary w-full p-2 rounded-md"
           >
             {years.map((option) => (
               <option key={option} value={option}>
@@ -105,7 +90,7 @@ const SelectDate = ({ name = "", handleOnChange, birthdate, selected }) => {
             onChange={({ target: { value } }) =>
               changeMonth(months.indexOf(value))
             }
-            className="bg-[#FFCC00] text-[#FF3B30] placeholder-orange-400 w-full p-2 rounded-md"
+            className="bg-tertiary text-primary w-full p-2 rounded-md"
           >
             {months.map((option) => (
               <option key={option} value={option}>
@@ -115,7 +100,8 @@ const SelectDate = ({ name = "", handleOnChange, birthdate, selected }) => {
           </select>
 
           <button
-            className="bg-[#FF9500] hover:bg-[#FFCC00] font-bold p-2 rounded-md"
+            className="bg-secondary hover:bg-tertiary p-2 rounded-md"
+            type="button"
             onClick={increaseMonth}
             disabled={nextMonthButtonDisabled}
           >

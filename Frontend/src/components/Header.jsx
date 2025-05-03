@@ -112,7 +112,7 @@ const Header = () => {
   }, [socketConnection]);
 
   return (
-    <header className="bg-primary p-2 flex items-center h-12 w-full fixed left-0 top-0 z-10">
+    <header className="bg-primary p-2 flex items-center h-12 w-full fixed left-0 top-0 z-20">
       {isAuthenticated ? (
         <nav className="w-full flex">
           {/* Button to display the left panel menu */}
@@ -136,7 +136,7 @@ const Header = () => {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <MenuItems className="absolute bg-primary top-12 z-10 w-fit space-y-1 p-2 rounded-md">
+                  <MenuItems className="absolute bg-secondary top-12 z-10 w-fit space-y-1 p-2 rounded-md">
                     {navIsAuthenticated.map((item) => (
                       <MenuItem key={item.name}>
                         <Link
@@ -144,8 +144,8 @@ const Header = () => {
                           to={item.href}
                           className={classNames(
                             item.current
-                              ? "bg-tertiary hover:bg-secondary"
-                              : "bg-secondary hover:bg-tertiary",
+                              ? "bg-tertiary hover:bg-primary"
+                              : "bg-primary hover:bg-tertiary",
                             "block font-bold p-1 rounded-md"
                           )}
                           aria-current={item.current ? "page" : undefined}
@@ -236,10 +236,10 @@ const Header = () => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <MenuItems className="absolute bg-primary top-12 right-2 z-10 w-fit space-y-1 p-2 rounded-md">
+                    <MenuItems className="absolute bg-secondary top-12 right-2 z-10 w-fit space-y-1 p-2 rounded-md">
                       {notifications?.length === 0 ? (
                         <MenuItem>
-                          <p className="bg-secondary hover:bg-tertiary block font-bold p-1 rounded-md">
+                          <p className="bg-primary hover:bg-tertiary block font-bold p-1 rounded-md">
                             {t("navigation.noNotifications")}
                           </p>
                         </MenuItem>
@@ -258,7 +258,7 @@ const Header = () => {
                                   notification._id
                                 )
                               }
-                              className="bg-secondary hover:bg-tertiary block p-1 rounded-md"
+                              className="bg-primary hover:bg-tertiary block p-1 rounded-md"
                             >
                               {notification.type === "message" ? (
                                 <label className="flex items-center gap-1">
@@ -323,7 +323,7 @@ const Header = () => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <MenuItems className="absolute bg-primary right-2 top-12 z-10 w-fit space-y-1 p-2 rounded-md">
+                    <MenuItems className="absolute bg-secondary right-2 top-12 z-10 w-fit space-y-1 p-2 rounded-md">
                       {userSetting.map((item) => (
                         <MenuItem key={item.name}>
                           <Link
@@ -331,8 +331,8 @@ const Header = () => {
                             to={item.href}
                             className={classNames(
                               item.current
-                                ? "bg-tertiary hover:bg-secondary"
-                                : "bg-secondary hover:bg-tertiary",
+                                ? "bg-tertiary hover:bg-primary"
+                                : "bg-primary hover:bg-tertiary",
                               "block font-bold p-1 rounded-md"
                             )}
                             aria-current={item.current ? "page" : undefined}
@@ -384,7 +384,7 @@ const Header = () => {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <MenuItems className="absolute bg-primary top-12 z-10 w-fit space-y-1 p-2 rounded-md">
+                  <MenuItems className="absolute bg-secondary top-12 z-10 w-fit space-y-1 p-2 rounded-md">
                     {navigation.map((item) => (
                       <MenuItem key={item.name}>
                         <Link
@@ -392,8 +392,8 @@ const Header = () => {
                           to={item.href}
                           className={classNames(
                             item.current
-                              ? "bg-tertiary hover:bg-secondary"
-                              : "bg-secondary hover:bg-tertiary",
+                              ? "bg-tertiary hover:bg-primary"
+                              : "bg-primary hover:bg-tertiary",
                             "block font-bold p-1 rounded-md"
                           )}
                           aria-current={item.current ? "page" : undefined}

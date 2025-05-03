@@ -1,5 +1,4 @@
 import React from "react";
-import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -7,19 +6,15 @@ import "swiper/css/pagination";
 import "swiper/css/free-mode";
 
 const PhotoCarousel = ({ photos }) => {
-  const [arrPhotos, setArrPhotos] = useState();
+  const photoArray = photos ? Object.values(photos) : [];
 
-  useEffect(() => {
-    if (photos) {
-      setArrPhotos(Object.values(photos));
-    }
-  }, [photos]);
+  if (photoArray.length === 0)
+    return <p className="text-center py-4">No hay imágenes para mostrar</p>;
 
   return (
     <Swiper
       breakpoints={{
         340: { slidesPerView: 1 },
-        // 700: { slidesPerView: 3, spaceBetween: 15 },
       }}
       freeMode={true}
       pagination={{ clickable: true }}
@@ -30,18 +25,14 @@ const PhotoCarousel = ({ photos }) => {
       modules={[FreeMode, Pagination, Autoplay]}
       className="h-full"
     >
-      {arrPhotos ? (
-        arrPhotos.map((item) => (
-          <SwiperSlide key={item.name}>
-            <div
-              className="h-full bg-no-repeat bg-center bg-contain"
-              style={{ backgroundImage: `url(${item.url})` }}
-            />
-          </SwiperSlide>
-        ))
-      ) : (
-        <p>No hay imagenes para mostrar</p>
-      )}
+      {photoArray.map((item) => (
+        <SwiperSlide key={item.name}>
+          <div
+            className="h-full bg-no-repeat bg-center bg-contain"
+            style={{ backgroundImage: `url(${item.url})` }}
+          />
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 };
