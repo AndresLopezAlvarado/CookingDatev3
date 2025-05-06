@@ -104,7 +104,7 @@ const People = () => {
       </nav>
 
       {/* People */}
-      <main className="mt-14 flex-1 flex">
+      <main className="mt-14 flex-1 flex items-center">
         {isFetchingLocation || isLoading ? (
           <div className="flex-1 flex flex-col gap-4 items-center justify-center">
             <h1 className="font-bold text-xl">{t("title.t1")}</h1>
@@ -112,7 +112,7 @@ const People = () => {
             <Spinner />
           </div>
         ) : people?.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center">
+          <div className="flex-1 flex flex-col justify-center items-center">
             <VscEmptyWindow className="w-48 h-48" />
 
             <h1>{t("title.t2")}</h1>

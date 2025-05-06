@@ -187,15 +187,15 @@ const Chat = () => {
   return (
     <div
       style={{ backgroundImage: `url(${backgroundImage})` }}
-      className="h-[calc(100vh-64px)] w-full p-1 gap-y-1 flex flex-col no-bg-repeat bg-cover"
+      className="min-h-screen p-1 flex flex-col gap-1 no-bg-repeat bg-cover"
     >
-      <header className="bg-[#FF3B30] font-bold p-2 rounded-md flex justify-between items-center">
+      <nav className="bg-primary p-2 fixed top-14 inset-x-1 z-10 flex gap-8 justify-between items-center rounded-md">
         <button
           title={t("bar.t1")}
           onClick={() => navigate(-1)}
-          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
+          className="bg-secondary hover:bg-tertiary focus:ring-tertiary focus:outline-none focus:ring-2 focus:ring-inset h-8 w-8 flex items-center justify-center rounded-md"
         >
-          <FaAngleLeft className="text-4xl" />
+          <FaAngleLeft className="text-2xl" />
         </button>
 
         <Link
@@ -208,14 +208,14 @@ const Chat = () => {
             imageUrl={receiverUser?.profile_pic}
           />
 
-          <div>
-            <h3 className="font-semibold text-lg my-0 text-ellipsis line-clamp-1">
+          <div className="flex flex-col">
+            <h3 className="text-ellipsis text-base font-semibold line-clamp-1">
               {receiverUser?.name}
             </h3>
 
             <p className="-my-1 text-sm">
               {receiverUser?.online ? (
-                <span className="text-[#FFCC00]">{t("bar.t2.online")}</span>
+                <span className="text-tertiary">{t("bar.t2.online")}</span>
               ) : (
                 <span className="text-slate-400">{t("bar.t2.offline")}</span>
               )}
@@ -223,68 +223,78 @@ const Chat = () => {
           </div>
         </Link>
 
-        <Menu>
-          <MenuButton className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md">
-            <HiDotsVertical className="text-4xl" />
-          </MenuButton>
+        <Menu as={"div"} className={"relative flex items-center"}>
+          {({ open }) => (
+            <>
+              <MenuButton className="bg-secondary hover:bg-tertiary rounded-md">
+                {open ? (
+                  <HiDotsVertical className="h-8 w-8 ring-tertiary ring-2 rounded-md" />
+                ) : (
+                  <HiDotsVertical className="h-8 w-8" />
+                )}
+              </MenuButton>
 
-          <Transition
-            as={Fragment}
-            enter="transition ease-out duration-100"
-            enterFrom="transform opacity-0 scale-95"
-            enterTo="transform opacity-100 scale-100"
-            leave="transition ease-in duration-75"
-            leaveFrom="transform opacity-100 scale-100"
-            leaveTo="transform opacity-0 scale-95"
-          >
-            <MenuItems className="absolute bg-[#FF3B30] top-32 right-8 z-10 w-52 space-y-2 p-2 mt-4 rounded-md">
-              <MenuItem>
-                <button
-                  className="bg-[#FFCC00] hover:bg-[#FF9500] w-full block font-bold p-2 rounded-md"
-                  onClick={(e) => {
-                    e.preventDefault();
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+              >
+                <MenuItems className="absolute bg-secondary right-0 top-11 z-10 w-fit space-y-1 p-2 rounded-md">
+                  <MenuItem className="w-full">
+                    <button
+                      className="bg-primary hover:bg-tertiary block font-bold p-1 rounded-md"
+                      onClick={(e) => {
+                        e.preventDefault();
 
-                    if (isBlocked) handleUnblockPerson();
-                    else handleBlockPerson();
-                  }}
-                >
-                  <div className="flex items-center gap-2">
-                    {isBlocked ? (
-                      <>
-                        <CgUnblock size={25} />
+                        if (isBlocked) handleUnblockPerson();
+                        else handleBlockPerson();
+                      }}
+                    >
+                      <div className="flex items-center gap-1">
+                        {isBlocked ? (
+                          <>
+                            <CgUnblock size={25} />
+                            <p className="whitespace-nowrap">
+                              {t("bar.t3.isBlocked")}
+                            </p>
+                          </>
+                        ) : (
+                          <>
+                            <PiKnifeFill size={25} />
+                            <p className="whitespace-nowrap">
+                              {t("bar.t3.isNotBlocked")}
+                            </p>
+                          </>
+                        )}
+                      </div>
+                    </button>
+                  </MenuItem>
 
-                        <p>{t("bar.t3.isBlocked")}</p>
-                      </>
-                    ) : (
-                      <>
-                        <PiKnifeFill size={25} />
+                  <MenuItem>
+                    <Link
+                      className="bg-primary hover:bg-tertiary block font-bold p-1 rounded-md"
+                      to={`/reportPerson/${receiverUser._id}`}
+                    >
+                      <div className="flex items-center gap-1">
+                        <MdOutlineReportGmailerrorred size={25} />
 
-                        <p>{t("bar.t3.isNotBlocked")}</p>
-                      </>
-                    )}
-                  </div>
-                </button>
-              </MenuItem>
-
-              <MenuItem>
-                <Link
-                  className="bg-[#FFCC00] hover:bg-[#FF9500] w-full block font-bold p-2 rounded-md"
-                  to={`/reportPerson/${receiverUser._id}`}
-                >
-                  <div className="flex items-center gap-2">
-                    <MdOutlineReportGmailerrorred size={25} />
-
-                    <p>{t("bar.t4")}</p>
-                  </div>
-                </Link>
-              </MenuItem>
-            </MenuItems>
-          </Transition>
+                        <p className="whitespace-nowrap">{t("bar.t4")}</p>
+                      </div>
+                    </Link>
+                  </MenuItem>
+                </MenuItems>
+              </Transition>
+            </>
+          )}
         </Menu>
-      </header>
+      </nav>
 
-      <section className="relative h-[calc(100vh-128px)] overflow-x-hidden overflow-y-scroll scrollbar">
-        <div className="flex flex-col gap-1 p-4" ref={currentMessage}>
+      <section className="relative h-[calc(100vh-108px)] overflow-x-hidden overflow-y-scroll">
+        <div className="flex flex-col gap-1" ref={currentMessage}>
           {allMessages.map((msg, index) => {
             return (
               <div
@@ -296,32 +306,30 @@ const Chat = () => {
                 }`}
               >
                 <div
-                  className={`p-2 rounded-lg w-auto max-w-[280px] md:max-w-sm lg:max-w-md break-words shadow-md ${
+                  className={`max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl p-2 break-words rounded-md ${
                     user._id === msg?.msgByUserId
-                      ? "bg-[#FF3B30] ml-auto"
-                      : "bg-[#FF9500] mr-auto"
+                      ? "bg-primary ml-auto"
+                      : "bg-secondary mr-auto"
                   }`}
                 >
-                  <div className="relative">
-                    {msg?.imageUrl && (
-                      <img
-                        src={msg?.imageUrl}
-                        className="w-full h-full object-scale-down rounded"
-                      />
-                    )}
+                  {msg?.imageUrl && (
+                    <img
+                      src={msg?.imageUrl}
+                      className="w-full object-scale-down rounded-md"
+                    />
+                  )}
 
-                    {msg?.videoUrl && (
-                      <video
-                        src={msg?.videoUrl}
-                        className="w-full h-full object-scale-down rounded"
-                        controls
-                      />
-                    )}
-                  </div>
+                  {msg?.videoUrl && (
+                    <video
+                      src={msg?.videoUrl}
+                      className="w-full object-scale-down rounded-md"
+                      controls
+                    />
+                  )}
 
-                  <p className="px-2 break-words">{msg.text}</p>
+                  <p>{msg.text}</p>
 
-                  <p className="px-2 text-xs flex justify-end">
+                  <p className="text-xs text-right">
                     {moment(msg.createdAt).format("hh:mm")}
                   </p>
                 </div>
@@ -331,81 +339,75 @@ const Chat = () => {
         </div>
 
         {message.imageUrl && (
-          <div className="w-full sticky bottom-0 bg-slate-700 bg-opacity-30 flex justify-center items-center rounded overflow-hidden p-4">
+          <div className="sticky bottom-0 w-full p-4 bg-primary bg-opacity-45 flex justify-center items-center rounded-md">
             <div
               onClick={handleClearUploadImage}
-              className="absolute top-0 right-0 p-2 cursor-pointer hover:text-red-600"
+              className="absolute top-4 right-4 bg-tertiary h-6 w-6 flex items-center justify-center cursor-pointer rounded-full"
             >
-              <IoClose size={30} />
+              <IoClose size={20} />
             </div>
-            <div className="bg-white p-3 rounded">
-              <img
-                src={message.imageUrl}
-                alt="uploadImage"
-                className="aspect-square w-full h-full max-w-sm object-scale-down"
-              />
-            </div>
+
+            <img
+              src={message.imageUrl}
+              alt="Upload image"
+              className="bg-white w-full max-w-sm object-scale-down rounded-md"
+            />
           </div>
         )}
 
         {message.videoUrl && (
-          <div className="w-full sticky bottom-0 bg-slate-700 bg-opacity-30 flex justify-center items-center rounded overflow-hidden p-4">
+          <div className="sticky bottom-0 w-full p-4 bg-primary bg-opacity-45 flex justify-center items-center rounded-md">
             <div
               onClick={handleClearUploadVideo}
-              className="absolute top-0 right-0 p-2 cursor-pointer hover:text-red-600"
+              className="absolute top-4 right-4 bg-tertiary h-6 w-6 flex items-center justify-center cursor-pointer rounded-full"
             >
-              <IoClose size={30} />
+              <IoClose size={20} />
             </div>
-            <div className="bg-white p-3 rounded">
-              <video
-                src={message.videoUrl}
-                alt="uploadVideo"
-                className="aspect-square w-full h-full max-w-sm object-scale-down"
-                controls
-                muted
-                autoPlay
-              />
-            </div>
+
+            <video
+              src={message.videoUrl}
+              alt="uploadVideo"
+              className="bg-white w-full max-w-sm object-scale-down rounded-md"
+              controls
+              muted
+              autoPlay
+            />
           </div>
         )}
 
         {loading && (
-          <div className="w-full sticky bottom-0 flex justify-center items-center p-4">
+          <div className="sticky bottom-0 w-full p-4 bg-primary bg-opacity-45 flex justify-center items-center rounded-md">
             <Spinner />
           </div>
         )}
       </section>
 
-      <section className="bg-white h-16 flex items-center px-4">
+      <section className="bg-primary h-12 p-2 flex gap-1 items-center rounded-md">
         <div className="relative">
           <button
             onClick={handleUploadImageVideoOpen}
-            className="bg-[#FF9500] hover:bg-[#FFCC00] font-bold p-2 rounded-md cursor-pointer"
+            className="bg-secondary hover:bg-tertiary h-8 w-8 flex items-center justify-center rounded-md"
           >
-            <FaPlus size={17} />
+            <FaPlus />
           </button>
 
           {openImageVideoUpload && (
-            <div className="bg-white shadow rounded absolute bottom-14 w-36 p-2">
-              <form>
+            <div className="absolute bottom-10 bg-secondary p-2 font-bold rounded-md">
+              <form className="flex flex-col gap-1">
                 <label
                   htmlFor="uploadImage"
-                  className="flex items-center p-2 px-3 gap-3 hover:bg-slate-200 cursor-pointer"
+                  className="bg-primary hover:bg-tertiary p-1 flex gap-1 items-center rounded-md cursor-pointer"
                 >
-                  <div className="text-[#FF3B30]">
-                    <FaImage size={18} />
-                  </div>
+                  <FaImage />
 
                   <p>{t("title.t1")}</p>
                 </label>
 
                 <label
                   htmlFor="uploadVideo"
-                  className="flex items-center p-2 px-3 gap-3 hover:bg-slate-200 cursor-pointer"
+                  className="bg-primary hover:bg-tertiary p-1 flex items-center gap-1 rounded-md cursor-pointer"
                 >
-                  <div className="text-[#FF9500]">
-                    <FaVideo size={18} />
-                  </div>
+                  <FaVideo />
 
                   <p>{t("title.t2")}</p>
                 </label>
@@ -429,19 +431,19 @@ const Chat = () => {
         </div>
 
         <form
-          className="h-full w-full flex justify-center items-center gap-2"
+          className="flex-1 flex gap-1"
           onSubmit={handleSendMessage}
         >
           <input
             type="text"
             placeholder="Type here..."
-            className="py-1 px-4 outline-none w-full h-full"
+            className="bg-tertiary w-full p-1 placeholder:text-orange-400 rounded-md"
             value={message.text}
             onChange={handleOnChange}
           />
 
-          <button className="h-10 bg-[#FF9500] hover:bg-[#FFCC00] font-bold p-2 rounded-md cursor-pointer">
-            <IoMdSend size={17} />
+          <button className="bg-secondary hover:bg-tertiary h-8 w-8 flex items-center justify-center rounded-md">
+            <IoMdSend />
           </button>
         </form>
       </section>

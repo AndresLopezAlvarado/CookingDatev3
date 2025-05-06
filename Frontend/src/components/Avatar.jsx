@@ -3,18 +3,17 @@ import { selectOnlineUsers } from "../features/auth/authSlice";
 
 const Avatar = ({ userId, name, imageUrl }) => {
   const onlineUsers = useSelector(selectOnlineUsers);
-  const isOnline = onlineUsers?.includes(userId);
+  const isOnline = !!onlineUsers?.includes(userId);
 
   return (
-    <div className={`text-slate-800 relative rounded-full font-bold`}>
+    <div className="relative">
       <img
-        className="h-12 w-12 overflow-hidden rounded-full"
-        src={imageUrl ? imageUrl : "/noProfilePhoto.png"}
+        className="h-8 w-8 rounded-full overflow-hidden"
+        src={imageUrl || "/noProfilePhoto.png"}
         alt={name}
       />
-
       {isOnline && (
-        <div className="bg-green-500 p-1 absolute bottom-2 -right-1 z-10 rounded-full" />
+        <div className="absolute top-0 right-0 z-10 h-2 w-2 bg-green-500 rounded-full" />
       )}
     </div>
   );

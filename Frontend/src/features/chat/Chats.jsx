@@ -51,109 +51,111 @@ const Chats = () => {
   }, [socketConnection, user, location.pathname]);
 
   return (
-    <div className="h-[calc(100vh-64px)] w-full p-1 gap-y-1 flex flex-col">
-      <header className="bg-[#FF3B30] font-bold p-2 rounded-md text-4xl flex space-x-8 justify-center items-center text-center">
-        <button
-          title={t("bar.t1")}
-          onClick={() => navigate(-1)}
-          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
-        >
-          <FaAngleLeft />
-        </button>
+    <div className="min-h-screen flex flex-col items-center">
+      <nav className="bg-primary p-2 fixed top-14 inset-x-1 z-10 flex gap-8 justify-center rounded-md">
+        {[
+          {
+            icon: <FaAngleLeft className="text-2xl" />,
+            onClick: () => navigate(-1),
+            key: "t1",
+            isButton: true,
+          },
+          {
+            icon: <IoIosPeople className="text-2xl" />,
+            to: "/people",
+            key: "t2",
+          },
+          {
+            icon: <MdEmojiEmotions className="text-2xl" />,
+            to: "/reactions",
+            key: "t3",
+          },
+          {
+            icon: <FaStar className="text-2xl" />,
+            to: "/favorites",
+            key: "t4",
+          },
+          {
+            icon: <GiPerspectiveDiceSixFacesRandom className="text-2xl" />,
+            to: "/recipe",
+            key: "t5",
+          },
+        ].map(({ key, icon, to, onClick, isButton }) =>
+          isButton ? (
+            <button
+              key={key}
+              title={t(`bar.${key}`)}
+              onClick={onClick}
+              className="bg-secondary hover:bg-tertiary focus:ring-tertiary focus:outline-none focus:ring-2 focus:ring-inset h-8 w-8 flex items-center justify-center rounded-md"
+            >
+              {icon}
+            </button>
+          ) : (
+            <Link
+              key={key}
+              title={t(`bar.${key}`)}
+              to={to}
+              className="bg-secondary hover:bg-tertiary focus:ring-tertiary focus:outline-none focus:ring-2 focus:ring-inset h-8 w-8 flex items-center justify-center rounded-md"
+            >
+              {icon}
+            </Link>
+          )
+        )}
+      </nav>
 
-        <Link
-          title={t("bar.t2")}
-          to="/people"
-          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
-        >
-          <IoIosPeople />
-        </Link>
+      <section className="w-full sm:w-5/6 md:w-3/5 lg:w-3/6 2xl:w-2/5 mt-14 p-1 flex-1 flex flex-col gap-4">
+        <h2 className="mt-4 text-2xl text-center font-bold">{t("title.t1")}</h2>
 
-        <Link
-          title={t("bar.t3")}
-          to="/reactions"
-          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
-        >
-          <MdEmojiEmotions />
-        </Link>
-
-        <Link
-          title={t("bar.t4")}
-          to="/favorites"
-          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
-        >
-          <FaStar />
-        </Link>
-
-        <Link
-          title={t("bar.t5")}
-          to="/recipe"
-          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
-        >
-          <GiPerspectiveDiceSixFacesRandom />
-        </Link>
-      </header>
-
-      <section className="p-4">
-        <h2 className="text-2xl font-bold">{t("title.t1")}</h2>
-
-        <div className="h-full overflow-x-hidden overflow-y-auto scrollbar">
+        <div className="flex flex-col gap-2">
           {allUser.length === 0 && (
-            <div className="flex flex-col text-lg text-[#FFCC00] justify-center items-center text-center">
+            <div className="flex flex-col gap-2 text-lg text-tertiary justify-center items-center text-center">
               <FiArrowUpLeft size={50} />
-
               <p>{t("title.t2")}</p>
             </div>
           )}
 
-          {allUser.map((conv, index) => {
+          {allUser.map(({ _id, userDetails, lastMsg, unseenMsg }) => {
+            const { _id: uid, username, profilePicture } = userDetails;
+            
             return (
               <NavLink
-                to={`/chat/${conv?.userDetails?._id}`}
-                key={conv?._id}
-                className="flex hover:border-[#FF3B30] hover:bg-[#FFCC00] gap-2 py-3 px-2 border border-transparent rounded items-center cursor-pointer"
+                to={`/chat/${uid}`}
+                key={_id}
+                className="hover:bg-tertiary p-2 flex gap-2 items-center border border-transparent hover:border-primary rounded-md cursor-pointer"
               >
                 <Avatar
-                  userId={conv?.userDetails?._id}
-                  name={conv?.userDetails?.username}
-                  imageUrl={conv?.userDetails?.profilePicture?.url}
+                  userId={uid}
+                  name={username}
+                  imageUrl={profilePicture?.url}
                 />
 
-                <div>
-                  <h3 className="text-ellipsis line-clamp-1 font-semibold text-base">
-                    {conv?.userDetails?.username}
+                <div className="flex flex-col overflow-hidden">
+                  <h3 className="text-ellipsis text-base font-semibold line-clamp-1">
+                    {username}
                   </h3>
 
                   <div className="text-slate-500 text-xs flex items-center gap-1">
-                    <div className="flex items-center gap-1">
-                      {conv?.lastMsg?.imageUrl && (
-                        <div className="flex items-center gap-1">
-                          <span>
-                            <FaImage />
-                          </span>
-                          {!conv?.lastMsg?.text && <span>{t("title.t3")}</span>}
-                        </div>
-                      )}
-
-                      {conv?.lastMsg?.videoUrl && (
-                        <div className="flex items-center gap-1">
-                          <span>
-                            <FaVideo />
-                          </span>
-                          {!conv?.lastMsg?.text && <span>{t("title.t4")}</span>}
-                        </div>
-                      )}
-                    </div>
-
-                    <p className="truncate max-w-[150px]">
-                      {conv?.lastMsg?.text}
-                    </p>
+                    {lastMsg?.imageUrl && (
+                      <div className="flex gap-1 items-center">
+                        <FaImage />
+                        {!lastMsg.text && <span>{t("title.t3")}</span>}
+                      </div>
+                    )}
+                    {lastMsg?.videoUrl && (
+                      <div className="flex gap-1 items-center">
+                        <FaVideo />
+                        {!lastMsg.text && <span>{t("title.t4")}</span>}
+                      </div>
+                    )}
+                    {lastMsg?.text && (
+                      <p className="truncate max-w-[150px]">{lastMsg.text}</p>
+                    )}
                   </div>
                 </div>
 
-                {Boolean(conv?.unseenMsg) && (
-                  <p className="text-sm w-6 h-6 flex justify-center items-center ml-auto p-1 bg-[#FFCC00] text-[#FF3B30] font-semibold rounded-full">
-                    {conv?.unseenMsg}
+                {unseenMsg > 0 && (
+                  <p className="bg-tertiary h-5 w-5 ml-auto text-primary text-xs font-bold flex justify-center items-center rounded-full">
+                    {unseenMsg}
                   </p>
                 )}
               </NavLink>

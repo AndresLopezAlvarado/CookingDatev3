@@ -116,7 +116,7 @@ const Header = () => {
       {isAuthenticated ? (
         <nav className="w-full flex">
           {/* Button to display the left panel menu */}
-          <Menu as={"div"} className={"flex items-center"}>
+          <Menu as={"div"} className={"relative flex items-center"}>
             {({ open }) => (
               <>
                 <MenuButton className="md:hidden bg-secondary hover:bg-tertiary rounded-md">
@@ -140,7 +140,6 @@ const Header = () => {
                     {navIsAuthenticated.map((item) => (
                       <MenuItem key={item.name}>
                         <Link
-                          key={item.name}
                           to={item.href}
                           className={classNames(
                             item.current
@@ -149,7 +148,7 @@ const Header = () => {
                             "block font-bold p-1 rounded-md"
                           )}
                           aria-current={item.current ? "page" : undefined}
-                          onClick={(t) => changeCurrent(item.name)}
+                          onClick={() => changeCurrent(item.name)}
                         >
                           {item.name}
                         </Link>

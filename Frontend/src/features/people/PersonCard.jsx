@@ -10,7 +10,7 @@ const PersonCard = ({ person }) => {
 
   return (
     <div
-      className="relative h-52 ring-primary hover:ring-4 flex flex-col items-center justify-end bg-cover bg-center rounded-md cursor-pointer"
+      className="relative h-52 sm:h-56 md:h-60 lg:h-64 xl:h-[310px] 2xl:h-[350px] ring-primary hover:ring-4 flex flex-col items-center justify-end bg-cover bg-center rounded-md cursor-pointer"
       style={
         person.profilePicture.url
           ? { backgroundImage: `url(${person.profilePicture.url})` }
