@@ -104,7 +104,7 @@ const People = () => {
       </nav>
 
       {/* People */}
-      <main className="mt-14 flex-1 flex items-center">
+      <main className="mt-14 flex-1 flex">
         {isFetchingLocation || isLoading ? (
           <div className="flex-1 flex flex-col gap-4 items-center justify-center">
             <h1 className="font-bold text-xl">{t("title.t1")}</h1>

@@ -29,77 +29,86 @@ const Favorites = () => {
   }, [refetch]);
 
   return (
-    <div className="h-screen w-full p-1 gap-y-1 flex flex-col">
+    <div className="min-h-screen flex flex-col">
       {/* Barra */}
-      <div className="bg-[#FF3B30] font-bold p-2 rounded-md text-4xl flex space-x-8 justify-center items-center text-center">
-        <button
-          title={t("bar.t1")}
-          onClick={() => navigate(-1)}
-          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
-        >
-          <FaAngleLeft />
-        </button>
-
-        <Link
-          title={t("bar.t2")}
-          to="/people"
-          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
-        >
-          <IoIosPeople />
-        </Link>
-
-        <Link
-          title={t("bar.t3")}
-          to="/chats"
-          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
-        >
-          <TiMessages />
-        </Link>
-
-        <Link
-          title={t("bar.t4")}
-          to="/reactions"
-          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
-        >
-          <MdEmojiEmotions />
-        </Link>
-
-        <Link
-          title={t("bar.t5")}
-          to="/recipe"
-          className="bg-[#FF9500] hover:bg-[#FFCC00] focus:ring-white focus:outline-none focus:ring-2 focus:ring-inset font-bold p-2 rounded-md"
-        >
-          <GiPerspectiveDiceSixFacesRandom />
-        </Link>
-      </div>
+      <nav className="bg-primary p-2 fixed top-14 inset-x-1 z-10 flex gap-8 justify-center rounded-md">
+        {[
+          {
+            icon: <FaAngleLeft className="text-2xl" />,
+            key: "t1",
+            type: "button",
+            action: () => navigate(-1),
+          },
+          {
+            icon: <IoIosPeople className="text-2xl" />,
+            key: "t2",
+            type: "link",
+            to: "/people",
+          },
+          {
+            icon: <TiMessages className="text-2xl" />,
+            key: "t3",
+            type: "link",
+            to: "/chats",
+          },
+          {
+            icon: <MdEmojiEmotions className="text-2xl" />,
+            key: "t4",
+            type: "link",
+            to: "/reactions",
+          },
+          {
+            icon: <GiPerspectiveDiceSixFacesRandom className="text-2xl" />,
+            key: "t5",
+            type: "link",
+            to: "/recipe",
+          },
+        ].map((item) =>
+          item.type === "button" ? (
+            <button
+              key={item.key}
+              title={t(`bar.${item.key}`)}
+              onClick={item.action}
+              className="bg-secondary h-8 w-8 flex items-center justify-center hover:bg-tertiary focus:ring-2 focus:ring-tertiary focus:ring-inset rounded-md"
+            >
+              {item.icon}
+            </button>
+          ) : (
+            <Link
+              key={item.key}
+              title={t(`bar.${item.key}`)}
+              to={item.to}
+              className="bg-secondary h-8 w-8 flex items-center justify-center hover:bg-tertiary focus:ring-2 focus:ring-tertiary focus:ring-inset rounded-md"
+            >
+              {item.icon}
+            </Link>
+          )
+        )}
+      </nav>
 
       {/* Favorites */}
-      <div className="flex flex-col flex-1 overflow-y-auto items-center text-center">
+      <main className="mt-14 flex-1 flex items-start">
         {favorites?.length === 0 ? (
-          <div className="flex flex-col flex-1 justify-center items-center">
+          <div className="flex-1 flex flex-col justify-center items-center">
             <FaStar className="w-48 h-48" />
 
             <h1>{t("title.t1")}</h1>
           </div>
         ) : (
-          <div className="w-full rounded-md grid grid-cols-3 md:grid-cols-4 xl:grid-cols-5">
+          <div className="p-1 flex-1 grid grid-cols-3 gap-1 sm:grid-cols-4 lg:grid-cols-5">
             {favorites?.map((favorite) => {
               const isOnline = onlineUsers?.includes(favorite._id);
 
               return (
                 <div
                   key={favorite._id}
-                  className="h-64 m-1 ring-[#FF3B30] hover:ring-4 hover:text-opacity-70 flex flex-col items-center justify-end bg-cover bg-center rounded-md cursor-pointer relative"
-                  style={
-                    favorite.profilePicture
-                      ? {
-                          backgroundImage: `url(${favorite.profilePicture.url})`,
-                        }
-                      : { backgroundImage: `url("/noProfilePhoto.png")` }
-                  }
-                  onClick={() => {
-                    navigate(`/people/${favorite._id}`);
+                  className="relative h-52 sm:h-56 md:h-60 lg:h-64 xl:h-[310px] 2xl:h-[350px] p-1 ring-primary hover:ring-4 flex flex-col items-center justify-end bg-cover bg-center rounded-md cursor-pointer"
+                  style={{
+                    backgroundImage: `url(${
+                      favorite.profilePicture?.url || "/noProfilePhoto.png"
+                    })`,
                   }}
+                  onClick={() => navigate(`/people/${favorite._id}`)}
                 >
                   {isOnline && (
                     <div className="absolute top-2 right-2 bg-green-500 p-2 rounded-full" />
@@ -109,7 +118,7 @@ const Favorites = () => {
             })}
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 };
