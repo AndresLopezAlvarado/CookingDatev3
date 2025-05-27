@@ -33,7 +33,7 @@ const Chat = () => {
   const user = useSelector(selectCurrentUser);
   const params = useParams();
   const navigate = useNavigate();
-  const currentMessage = useRef(null);
+  const lastMessageRef = useRef(null);
   const [receiverUser, setReceiverUser] = useState({
     name: "",
     email: "",
@@ -182,11 +182,13 @@ const Chat = () => {
   }, [socketConnection, params?.id, location.pathname]);
 
   useEffect(() => {
-    if (currentMessage.current) {
-      currentMessage.current.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-      });
+    if (lastMessageRef.current) {
+      setTimeout(() => {
+        lastMessageRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+        });
+      }, 500); // Retraso para esperar el render completo y que se pueda hacer scroll hasta el ultimo mensaje
     }
   }, [allMessages]);
 
@@ -301,7 +303,7 @@ const Chat = () => {
         style={{ backgroundImage: `url(${backgroundImage})` }}
         className="relative h-[calc(100dvh-164px)] py-1 mt-14 overflow-x-hidden overflow-y-scroll bg-cover"
       >
-        <div className="flex flex-col gap-1" ref={currentMessage}>
+        <div className="flex flex-col gap-1">
           {allMessages.map((msg, index) => {
             return (
               <div
@@ -345,48 +347,7 @@ const Chat = () => {
           })}
         </div>
 
-        {/* {message.imageUrl && (
-          <div className="sticky bottom-0 w-full p-4 bg-primary bg-opacity-45 flex justify-center items-center rounded-md">
-            <div
-              onClick={handleClearUploadImage}
-              className="absolute top-4 right-4 bg-tertiary h-6 w-6 flex items-center justify-center cursor-pointer rounded-full"
-            >
-              <IoClose size={20} />
-            </div>
-
-            <img
-              src={message.imageUrl}
-              alt="Upload image"
-              className="bg-white w-full max-w-sm object-scale-down rounded-md"
-            />
-          </div>
-        )}
-
-        {message.videoUrl && (
-          <div className="sticky bottom-0 w-full p-4 bg-primary bg-opacity-45 flex justify-center items-center rounded-md">
-            <div
-              onClick={handleClearUploadVideo}
-              className="absolute top-4 right-4 bg-tertiary h-6 w-6 flex items-center justify-center cursor-pointer rounded-full"
-            >
-              <IoClose size={20} />
-            </div>
-
-            <video
-              src={message.videoUrl}
-              alt="uploadVideo"
-              className="bg-white w-full max-w-sm object-scale-down rounded-md"
-              controls
-              muted
-              autoPlay
-            />
-          </div>
-        )}
-
-        {loading && (
-          <div className="sticky bottom-0 w-full p-4 bg-primary bg-opacity-45 flex justify-center items-center rounded-md">
-            <Spinner />
-          </div>
-        )} */}
+        <div ref={lastMessageRef} />
       </section>
 
       {/* Previews superpuestos arriba de la barra inferior */}

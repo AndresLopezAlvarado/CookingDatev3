@@ -75,8 +75,8 @@ const ReportPerson = () => {
   };
 
   return (
-    <div className="min-h-screen p-1 flex flex-col gap-4 items-center text-center">
-      <div className="bg-primary w-full md:w-5/6 lg:w-3/5 2xl:w-3/6 p-2 flex gap-2 justify-between items-center rounded-md">
+    <div className="h-full p-1 flex flex-col gap-4 items-center text-center">
+      <nav className="bg-primary w-full md:w-5/6 lg:w-3/5 2xl:w-3/6 p-2 flex gap-2 justify-between items-center rounded-md">
         <button
           title={t("bar.t1")}
           onClick={() => navigate(-1)}
@@ -89,10 +89,10 @@ const ReportPerson = () => {
 
         <img
           className="h-8 w-8 rounded-full"
-          src={reportedPerson?.profilePicture?.url}
+          src={reportedPerson?.profilePicture?.url || "/noProfilePhoto.png"}
           alt="Reported person"
         />
-      </div>
+      </nav>
 
       <label className="font-bold" htmlFor="reportedBy">
         {t("title.t2")}: {reportedBy?.username}

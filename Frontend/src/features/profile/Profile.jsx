@@ -80,7 +80,7 @@ const Profile = () => {
   }, [user]);
 
   return (
-    <div className="min-h-screen pt-4 pb-4 flex flex-col gap-2">
+    <div className="h-full pt-4 pb-4 flex flex-col gap-2 items-center">
       {/* Profile */}
       <div className="flex flex-col gap-3 items-center justify-center">
         <h1 className="text-3xl font-bold">{user.username}</h1>
@@ -123,8 +123,8 @@ const Profile = () => {
             { value: user.dietaryPreferences, label: t("title.t4") },
           ]
             .filter((item) => item.value)
-            .map(({ value, label }, idx) => (
-              <div key={idx}>
+            .map(({ value, label }, key) => (
+              <div key={key}>
                 <span className="font-bold">{label}:</span> {value}
               </div>
             ))}
@@ -141,9 +141,9 @@ const Profile = () => {
       </div>
 
       {/* Upload photos */}
-      <div className="p-1 sm:p-2 md:p-4 flex flex-col gap-3 items-center justify-center">
+      <div className="w-full md:w-5/6 lg:w-4/6 xl:w-3/5 p-1 sm:p-2 md:p-4 flex flex-col gap-3 items-center justify-center">
         {user.photos && Object.keys(user.photos).length > 0 ? (
-          <div className="grid grid-cols-3 gap-1 md:grid-cols-4">
+          <div className="grid grid-cols-3 sm:grid-cols-4 xl:grid-cols-5 gap-1">
             {Object.values(user.photos).map((photo, index) => (
               <img
                 src={photo.url}
