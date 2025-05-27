@@ -109,13 +109,19 @@ const Chat = () => {
           msgByUserId: user?._id,
         });
 
-        if (!usersInChat.includes(params.id))
+        if (!usersInChat.includes(params.id)) {
+          const content =
+            message.text ||
+            (message.imageUrl ? "[Image]" : "") ||
+            (message.videoUrl ? "[Video]" : "");
+
           socketConnection.emit("newNotification", {
             sender: user?._id,
             receiver: params.id,
-            content: message.text,
+            content: content,
             type: "message",
           });
+        }
 
         setMessage({ text: "", imageUrl: "", videoUrl: "" });
       }
