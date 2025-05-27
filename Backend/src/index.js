@@ -11,7 +11,10 @@ import recipeRoutes from "./routes/recipeRoutes.js";
 import { connectDB } from "./config/db.js";
 import "./libs/cronJobs.js";
 
-app.use(cors({ origin: FRONTEND_URL, credentials: true }));
+app.use(cors({
+  origin: [FRONTEND_URL, "http://192.168.11.15:5173"],
+  credentials: true,
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(

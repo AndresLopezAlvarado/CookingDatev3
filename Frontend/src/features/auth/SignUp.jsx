@@ -53,7 +53,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="h-screen w-full p-8 md:p-16 flex flex-col items-center text-center">
+    <div className="h-full w-full flex flex-col items-center">
       <Formik
         enableReinitialize
         initialValues={{ username: "", email: "", password: "" }}
@@ -63,10 +63,10 @@ const SignUp = () => {
         }
       >
         {({ isSubmitting }) => (
-          <Form className="space-y-4">
-            <h1 className="text-3xl font-bold">{t("title.t1")}</h1>
+          <Form className="flex flex-col gap-4 items-center">
+            <h1 className="text-2xl text-center font-bold">{t("title.t1")}</h1>
 
-            <div>
+            <div className="w-full">
               <label className="font-bold" htmlFor="username">
                 {t("username")}:
               </label>
@@ -85,7 +85,7 @@ const SignUp = () => {
               />
             </div>
 
-            <div>
+            <div className="w-full">
               <label className="font-bold" htmlFor="email">
                 Email:
               </label>
@@ -104,7 +104,7 @@ const SignUp = () => {
               />
             </div>
 
-            <div>
+            <div className="w-full">
               <label className="font-bold" htmlFor="password">
                 {t("password")}:
               </label>

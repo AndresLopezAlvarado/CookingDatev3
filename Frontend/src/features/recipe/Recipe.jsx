@@ -97,7 +97,7 @@ const Recipe = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center">
+    <div className="h-full flex flex-col items-center">
       {/* Barra */}
       <nav className="bg-primary p-2 fixed top-14 inset-x-1 z-10 flex gap-8 justify-center rounded-md">
         {[
@@ -154,7 +154,7 @@ const Recipe = () => {
         )}
       </nav>
 
-      <div className="w-full sm:w-5/6 md:w-4/6 lg:w-3/5 xl:w-4/6 2xl:w-3/5 flex-1 flex flex-col">
+      <main className="w-full sm:w-3/5 lg:w-1/2 flex-1 flex flex-col">
         {/* Form */}
         <div className="mt-14 p-2 flex flex-col gap-4 items-center">
           <h1 className="text-3xl font-bold">{t("title.t1")}</h1>
@@ -463,8 +463,8 @@ const Recipe = () => {
                     className="p-2 text-justify"
                     dangerouslySetInnerHTML={{
                       __html:
-                        recipe.summary.length > 200
-                          ? recipe.summary.substring(0, 200) + "..."
+                        recipe.summary.length > 400
+                          ? recipe.summary.substring(0, 400) + "..."
                           : recipe.summary,
                     }}
                   />
@@ -473,7 +473,7 @@ const Recipe = () => {
             </>
           )}
         </div>
-      </div>
+      </main>
     </div>
   );
 };

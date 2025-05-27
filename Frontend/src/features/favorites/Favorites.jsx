@@ -29,7 +29,7 @@ const Favorites = () => {
   }, [refetch]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="h-full flex flex-col">
       {/* Barra */}
       <nav className="bg-primary p-2 fixed top-14 inset-x-1 z-10 flex gap-8 justify-center rounded-md">
         {[
@@ -95,7 +95,7 @@ const Favorites = () => {
             <h1>{t("title.t1")}</h1>
           </div>
         ) : (
-          <div className="p-1 flex-1 grid grid-cols-3 gap-1 sm:grid-cols-4 lg:grid-cols-5">
+          <div className="p-1 flex-1 grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-9 gap-1">
             {favorites?.map((favorite) => {
               const isOnline = onlineUsers?.includes(favorite._id);
 

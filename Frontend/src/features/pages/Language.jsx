@@ -9,7 +9,7 @@ const Language = () => {
   const changeLanguage = (lng) => i18n.changeLanguage(lng);
 
   return (
-    <div className="h-screen p-8 md:p-16 flex flex-col items-center gap-10">
+    <div className="h-full p-8 md:p-16 flex flex-col items-center gap-10">
       <h1 className="text-3xl font-bold">{t("title")}</h1>
 
       <p>{t("paragraph")}</p>

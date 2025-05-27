@@ -51,7 +51,7 @@ const Chats = () => {
   }, [socketConnection, user, location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center">
+    <div className="h-full flex flex-col items-center">
       <nav className="bg-primary p-2 fixed top-14 inset-x-1 z-10 flex gap-8 justify-center rounded-md">
         {[
           {
@@ -103,7 +103,7 @@ const Chats = () => {
         )}
       </nav>
 
-      <section className="w-full sm:w-5/6 md:w-3/5 lg:w-3/6 2xl:w-2/5 mt-14 p-1 flex-1 flex flex-col gap-4">
+      <main className="w-full sm:w-5/6 md:w-3/5 lg:w-3/6 2xl:w-2/5 mt-14 p-1 flex-1 flex flex-col gap-4">
         <h2 className="mt-4 text-2xl text-center font-bold">{t("title.t1")}</h2>
 
         <div className="flex flex-col gap-2">
@@ -116,7 +116,7 @@ const Chats = () => {
 
           {allUser.map(({ _id, userDetails, lastMsg, unseenMsg }) => {
             const { _id: uid, username, profilePicture } = userDetails;
-            
+
             return (
               <NavLink
                 to={`/chat/${uid}`}
@@ -162,7 +162,7 @@ const Chats = () => {
             );
           })}
         </div>
-      </section>
+      </main>
     </div>
   );
 };

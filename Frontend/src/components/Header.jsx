@@ -112,7 +112,7 @@ const Header = () => {
   }, [socketConnection]);
 
   return (
-    <header className="bg-primary p-2 flex items-center h-12 w-full fixed left-0 top-0 z-20">
+    <header className="fixed left-0 top-0 z-20 bg-primary h-12 w-full p-2 flex items-center">
       {isAuthenticated ? (
         <nav className="w-full flex">
           {/* Button to display the left panel menu */}

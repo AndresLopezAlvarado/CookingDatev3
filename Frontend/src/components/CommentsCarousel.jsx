@@ -7,29 +7,36 @@ import "swiper/css/free-mode";
 const CommentsCarousel = ({ comments }) => {
   return (
     <Swiper
-      breakpoints={{
-        0: { slidesPerView: 1, spaceBetween: 10 },
-        640: { slidesPerView: 2, spaceBetween: 15 },
-        1280: { slidesPerView: 3, spaceBetween: 20 }, // Aumenté a 20
-      }}
+      // breakpoints={{
+      //   0: { slidesPerView: 1, spaceBetween: 10 },
+      //   640: { slidesPerView: 2, spaceBetween: 15 },
+      //   1280: { slidesPerView: 3, spaceBetween: 20 },
+      // }}
+      spaceBetween={10}
+      slidesPerView={1}
       freeMode={true}
-      pagination={{ clickable: true }}
+      pagination={{
+        clickable: true,
+      }}
       autoplay={{
         delay: 2000,
         disableOnInteraction: false,
+        pauseOnMouseEnter: true,
       }}
       modules={[FreeMode, Pagination, Autoplay]}
-      className="w-full p-4"
+      className="m-1 p-4"
     >
       {comments &&
         comments.map((comment) => (
           <SwiperSlide
             key={comment.id}
-            className="border-primary text-sm border-4 mb-4 p-4 flex flex-col justify-center gap-1 rounded-md"
+            className="mb-5 p-2 flex flex-col gap-1 text-sm border-2 border-primary rounded-md"
           >
-            <h1 className="font-bold">{comment.name}</h1>
-            <p>{comment.body}</p>
-            <h1 className="font-bold">{comment.email}</h1>
+            <label className="font-bold">{comment.name}</label>
+
+            <p className="text-justify">{comment.body}</p>
+
+            <label className="text-right font-bold">{comment.email}</label>
           </SwiperSlide>
         ))}
     </Swiper>

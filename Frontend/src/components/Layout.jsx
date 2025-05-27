@@ -3,13 +3,15 @@ import Footer from "./Footer";
 
 const Layout = ({ children }) => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <>
       <Header />
 
-      <main className="mt-12 flex-1">{children}</main>
+      <main className="p-1 mt-12 min-h-[calc(100dvh-3rem)]">
+        {children}
+      </main>
 
       <Footer />
-    </div>
+    </>
   );
 };
 

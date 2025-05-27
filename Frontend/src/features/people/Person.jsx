@@ -186,7 +186,7 @@ const Person = () => {
   }, [socketConnection, params?.id, isReacted, location.pathname]);
 
   return (
-    <div className="min-h-screen p-1 sm:p-2 md:p-3 flex flex-col gap-2 text-center items-center">
+    <div className="h-full p-1 sm:p-2 md:p-3 flex flex-col gap-2 text-center items-center">
       {person && (
         <>
           {/* Photos */}
@@ -194,7 +194,7 @@ const Person = () => {
             {person.photos ? (
               <PhotoCarousel photos={person.photos} />
             ) : (
-              <div className="h-full flex">
+              <div className="h-full flex justify-center">
                 <img
                   className="rounded-full"
                   src={

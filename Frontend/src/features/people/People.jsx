@@ -67,7 +67,7 @@ const People = () => {
   }, [socketConnection, refetch, location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="h-full flex flex-col">
       {/* Barra */}
       <nav className="bg-primary p-2 fixed top-14 inset-x-1 z-10 flex gap-8 justify-center rounded-md">
         {[
@@ -106,7 +106,7 @@ const People = () => {
       {/* People */}
       <main className="mt-14 flex-1 flex">
         {isFetchingLocation || isLoading ? (
-          <div className="flex-1 flex flex-col gap-4 items-center justify-center">
+          <div className="flex-1 flex flex-col gap-4 justify-center items-center">
             <h1 className="font-bold text-xl">{t("title.t1")}</h1>
 
             <Spinner />

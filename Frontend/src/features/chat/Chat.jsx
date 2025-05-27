@@ -185,10 +185,7 @@ const Chat = () => {
   }, [allMessages]);
 
   return (
-    <div
-      style={{ backgroundImage: `url(${backgroundImage})` }}
-      className="min-h-screen p-1 flex flex-col gap-1 no-bg-repeat bg-cover"
-    >
+    <div className="relative h-full flex flex-col gap-1">
       <nav className="bg-primary p-2 fixed top-14 inset-x-1 z-10 flex gap-8 justify-between items-center rounded-md">
         <button
           title={t("bar.t1")}
@@ -293,7 +290,11 @@ const Chat = () => {
         </Menu>
       </nav>
 
-      <section className="relative h-[calc(100vh-108px)] overflow-x-hidden overflow-y-scroll">
+      {/* Caja de mensajes */}
+      <section
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+        className="relative h-[calc(100vh-164px)] py-1 mt-14 overflow-x-hidden overflow-y-scroll bg-cover"
+      >
         <div className="flex flex-col gap-1" ref={currentMessage}>
           {allMessages.map((msg, index) => {
             return (
@@ -338,7 +339,7 @@ const Chat = () => {
           })}
         </div>
 
-        {message.imageUrl && (
+        {/* {message.imageUrl && (
           <div className="sticky bottom-0 w-full p-4 bg-primary bg-opacity-45 flex justify-center items-center rounded-md">
             <div
               onClick={handleClearUploadImage}
@@ -379,9 +380,54 @@ const Chat = () => {
           <div className="sticky bottom-0 w-full p-4 bg-primary bg-opacity-45 flex justify-center items-center rounded-md">
             <Spinner />
           </div>
-        )}
+        )} */}
       </section>
 
+      {/* Previews superpuestos arriba de la barra inferior */}
+      {(message.imageUrl || message.videoUrl || loading) && (
+        <div className="absolute bottom-12 z-50 w-full flex justify-center pointer-events-none">
+          <div className="relative w-full max-w-sm bg-tertiary bg-opacity-75 rounded-md p-4 pointer-events-auto">
+            {/* Botón cerrar */}
+            <div
+              onClick={
+                message.imageUrl
+                  ? handleClearUploadImage
+                  : message.videoUrl
+                  ? handleClearUploadVideo
+                  : undefined
+              }
+              className="absolute top-2 right-2 bg-secondary h-6 w-6 flex items-center justify-center cursor-pointer rounded-full"
+            >
+              <IoClose size={20} />
+            </div>
+
+            {/* Previsualización imagen */}
+            {message.imageUrl && (
+              <img
+                src={message.imageUrl}
+                alt="Upload image"
+                className="w-full object-scale-down rounded-md"
+              />
+            )}
+
+            {/* Previsualización video */}
+            {message.videoUrl && (
+              <video
+                src={message.videoUrl}
+                className="w-full object-scale-down rounded-md"
+                controls
+                muted
+                autoPlay
+              />
+            )}
+
+            {/* Spinner de carga */}
+            {loading && <Spinner />}
+          </div>
+        </div>
+      )}
+
+      {/* Barra inferior */}
       <section className="bg-primary h-12 p-2 flex gap-1 items-center rounded-md">
         <div className="relative">
           <button
@@ -430,10 +476,7 @@ const Chat = () => {
           )}
         </div>
 
-        <form
-          className="flex-1 flex gap-1"
-          onSubmit={handleSendMessage}
-        >
+        <form className="flex-1 flex gap-1" onSubmit={handleSendMessage}>
           <input
             type="text"
             placeholder="Type here..."

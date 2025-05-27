@@ -18,7 +18,10 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: FRONTEND_URL, credentials: true },
+  cors: {
+    origin: [FRONTEND_URL, "http://192.168.11.15:5173"],
+    credentials: true,
+  },
 });
 
 const onlineUsers = new Set();
