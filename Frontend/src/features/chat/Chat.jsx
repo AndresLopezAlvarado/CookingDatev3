@@ -299,7 +299,7 @@ const Chat = () => {
       {/* Caja de mensajes */}
       <section
         style={{ backgroundImage: `url(${backgroundImage})` }}
-        className="relative h-[calc(100vh-164px)] py-1 mt-14 overflow-x-hidden overflow-y-scroll bg-cover"
+        className="relative h-[calc(100dvh-164px)] py-1 mt-14 overflow-x-hidden overflow-y-scroll bg-cover"
       >
         <div className="flex flex-col gap-1" ref={currentMessage}>
           {allMessages.map((msg, index) => {
