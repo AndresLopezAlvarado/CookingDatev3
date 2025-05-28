@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { VscEmptyWindow } from "react-icons/vsc";
 import { TiMessages } from "react-icons/ti";
 import { FaStar } from "react-icons/fa6";
+import { FiUserX } from "react-icons/fi";
 import { MdEmojiEmotions } from "react-icons/md";
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 import { useGetPeopleQuery } from "./peopleApiSlice";
@@ -112,8 +112,8 @@ const People = () => {
             <Spinner />
           </div>
         ) : people?.length === 0 ? (
-          <div className="flex-1 flex flex-col justify-center items-center">
-            <VscEmptyWindow className="w-48 h-48" />
+          <div className="flex-1 flex flex-col gap-4 justify-center items-center">
+            <FiUserX className="w-52 h-52" />
 
             <h1>{t("title.t2")}</h1>
           </div>

@@ -7,7 +7,7 @@ import { FaAngleLeft } from "react-icons/fa";
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 import { FaImage } from "react-icons/fa";
 import { IoIosPeople } from "react-icons/io";
-import { FiArrowUpLeft } from "react-icons/fi";
+import { TbMessage2Off } from "react-icons/tb";
 import { FaVideo } from "react-icons/fa";
 import { selectCurrentUser } from "../auth/authSlice";
 import Avatar from "../../components/Avatar";
@@ -108,8 +108,9 @@ const Chats = () => {
 
         <div className="flex flex-col gap-2">
           {allUser.length === 0 && (
-            <div className="flex flex-col gap-2 text-lg text-tertiary justify-center items-center text-center">
-              <FiArrowUpLeft size={50} />
+            <div className="flex-1 flex flex-col gap-4 justify-center items-center">
+              <TbMessage2Off className="w-52 h-52" />
+              
               <p>{t("title.t2")}</p>
             </div>
           )}

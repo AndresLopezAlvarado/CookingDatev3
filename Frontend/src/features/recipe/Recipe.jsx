@@ -157,7 +157,7 @@ const Recipe = () => {
       <main className="w-full sm:w-3/5 lg:w-1/2 flex-1 flex flex-col">
         {/* Form */}
         <div className="mt-14 p-2 flex flex-col gap-4 items-center">
-          <h1 className="text-3xl font-bold">{t("title.t1")}</h1>
+          <h1 className="text-2xl font-bold">{t("title.t1")}</h1>
 
           <p className="text-center">{t("title.t2")}</p>
 

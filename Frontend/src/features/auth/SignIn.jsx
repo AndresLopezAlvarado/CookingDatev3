@@ -32,14 +32,14 @@ const SignIn = () => {
       navigate("/people");
     } catch (error) {
       toast({
-        position: "top",
+        position: "bottom",
         duration: 4000,
 
         render: () => (
-          <div className="bg-tertiary font-bold p-4 rounded-md text-center">
-            <h1>An error has occurred!:</h1>
+          <div className="bg-primary p-1 text-center rounded-md">
+            <h1 className="text-tertiary font-bold">An error has occurred!:</h1>
 
-            <p>{error.response.data.message}</p>
+            <p>{error.data.message}</p>
           </div>
         ),
       });

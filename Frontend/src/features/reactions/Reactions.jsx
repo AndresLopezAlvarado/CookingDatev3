@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ImSpoonKnife } from "react-icons/im";
 import { IoFastFoodOutline } from "react-icons/io5";
-import { VscEmptyWindow } from "react-icons/vsc";
+import { FaRegSadTear } from "react-icons/fa";
 import { FaAngleLeft } from "react-icons/fa";
 import { useSocket } from "../../contexts/SocketContext";
 import { useSelector } from "react-redux";
@@ -80,8 +80,9 @@ const Reactions = () => {
       {/* People */}
       <main className="mt-14 flex-1 flex items-center">
         {cookAtHome?.length === 0 && eatOutside?.length === 0 ? (
-          <div className="flex-1 flex flex-col justify-center items-center">
-            <VscEmptyWindow className="w-48 h-48" />
+          <div className="flex-1 flex flex-col gap-4 justify-center items-center">
+            <FaRegSadTear className="w-52 h-52" />
+
             <h1>{t("title.t1")}</h1>
           </div>
         ) : (

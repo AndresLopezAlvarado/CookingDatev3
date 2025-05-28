@@ -154,8 +154,8 @@ const Profile = () => {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col gap-2 justify-center items-center">
-            <FaFileImage className="w-48 h-48" />
+          <div className="flex-1 flex flex-col gap-4 justify-center items-center">
+            <FaFileImage className="w-52 h-52" />
 
             <h1>{t("title.t5")}</h1>
           </div>

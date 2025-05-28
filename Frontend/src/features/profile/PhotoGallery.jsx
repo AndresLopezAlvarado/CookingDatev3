@@ -138,8 +138,8 @@ const PhotoGallery = ({ toggleModal }) => {
 
       <div className="flex flex-col gap-2 items-center">
         {savedPhotos.length === 0 ? (
-          <div className="flex flex-col justify-center items-center space-y-2">
-            <FaFileImage className="w-48 h-48" />
+          <div className="flex flex-col gap-4 justify-center items-center">
+            <FaFileImage className="w-52 h-52" />
 
             <h1>{t("form.f9")}</h1>
           </div>
